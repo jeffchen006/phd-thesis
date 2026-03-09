@@ -1,0 +1,184 @@
+\documentclass{ut-thesis}
+\usepackage[colorlinks]{hyperref} % for links
+\usepackage{graphicx} % for embedding graphics
+\usepackage{booktabs} % for pretty tables
+\usepackage{lipsum} % for gibberish text
+
+
+%% zhiychen 2022
+%\usepackage[ruled,vlined, linesnumbered]{algorithm2e}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{algpseudocode}
+\makeatletter
+\renewcommand{\ALG@beginalgorithmic}{\footnotesize}
+\makeatother
+\usepackage{eqnarray}
+\usepackage{alltt}
+\usepackage{textcomp}
+\usepackage{mathtools}
+\usepackage{textcomp}
+\usepackage{graphicx}
+\usepackage{adjustbox}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{xparse}
+\newcommand{\vals}{\mathsf{Vals}}
+\newcommand{\meths}[1]{\mathsf{Meths}({#1})}
+\newcommand{\inv}[1]{\mathsf{inv}({#1})}
+\newcommand{\obs}{\mathsf{Obs}}
+\newcommand{\eqdef}{\stackrel{\text{def}}{=}}
+\newtheorem{remark}{Remark}[section]
+
+\lstset{language=C,keywordstyle={\bfseries \color{blue}}}
+\usepackage{listings}
+\usepackage{color}
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+\lstset{frame=tb,
+  language=Java,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}
+
+\lstset{frame=tb,
+  language=Python,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}
+\usepackage{pdftexcmds}
+\usepackage{catchfile}
+\usepackage{ifluatex}
+\usepackage{ifplatform}
+
+\iflinux
+% add settings
+\usepackage{minted}
+\fi
+
+\usepackage{multirow}
+\usepackage{macros}
+\usepackage{cite}
+\usepackage{comment}
+\usepackage{amsmath,amssymb,amsfonts}
+%\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{listings}
+
+% \usepackage{listings}
+% \usepackage{stmaryrd}
+% \usepackage{array}
+% \usepackage{listings,stmaryrd,array}
+% \usepackage{tablefootnote}
+\usepackage{float}
+% \usepackage{enumitem}
+% \pagestyle{plain}
+% \PassOptionsToPackage{hyphens}{url}
+% \usepackage{hyperref}
+% \usepackage{xurl}
+% \usepackage{subfig}
+% \usepackage[framemethod=TikZ]{mdframed}
+% \usepackage{makecell}
+
+
+
+\usepackage{pifont}% http://ctan.org/pkg/pifont
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
+
+
+
+% author data
+\author{Zhiyang Chen}
+\title{FlashSyn: Approximate Synthesis for Flash Loan Attacks}
+\degree{Master of Science}
+\department[]{Department of Computer Science}
+\gradyear{2022}
+
+
+
+
+\newcommand*{\name}{{FlashSyn}}
+
+\newcommand*{\numOfBenchmarks}{eighteen}
+\newcommand*{\numOfSuccess}{sixteen}
+\newcommand*{\numOfAttacks}{sixteen}
+\newcommand*{\numOfAttacksETH}{nine}
+\newcommand*{\numOfAttacksBSC}{six}
+\newcommand*{\numOfAttacksFantom}{one}
+\newcommand*{\numOfAttacksDVD}{two}
+
+
+\begin{document}
+  \frontmatter
+    \maketitle
+    \begin{abstract}
+      \input{tex/abstract}
+    \end{abstract}
+    
+    % \begin{dedication}
+    %   \input{tex/dedication}
+    % \end{dedication}
+
+    % \begin{acknowledgements}
+    %   \input{tex/acknowledgements}
+    % \end{acknowledgements}
+    
+    \tableofcontents
+    \listoftables
+    \listoffigures
+
+  \mainmatter
+    \input{tex/ch-intro}
+    \input{tex/ch-background}
+    \input{tex/ch-example}
+    \input{tex/ch-preliminary}
+    \input{tex/ch-FlashSyn}
+    \input{tex/ch-imple}
+    \input{tex/ch-eval}
+    % \input{tex/ch-results}
+    \input{tex/ch-related}
+    \input{tex/ch-limits}
+    \input{tex/ch-conclusion}
+    \input{tex/appendix}
+  \appendix
+
+
+  \backmatter
+%   \printbibliography[heading=bibintoc]
+
+
+% bibliography
+{
+% \bibliographystyle{IEEEtran}
+\bibliographystyle{abbrv}
+\bibliography{main}
+}
+
+
+\end{document}

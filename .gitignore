@@ -1,0 +1,49 @@
+# LaTeX intermediate files
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.fmt
+*.fot
+*.cb
+*.cb2
+.*.lb
+
+# LaTeX output
+*.dvi
+*.ps
+*.pdf
+
+# Intermediate documents
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.lol
+
+# Bibliography
+*.bib.bak
+
+# Synctex
+*.synctex.gz
+
+# Temporary files
+*~
+*.tmp
+*.swp
+*.swo
+
+# Editor directories and files
+.vscode/
+.idea/
+*.sublime-workspace
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Build directories
+build/
+dist/

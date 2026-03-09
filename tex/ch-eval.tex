@@ -1,0 +1,290 @@
+
+
+
+\chapter{Evaluation}
+\label{sec:evaluation}
+
+
+
+\begin{table}[h!]
+    \caption{Benchmark of attacks used in the evaluation.}
+    \vspace{-2mm}
+    \centering
+    \begin{tabular}{|c|c|c|c|c|}
+    \hline
+    Blockchain & Benchmark &  Date  & Loss (USD) & Link \\ \hline
+    \multirow{9}{*}{Ethereum}  & bZx1 & 02/14/20 & 355k & \cite{bZx1} \\ \cline{2-5} 
+                & Harvest\_USDT & 10/26/20 & 14M & \cite{HarvestUSDC} \\ \cline{2-5} 
+                & Harvest\_USDC & 10/26/20 & 11M & \cite{HarvestUSDT}  \\ \cline{2-5} 
+                & Eminence & 09/29/20 & 7M & \cite{Eminence} \\ \cline{2-5} 
+                & ValueDeFi & 11/14/20 & 7.4M & \cite{ValueDeFi}\\ \cline{2-5} 
+                & Cheesebank & 11/16/20 & 3.3M & \cite{Cheesebank} \\ \cline{2-5} 
+                & Warp & 12/17/20 & 8M & \cite{Warp} \\ \cline{2-5} 
+                & Yearn & 02/05/21 & 11M  & \cite{Yearn} \\ \cline{2-5} 
+                & inverseFi & 06/16/22 & 1.26M  & \cite{inverseFi} \\ \hline
+    \multirow{6}{*}{BSC}   & bEarnFi  & 05/17/21 & 11M & \cite{bEarnFi} \\ \cline{2-5} 
+                           & AutoShark & 05/24/21 & 822.8k & \cite{AutoShark} \\ \cline{2-5}
+                           & ElevenFi & 06/23/21 & 4.5M & \cite{ElevenFi} \\ \cline{2-5} 
+                           & ApeRocket & 07/14/21 & 1.3M & \cite{ApeRocket} \\ \cline{2-5} 
+                           & WDoge     & 04/24/22 & 30k  & \cite{WDoge} \\ \cline{2-5} 
+                           & Novo      & 05/29/22 & 108k & \cite{Novo}  \\ \hline
+    Fantom                 & OneRing   & 03/21/22 & 1.45M & \cite{OneRing} \\ \hline
+    Damn Vulnerable  & Puppet   &  &  & \cite{DVD1} \\ \cline{2-5} 
+    DeFi (DVD)       & PuppetV2 &  &  & \cite{DVD2} \\ \hline
+    \end{tabular}
+    \flushleft
+    \label{tab:benchmark}
+    \vspace{-5mm}
+\end{table}
+
+
+
+
+
+In this section, we try to answer the following research questions. 
+\begin{itemize}
+
+\item \textbf{RQ1:} Can {\name} effectively synthesize flash loan attack vectors?
+
+\item \textbf{RQ2:} How important is the synthesis-via-approximation technique for {\name}?
+
+\item \textbf{RQ3:} How much does counterexample-driven approximation
+    refinement improve {\name}'s results?
+\end{itemize}
+
+\input{tex/table/tableRQ1}
+
+\section{Experiments Setup:}
+\noindent \textbf{Benchmark:} 
+We systematically investigated all history attacks on Ethereum, Binance Smart
+Chain (BSC), and Fantom blockchains from 02/14/2020 to 06/16/2022. We excluded those attacks that we cannot reproduce or that are not pure flash loan attacks (e.g.,
+exploiting re-entrance vulnerabilities in addition to flash loan attacks). We
+obtained $16$ history attacks in total. We also collected $2$ fictional flash
+loan attacks from the Damn Vulnerable DeFi (DVD) challenges~\cite{DVD}. In
+Table~\ref{tab:benchmark}, we list the benchmarks, the date of the attack, the
+loss caused by each attack, and a link to the attack transaction. 
+
+%We collected $16$ flash loan attacks on Ethereum,
+% Binance Smart Chain (BSC), and Fantom blockchains that occurred between $2020$ and $2022$, and $2$ fictional flash loan attacks from the Damn Vulnerable DeFi (DVD) challenges~\cite{DVD}. 
+% Ethereum and BSC are the two most popular blockchains in DeFi and most flash loan attacks occur on them. In Table~\ref{tab:benchmark}, we list the benchmarks, the date of the attack, the loss caused by each attack, and a link to the attack transaction. 
+
+ %We selected ones in the scope of this work: the flash loan attacks that 
+ %(1) only involves calling functions in existing DeFi smart contracts 
+ %(2) can be executed within a single transaction
+ %(3) do not exploit the vulnerability of flash loan providers. 
+ %Then we tried our best to reproduce these close-source attacks from their execution trees. 
+ %This resulted in {\numOfBenchmarks} benchmarks: {\numOfAttacksETH} from Ethereum Blockchain,  {\numOfAttacksBSC} from Binance Smart Chain, {\numOfAttacksFantom} from Fantom and  {\numOfAttacksDVD} from Damn Vulnerable DeFi\footnote{Damn Vulnerable DeFi is CTF-like security playground for decentralized finances.}.  
+
+\noindent \textbf{Ground Truth:} For historical flash loan attacks, we forked
+the corresponding blockchain at one block prior to the attack transaction and
+replayed the attacker's attack vector as the ground truth. For DVD cases, we
+select solutions given by community as ground truth. Note that in a flash loan
+attack, where the same attack vector is repeated multiple times, e.g.,
+Harvest\_USDC, we remove the loop and only consider the first attack vector as
+the ground truth. 
+
+\noindent \textbf{Flash loan initial balance:} We assume that the flash loan
+attacks do not exploit the vulnerability in flash loan providers (holds for all
+benchmarks). We initialize a set of addresses we use in the {\runner} component
+with sufficient balances that match the balances the attacker accumulated
+through flash loans to launch their attacks. In the DVD cases, the initial
+balances match the setup of the DVD challenges~\cite{DVD}.
+Note initial balance does not have to be 100\% from flash loan, it can also be (partially) 
+from the attacker's own tokens.    
+
+%\noindent \textbf{Action candidates:} In general, each function call inside the ground truth is considered as an action candidate. The only exception is Uniswap and its forks.  They require a series of function calls and local computations to swap or mint tokens. We consider them as common patterns and compose function calls together and  regard them composed as one action candidate. If the ground truth only contains  swapping token X to token Y, we add a new action candidate which swaps token Y back to token X. 
+
+\noindent \textbf{Baseline with Manual Summary:} To demonstrate the importance
+of synthesis-via-approximation techniques, we implemented a baseline
+synthesizer that works with manual summaries of smart contract actions.
+Specifically, we manually inspected all benchmark smart contracts that are open
+sourced and for each benchmark we allocated more than $4$ manual analysis hours
+to extract the precise mathematical summaries. The baseline synthesizer then
+uses the manually extracted precise summaries to drive the synthesis.
+
+\noindent \textbf{Environment Setup:} 
+We assume that the flash loan providers are generally available, and we do not
+consider the borrow and the return as the part of the synthesis task. In the
+experiments, we incrementally increase $\len$ in Algorithm~\ref{alg:enu} until
+{\name} successfully synthesizes a profitable attack vector. For all cases that
+{\name} succeeds, the resulting $\len$ equals to the action length of the
+ground truth. The experiments are conducted on an Ubuntu $22.04$ server, with
+an AMD Ryzen Threadripper 2990WX $32$-Core Processor and $128$ GB RAM. 
+\subsection{Overview}
+
+We applied {\name} to the $18$ benchmarks. We set a timeout of $3$ hours for
+polynomial approximations and $4$ hours for interpolations. Table~\ref{tab:RQ1}
+summarized the results. {\name} was able to find positive profits for $16$
+benchmarks except the \emph{Yearn} and \emph{InverseFi} benchmarks. The first
+five columns of Table~\ref{tab:RQ1} list data concerning the benchmarks. In
+particular, the characteristics of each of the $16$ synthesized benchmarks in terms of the number of
+actions to be approximated and the length of the original attack vector. The
+four columns under \textbf{Polynomial} list data concerning the synthesis using
+polynomial based approximation. The four columns under \textbf{Interpolation}
+list data concerning the synthesis using interpolation based approximation. The
+last column of Table~\ref{tab:RQ1} lists data concerning our attempt to replace
+the approximation component of {\name} with precise mathematical summaries
+for actions. 
+%In particular, we manually inspected all smart contracts that are
+%open sourced and for each benchmark we allocated more than $4$ hours to extract
+%the mathematical expressions. 
+Note that four benchmarks were close sourced (marked \textbf{cs} in
+Table~\ref{tab:RQ1}) and five benchmarks were too complicated (marked
+\textbf{cx}) and we were not able to extract mathematical precise summaries to enable
+the baseline synthesizer to produce any attack vector. For other benchmarks that
+are not \textbf{cs} or \textbf{cx}, we list the profit generated using the manually extracted
+mathematical expressions in the synthesizer and optimizer. Note that {\name} was
+not able to find any attack vector with positive profit for the two benchmarks
+\emph{Yearn} and \emph{InverseFi}, which are not shown in Table~\ref{tab:RQ1}.
+%For these $2$ benchmarks, the approximation was not precise enough to lead to a positive profit. 
+
+%Empirically we found {\name}-poly reaches best performance with 500 initial data points per action, while {\name}-inte reaches best performance with 2000 initial data points per action. Table~\ref{tab:RQ1} summarized the results.  The columns \textbf{AC}, \textbf{AP}, \textbf{GL} reveal the complexity level of each benchmark. 
+
+\input{tex/table/tableRQ3Summary}
+
+\section{RQ1: Effectiveness of {\name}}
+
+Our results in Table~\ref{tab:RQ1} show that {\name} can effectively synthesize
+flash loan attack vectors. As shown in Table~\ref{tab:RQ1}, {\name}-poly
+(resp., {\name}-inter) synthesized profitable attack vectors for $16$ (resp.,
+$13$) benchmarks with an average normalized profit(w.r.t. the ground
+truth profit) of $0.945$ (resp., $0.641$). In particular, for three benchmarks
+(\emph{ApeRocket}, \emph{ElevenFi}, and \emph{AutoShark}) the profits found by
+{\name}-poly are within $99\%$ of the profits in the original attacks vectors.
+Surprisingly in three benchmarks (\emph{bZx1}, \emph{Warp}, and \emph{OneRing})
+the profits found by {\name} are bigger than the profits in the original
+attacks vectors. We elaborate more on the \emph{Warp} case where the profit
+roughly double the ground truth profit in the supplementary materials. 
+On average, {\name}-poly is $\times2$ faster than {\name}-inter. This is
+because we used parallelism in {\name}-poly which was not possible for
+{\name}-inter. Note that {\name}-inter use more data points than {\name}-poly.
+This is because that with more data points the precision of interpolation
+improves (it is easier to find neighbors for new data points), however, with
+more data points the precision of a polynomial of a degree $n \leq 6$
+deteriorates.  We believe the two approximation methods are complementary. For
+instance, the best profit for \emph{OneRing} was found by {\name}-inter, while,
+the best profit for \emph{Warp} was found by {\name}-poly.
+
+%We measure the efficiency of {\name} by measuring the time when the synthesis stops.  Naturally, we would expect {\name} takes more time to finish synthesis procedure for a  benchmark with more action candidates(\textbf{AC}) and larger synthesis length($=$\textbf{GL}).   On average, {\name}-poly/{\name}-inte spends 729/1528 seconds to  perform the initial data collection of 500/2000 points per action, and additional 1564/3197 seconds  to finish synthesis procedure. Since {\name}-poly is parallelized while {\name}-inte is not, {\name}-poly should  be faster than {\name}-inte in principle. 
+
+%We measure the effectiveness of {\name} by comparing the best profit of synthesized attack vectors of {\name} 
+%with the profit of the ground truth. {\name}-poly/{\name}-inte synthesized profitable attack vectors for 16/13 benchmarks, the average ratio of synthesized profit w.r.t. groundtruth profit is 0.917/0.797. It's surprising that
+%in some benchmarks (bZx1, Warp, Puppet, OneRing), {\name} synthesized an even better profit than the groundtruth, 
+%which is conducted by exceptionally experienced attackers. 
+%For bZx1 and Warp, {\name} synthesized an attack vector
+%with a profit roughly double the groundtruth profit. 
+%Since bZx1 has been widely studied by researchers\cite{qin2021attacking,cao2021flashot}, 
+%we conduct a case study of Warp in the Appendix.
+
+% Since we calculate a weighted sum of tokens as our profit, one possible concern is whether flash loan 
+% can be repaid. % to be finished
+
+\begin{comment}
+\begin{mdframed}[style=MyFrame]
+\textbf{Summary to RQ1:} {\name} can efficiently and effectively synthesized attack vectors with positive
+profit which reveals flash loan vulnerabilities.
+\end{mdframed}
+\end{comment}
+
+
+
+\section{RQ2: Comparison with Precise Baseline}
+Our results in Table~\ref{tab:RQ1} show that the synthesis-via-approximation
+technique is important for the effectiveness of {\name}. For the $9$ cases that
+the precise baseline failed due to either close source (\textbf{cs}) or
+complicated contract logics (\textbf{cx}), {\name} found attack vectors that
+generate positive profits. On average, the best profit from {\name} is $0.97$
+of the profit returned by the precise baseline. In particular, for \emph{Warp} and \emph{PuppetV2}
+{\name} synthesized an attack vector with a profit higher than the profit
+obtained by the precise approach. 
+
+For the $9$
+cases that are marked either \textbf{cs} or \textbf{cx},  {\name} returns
+positive profits. 
+This shows the benefit of the approximation approach used in {\name} to overcome 
+To further evaluate the {\approximators}' performance of {\name}, one author spent $4$ hours per benchmark 
+to implement precise expressions of transition functions. We successfully get precise expressions 
+for $7$ out of $18$ benchmarks. 
+Note these precise expressions are only true for a specific blockchain 
+state, and are not universally applicable. Next we replaced {\approximators} of 
+{\name} with these precise expressions, and ran {\name}-precise on these $7$ benchmarks. 
+ 
+
+
+\begin{comment}
+\begin{mdframed}[style=MyFrame]
+    \textbf{Summary to RQ2:} {\name}'s {\approximators} framework approximates the effect of actions well, 
+    reaching a similar performance as precise framework. 
+\end{mdframed}
+\end{comment}
+
+\section{RQ3: Counterexample-Driven Approximation Refinement}
+
+We evaluate {\name} with different initial numbers of data points. In
+particular, we evaluated {\name} with $200$, $500$, $1000$, and $2000$ initial
+data points threshold per action to be approximated without and with
+counterexample loop. The results
+of the evaluation are shown in Table~\ref{tab:RQ3Summary}. The \textbf{Avg.}
+rows in Table~\ref{tab:RQ3Summary} are calculated based on the $16$ benchmarks
+excluding \emph{Yearn} and \emph{InverseFi}. The \textbf{Avg. Normalized
+Profit} is calculated as the average of normalized profits, i.e., profit /
+ground truth profit. For polynomial approximation, the results show that only
+with counterexample loop we are able to solve the $16$ benchmarks (Columns
+\textbf{500+x} and \textbf{2000+x}). Also, the maximum average of normalized
+profits is achieved with counterexample loop (Column \textbf{2000+x}) which
+improved from $0.717$ (Column \textbf{2000}) without counterexample loop to
+$0.945$ with counterexample loop. For interpolation approximation, the maximum
+average of normalized profits is also achieved with counterexample loop (Column
+\textbf{2000+x}) which improved from $0.594$ (Column \textbf{2000}) without
+counterexample loop to $0.641$ with counterexample loop. In summary, the
+results in Table~\ref{tab:RQ3Summary} show the clear benefits of
+counterexample-driven approximation refinement used in {\name}. 
+%To answer RQ3, we disable counterexample-driven approximation refinement and keep everything else in {\name} the same(referred as {\name}-disable), and run {\name} on all benchmarks with different number of initial data points. A comparison between {\name} and {\name}-disable is shown in Table~\ref{tab:RQ3Summary}. All \textbf{Avg.} rows in Table~\ref{tab:RQ3Summary} are calculated based on $16$ benchmarks excluding Yearn and InverseFi. For Avg. Normalized Profit, we calculate the average normalized profit (profit / groundtruth profit) to better understand how profit improves. Generally speaking, we would expect counterexample-driven approximation refinement can improve the profit reached by {\name} with a cost of extra time. 
+
+%\textcolor{red}{don't know how to better analyze the stats. Leave it for you. --Zhiyang}
+
+
+
+
+%\input{tex/table/tableRQ3Profit}
+
+%\input{tex/table/tableRQ3Time}
+
+%\input{tex/table/tableRQ3Datapoints}
+
+%\input{tex/table/tableIC}
+
+\begin{comment}
+\begin{mdframed}[style=MyFrame]
+\textbf{Summary to RQ3:} Counterexample-Driven Approximation Refinement can improve the profit reached by {\name} and solve more benchmarks.
+\end{mdframed}
+\end{comment}
+
+
+
+
+
+
+
+% \subsection{Ethereum Blockchain}
+% \input{tex/benchmarks/bZx1}
+% \input{tex/benchmarks/Harvest_USDC}
+% \input{tex/benchmarks/Harvest_USDT}
+% \input{tex/benchmarks/Warp}
+% \input{tex/benchmarks/Eminence}
+% \input{tex/benchmarks/Cheesebank}
+% \input{tex/benchmarks/ValueDeFi}
+
+% \subsection{Binance Smart Chain}
+% \input{tex/benchmarks/ElevenFi}
+% \input{tex/benchmarks/bEarnFi}
+% \input{tex/benchmarks/ApeRocket}
+% \input{tex/benchmarks/Novo}
+% \input{tex/benchmarks/WDoge}
+
+% \subsection{Fantom}
+% \input{tex/benchmarks/OneRing}
+
+% \subsection{Damn Vulnerable DeFi}
+% \input{tex/benchmarks/Puppet}
+% \input{tex/benchmarks/PuppetV2}
