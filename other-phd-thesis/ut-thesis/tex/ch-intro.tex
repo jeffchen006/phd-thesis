@@ -1,0 +1,117 @@
+\chapter{Introduction}
+\label{sec:intro}
+
+Blockchain technology provides decentralized, robust, and programmable ledgers
+at Internet scale. Developers can deploy smart contracts onto a blockchain
+to encode arbitrarily complicated transaction rules that operate on the ledger. 
+%The faithful execution of smart contracts are enforced and verified by all
+%participants of the blockchain network. 
+Blockchains and smart contracts have become the key infrastructure for various
+decentralized financial services (DeFi). The Total Value Locked (TVL) in $1417$
+DeFi smart contracts has reached $85.64$ billion USD on June 1st
+2022~\cite{DeFillama}.
+
+
+Security attacks are critical threats to smart contracts. Attackers can send
+malicious transactions to exploit vulnerabilities of a contract to steal
+millions of dollars from the contract users. Particularly, a new kind of
+security attacks that use large amount of digital assets to exploit design
+flaws in DeFi contracts has become prevalent. Because such attacks typically
+borrow the used assets from flash loan contracts, they are called \emph{flash
+loan attacks}~\cite{SlowMistStats, mckay2022defi}. Among the top $200$ costliest
+attacks recorded in Rekt Database,  the financial loss caused by $36$
+flash loan attacks exceeds $418$ million USD~\cite{mckay2022defi}.
+
+%The flash loan is a special kind of loan that occurs inside one transaction,
+%i.e., the borrower must return all borrowed assets back before the end of the
+%transaction otherwise the flash loan protocol will abort the transaction to
+%cancel the loan.
+A malicious flash loan attack transaction typically contains a sequence of
+actions (i.e., function calls to smart contracts). The first action borrows a
+very large sum of digital assets from a flash loan contract and the last action
+returns the borrowed assets. The sequence of actions in the middle interacts
+with multiple DeFi contracts using the borrowed assets to exploit their design
+flaws. When a DeFi contract fails to consider corner cases caused by the large
+sum of borrowed assets, the attacker may extract prohibitive profits. For
+example, many flash loan attacks use borrowed assets to temporarily manipulate
+asset prices in a DeFi contract to fool the contract to make unfavorable trades
+with the attacker~\cite{qin2021attacking,cao2021flashot}. Although researchers
+have developed many automated program analysis and verification
+techniques~\cite{mossberg2019manticore,feng2019precise, grieco2020echidna,
+brent2020ethainter} to detect and eliminate bugs in smart
+contracts, these techniques cannot handle flash loan attack vulnerabilities.
+This is because such vulnerabilities are design flaws rather than
+implementation bugs. Moreover, these techniques typically operate with one
+contract at a time, but flash loan attacks almost always involve multiple DeFi
+contracts interacting with each other.
+
+
+\noindent \textbf{\name:}
+We present {\name}, the first automated end-to-end program synthesis
+tool for detecting flash loan attack vulnerabilities. Given a set of smart
+contracts and candidate actions in these contracts, {\name} automatically
+synthesizes an action sequence along with all action parameters to interact
+with the contracts to exploit potential flash loan vulnerabilities.
+
+The main challenge {\name} faces is that the underlying logic of DeFi actions
+is often too sophisticated for standard solvers or optimizers to handle. Even
+if the action sequence was already known, a naive application of symbolic
+execution might not be able to find action parameters because it may need to extract
+overly complicated symbolic constraints causing the solvers to
+time out. Moreover, {\name} synthesizes the action sequence and the action
+parameters together and therefore faces an additional search space explosion
+challenge.
+
+{\name} addresses these challenges with its novel
+\emph{synthesis-via-approximation} technique. Instead of attempting to extract
+accurate symbolic expressions from smart contract code, {\name} collects data
+points to approximate the effect of contract actions with polynomials and
+interpolations. {\name} then uses the approximated expressions to drive the
+synthesis. {\name} also incrementally improves the approximation with its novel
+\emph{counterexample-driven approximation refinement} techniques, i.e., if the
+synthesis fails because of a large deviation caused by the approximations,
+{\name} collects the corresponding data points as counterexamples to
+iteratively refine the approximations. The combination of these techniques
+allows the underlying optimizer of {\name} to work with more tractable
+expressions. It also decouples the two difficult tasks, finding the action
+sequence and finding the action parameters. When working with a set of
+coarse-grained approximated expressions, {\name} can filter out unproductive
+action sequences with a small cost.
+
+\noindent \textbf{Experimental Results:} 
+We evaluate {\name} on $16$ DeFi benchmark protocols that were victims to flash
+loan attacks and $2$ DeFi benchmark protocols from Damn Vulnerable DeFi
+challenges~\cite{DVD}. {\name} automatically synthesizes adversarial attacks for $16$ out
+of the 18 benchmarks. For comparison, a baseline that operates manually crafted
+accurate action summaries only synthesizes attacks for 7 out of the 18.
+
+\noindent \textbf{Contributions:}
+This thesis makes the following contributions:
+\begin{itemize}
+\item \textbf{\name:} The first automated
+end-to-end program synthesis tool for detecting flash loan attack
+vulnerabilities. It enables approximate attack synthesis 
+without diving into sophisticated logics of DeFi contracts. 
+
+\item \textbf{Synthesis via Approximation:} A novel synthesis-via-approximation technique to handle
+        sophisticated logics of DeFi contracts. 
+
+\item \textbf{Counterexample Driven Approximation Refinement:} A novel counterexample driven approximation refinement technique to
+        incrementally improve the approximation during the synthesis process.
+\item \textbf{Experimental Evaluation:} 
+We implemented {\name} in a tool and evaluated it on $16$ protocols that were victims to flash
+loan attacks and $2$ fictional flash loan attacks. 
+\end{itemize}
+
+The rest of the thesis is organized as follows. Section~\ref{sec:background} briefly introduces background information. 
+Section~\ref{sec:example} 
+presents a motivating example to give a high-level overview of {\name}. 
+In Section ~\ref{sec:preli}, we define the problem we tackle in this thesis. 
+Section~\ref{sec:approach} presents our core synthesis algorithm.
+%and 
+%the counterexample driven approximation refinement technique. 
+Section~\ref{sec:implementation} describes {\name}, an implementation of our techniques. 
+Section~\ref{sec:evaluation} evaluates {\name} on $18$ benchmarks. 
+In Sections~\ref{sec:related} and \ref{sec:threats}, 
+we discuss related work and threats to validity, respectively.  
+Section~\ref{sec:conclusion} concludes the thesis.

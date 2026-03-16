@@ -1,0 +1,69 @@
+\section{Background}
+\label{sec:background}
+
+
+\noindent \textbf{Blockchain:}
+Blockchain is a distributed ledger that broadcasts and stores information of
+transactions across different parties. 
+A blockchain consists of a growing
+number of blocks and a consensus algorithm determining block order.
+Each block is constituted of transactions.
+Ethereum~\cite{ethereum22,buterin2014ethereum} is the first blockchain to
+support, store, and execute Turing complete programs, known as smart contracts.
+Many new blockchains use the Ethereum virtual machine (EVM) 
+for execution due to its popularity among developers.
+
+%Smart contracts can create internal transactions to other smart contracts. The internal transactions are nested from a top-level transaction, an external transaction, initiated by a user account. If a transaction is aborted then the effects of all nested internal transactions will be reversed. 
+
+
+
+\noindent \textbf{Smart Contracts:}
+Each smart contract is associated with a unique address, a
+persistent account's storage trie, a balance of native tokens, e.g., Ether in
+Ethereum, and bytecode (e.g., EVM
+bytecode~\cite{ethereum22,buterin2014ethereum}) that executes incoming
+transactions to change the storage and balance. Users interact with a smart
+contract by issuing transactions from their user accounts to the contract
+address. 
+Smart contracts can also interact with other smart contracts as function calls.
+Currently, there are several human-readable high-level programming languages,
+e.g., Solidity~\cite{solidity} and Vyper~\cite{vyper}, to write smart contracts
+that compile to the EVM bytecode. 
+
+
+
+\noindent \textbf{Decentralized Finance (DeFi):}
+DeFi is a peer-to-peer financial ecosystem built on top of
+blockchains~\cite{wust2018you}. The building blocks of DeFi are smart contracts
+that manage digital assets. 
+A few DeFi protocols dominate the DeFi market and serve as references for other
+decentralized applications: stable coins (e.g., USDC and USDT), price oracles,
+decentralized exchanges, and lending and borrowing platforms. 
+In DeFi, a special type of loan called \textbf{flash
+loan} allows lenders to offer loans to borrowers without upfront collaterals
+deposits. The loan is only valid within a single transaction and must be repaid
+with fees before the completion of the transaction.
+ 
+
+
+%\subsection{Transaction Execution} 
+
+%A transaction is constituted of a sender address, a recipient address, a
+%transferred value of native token (can be zero), a transaction data (can be
+%empty), and a gas value to pay the transaction fees. If the transaction
+%recipient address is associated with a user account then the transaction is
+%called \emph{simple payment} transaction that transfers the value of native
+%token from the sender account to the recipient account and the transaction's
+%data is empty in this case. Otherwise, if the transaction recipient address is
+%associated with a smart contract account then the transaction's data identifies
+%a method of the recipient smart contract's code together with arguments passed
+%to execute the method. When the transaction is received by the block miners,
+%the corresponding smart contract's method is executed in the EVM, modifying the
+%smart contract's balance and storage trie accordingly. Note that the execution
+%of each EVM instruction, such as read/write operations on the underlying
+%storage trie, is associated with a gas fee. The transaction's gas value must
+%exceed the accumulated gas fees at the end of execution, otherwise the
+%transaction is aborted~\cite{ethereum22,buterin2014ethereum}.
+
+
+

@@ -1,0 +1,21 @@
+%!TEX root = main.tex
+\chapter{Conclusion}
+\label{sec:conclusion}
+
+Towards preventing flash loan attacks on DeFi protocols, we have proposed an
+automated synthesis framework based on numerical approximation. 
+
+Given smart
+contracts of a DeFi protocol, we use counterexample driven synthesis to approximate the
+functional behaviors of the smart contracts. 
+To collect the synthesis data
+points, our current implementation assumes manually-specified functions to
+approximate and the sets of states that those functions modify. We consider the
+cost of this manual effort to be offset by a significant benefit: not dealing
+with the complex implementations of the functions in the DeFi protocols and
+using approximation to find adversarial attacks. 
+
+Our results show that the proposed framework is practical and the approximation
+is sufficient to drive the synthesis of flash loan attack vectors. The thesis
+points out a potential new approach for solving trace
+synthesis problems for complicated functions.

@@ -1,0 +1,120 @@
+\chapter{Background}
+\label{sec:background}
+
+This chapter briefly gives introductory descriptions of blockchain, smart
+contracts, decentralized finance, and transaction execution.
+
+
+\section{Blockchain}
+
+
+Blockchain is a distributed ledger that broadcasts and stores information of
+transactions across different parties. 
+A blockchain consists of a growing
+number of blocks and a consensus algorithm which decides the order of blocks.
+Each block is constituted of transactions.
+%While Satoshi Nakamoto invented the first decentralized cryptocurrency Bitcoin
+%in 2008~\cite{nakamoto2008bitcoin}, the 
+Ethereum~\cite{ethereum22,buterin2014ethereum} is the first blockchain to
+support, store, and execute Turing complete programs, known as smart contracts.
+In particular, the Ethereum blockchain is constituted of a global state and
+transactions that modify the state. 
+%Ethereum supports two types of accounts:
+%user accounts and smart contract accounts, and each account is associated with
+%a unique address.  
+New popular blockchains
+%, e.g., Binance Smart
+%Chain~\cite{bsc},  Avalanche~\cite{avalanche},
+%Conflux~\cite{li2020decentralized}, and Near~\cite{near}, Fantom~\cite{fantom}
+work with Ethereum virtual machine (EVM) based execution environment due to the
+popularity of the EVM stack for developers. 
+
+%Smart contracts can create internal transactions to other smart contracts. The internal transactions are nested from a top-level transaction, an external transaction, initiated by a user account. If a transaction is aborted then the effects of all nested internal transactions will be reversed. 
+
+
+
+
+\section{Smart Contracts} 
+%Smart contracts are programs created to automatically execute those
+%transactions. 
+Each smart contract is associated with a unique address, a
+persistent account's storage trie, a balance of native tokens, e.g., Ether in
+Ethereum and BNB in Binance Smart Chain, and bytecode (e.g., EVM
+bytecode~\cite{ethereum22,buterin2014ethereum}) that executes incoming
+transactions to change the storage and balance. Users interact with a smart
+contract by issuing transactions from their user accounts to the contract
+address. 
+%Smart contracts become
+%immutable once deployed to the blockchain.  
+Smart contracts can also interact with other smart contracts as function calls.
+%create internal
+%transactions to interact with other smart contracts. The internal transactions
+%are nested from a top-level transaction, an external transaction, initiated by
+%a user account. If an external transaction is aborted then the effects of all
+%nested internal transactions will be reversed as well. 
+Currently, there are several human-readable high-level programming languages,
+e.g., Solidity~\cite{solidity} and Vyper~\cite{vyper}, to write smart contracts
+that compile to the EVM bytecode. 
+%In Figure~\ref{fig:ERC20}. we show an
+%excerpt of the ERC20 token smart contract written in Solidity. The listed
+%function {transfer} allows an address, {from}, to transfer ERC20 tokens to
+%another address, {to}. 
+
+\input{solidity-highlighting.tex}
+\begin{figure}[t]
+    \centering
+    \begin{minipage}[h]{0.9\linewidth}
+    \lstinputlisting{codes/ERC20.sol}
+    \end{minipage}
+    \caption{An excerpt of ERC20 smart contract.}
+    \label{fig:ERC20}
+    \vspace{-2mm}
+\end{figure}
+
+
+
+
+\section{Decentralized Finance (DeFi)}
+
+Decentralized finance (DeFi) is a peer-to-peer financial ecosystem built on top of
+blockchains~\cite{wust2018you}. The building blocks of DeFi are smart contracts
+that manages digital assets. 
+%that constitute the DeFi
+%protocols~\cite{popescu2020decentralized,cao2021flashot}. 
+A few DeFi protocols dominate the DeFi market and serve as references for other
+decentralized applications: stable coins (e.g., USDC and USDT), price oracles,
+decentralized exchanges, and lending and borrowing platforms. 
+%\subsubsection{Flash loan} 
+In DeFi, a special type of loan called \emph{flash
+loan} allows lenders to offer loans to borrowers without upfront collaterals
+deposits. The loan is only valid within a single transaction and must be repaid
+with fees before the completion of the transaction (otherwise the transaction
+is reverted). 
+ 
+%These money legos can be composed to form various applications. For instance, 1inch~\cite{1inch} is a DEX aggregator that assist users to find the best crypto prices across DEXes, and reroutes trades between them. 
+%Composability is one of the most important feature of DeFi.
+%However, referencing external protocols also introduces new risks to a DeFi application, since external protocols' unusual behaviors could easily lead to the applications' unexpected behaviors without rigorous checks. 
+
+
+
+\section{Transaction Execution} 
+
+A transaction is constituted of a sender address, a recipient address, a
+transferred value of native token (can be zero), a transaction data (can be
+empty), and a gas value to pay the transaction fees. If the transaction
+recipient address is associated with a user account then the transaction is
+called \emph{simple payment} transaction that transfers the value of native
+token from the sender account to the recipient account and the transaction's
+data is empty in this case. Otherwise, if the transaction recipient address is
+associated with a smart contract account then the transaction's data identifies
+a method of the recipient smart contract's code together with arguments passed
+to execute the method. When the transaction is received by the block miners,
+the corresponding smart contract's method is executed in the EVM, modifying the
+smart contract's balance and storage trie accordingly. Note that the execution
+of each EVM instruction, such as read/write operations on the underlying
+storage trie, is associated with a gas fee. The transaction's gas value must
+exceed the accumulated gas fees at the end of execution, otherwise the
+transaction is aborted~\cite{ethereum22,buterin2014ethereum}.
+
+
+

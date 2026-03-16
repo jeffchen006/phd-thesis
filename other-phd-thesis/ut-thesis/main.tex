@@ -117,7 +117,7 @@
 \author{Zhiyang Chen}
 \title{FlashSyn: Approximate Synthesis for Flash Loan Attacks}
 \degree{Doctor of Philosophy}
-\department[]{Department of Computer Science}
+\department{Department of Computer Science}
 \gradyear{2022}
 
 
@@ -133,20 +133,9 @@
 \newcommand*{\numOfAttacksFantom}{one}
 \newcommand*{\numOfAttacksDVD}{two}
 
-\providecommand{\revise}[1]{#1}
-\providecommand{\camera}[1]{#1}
-\providecommand{\chen}[1]{#1}
-\providecommand{\framework}{Framework}
-\providecommand{\bench}{Bench}
-\makeatletter
-\@ifundefined{citep}{\newcommand{\citep}[2][]{\cite{#2}}}{}
-\@ifundefined{citet}{\newcommand{\citet}[2][]{\cite{#2}}}{}
-\@ifundefined{citeauthor}{\newcommand{\citeauthor}[1]{\cite{#1}}}{}
-\makeatother
-
 
 \begin{document}
-  \frontmatter
+  \begin{preliminary}
     \maketitle
     \begin{abstract}
       \input{tex/abstract}
@@ -163,8 +152,7 @@
     \tableofcontents
     \listoftables
     \listoffigures
-
-  \mainmatter
+  \end{preliminary}
 
     \input{tex/ch-intro}
     \input{tex/ch-background}
@@ -179,9 +167,6 @@
     \input{tex/ch-conclusion}
     \input{tex/appendix}
   \appendix
-
-
-  \backmatter
 
 
 %   \printbibliography[heading=bibintoc]

@@ -1,0 +1,132 @@
+
+\vspace{-5pt}
+\section{Related Work}
+\label{sec:related_work}
+\vspace{-5pt}
+
+\textbf{Poison Detection in LLM Code Generation.}
+There are multiple work investigating the malicious behavior 
+of LLMs in the inference stage for code generation. 
+The work in~\citet{zeng2025inducing} studies a 
+poisoning attack in code generation when the
+external tools including search engines used by LLMs 
+contain malicious content. 
+Similarly, BIPIA~\citep{yi2025benchmarking} presents 
+the first systematic benchmark to evaluate 
+indirect prompt injection attacks, focusing 
+on malicious instructions embedded in external 
+content that manipulate LLM behavior. 
+In contrast, our work demonstrates a more fundamental 
+problem that does not require the LLM to 
+access any external sources during inference. 
+We show that harmful content, such as scam API endpoints, 
+has already been absorbed into the models' weights from their 
+training data and can be triggered by developer-style prompts.
+
+
+\textbf{Poisoning Attacks in LLM Training Pipelines.} 
+Data poisoning, where adversaries manipulate 
+training data to alter model behavior at 
+inference, has emerged as a critical threat to 
+machine learning systems. While early work mostly 
+focused on computer vision 
+applications~\citep{cina2023wild, raghavan2022improved, 
+goldblum2022dataset}, 
+recent studies have extended this concern to the 
+language domain, particularly LLMs. 
+\citet{carlini2024poisoning} 
+proves the practicality and feasibility of 
+poisoning web-scale training datasets collection pipelines.
+A recent survey~\citep{zhao2025data} provides the 
+first systematic overview of data poisoning attacks 
+targeting LLMs across multiple stages such as 
+pretraining, fine-tuning, preference alignment, and 
+instruction tuning. \citet{jiang2024turning} studies 
+poisoning attacks on LLMs 
+during fine-tuning on text summarization and completion tasks, 
+showing that existing defenses remain ineffective. 
+Our study differs by (i) targeting malicious code 
+generation, which poses immediate execution risks, rather 
+than natural-language outputs, and (ii) auditing production 
+LLMs for evidence of existing, passive poisoning in 
+their training corpora, rather than new inference-time active attacks.
+
+
+\chen{\textbf{Evaluating LLM-generated Code Security from CWEs}}
+There is another line of work that constructs test benchmarks 
+from existing Common Weakness Enumeration (CWE) entries to 
+evaluate the security of LLM-generated code. 
+\textsc{SecCodePLT}~\citep{yang2024seccodeplt} utilizes seed 
+samples of real-world vulnerable code and employs LLM-based mutators 
+for data expansion across 44 CWEs. 
+Similarly, \textsc{SafeGenBench}~\citep{li2025safegenbench}, 
+based on pre-defined vulnerability categories and CWE types, 
+applies LLMs to generate test questions that are not only consistent 
+with real development scenarios but also strictly adhering 
+to specific vulnerability characteristics. 
+In a slightly different direction, the \textsc{CodeLMSec} 
+benchmark~\citep{debenedetti2023a} approximates an inversion 
+of the target black-box model via few-shot prompting to 
+build non-secure prompts for evaluation. 
+Unlike these benchmarks, which focus on specific programming 
+languages and CWEs, our work investigates a distinct, orthogonal threat: 
+the generation of malicious URLs. We target the model's 
+memorization and reproduction of real-world scams, rather than 
+flaws in code logic. 
+
+
+
+
+% \textbf{Uncurated Datasets.}
+% Deep learning models, particularly LLMs, achieve their 
+% best performance when trained on massive datasets, 
+% as demonstrated by neural scaling 
+% laws~\citep{kaplan2020scaling, hoffmann2022training, 
+% brown2020language, carlini2024poisoning}. 
+% While some of the most advanced language models, 
+% such as GPT-4 and Gemini Ultra, do not 
+% disclose the size of their training datasets, 
+% estimates based on their training compute suggest 
+% they were likely trained on approximately 13 trillion 
+% tokens—assuming Chinchilla scaling 
+% efficiency~\citep{hoffmann2022training, 
+% villalobos2024position}. As a result, the 
+% demand for publicly available human-written 
+% text is growing rapidly. Recent projections 
+% suggest that if current development trends 
+% continue, LLMs may exhaust the available 
+% supply of public human text between 2026 and 2032, 
+% or even earlier under continued 
+% over-training~\citep{villalobos2024position}. 
+% To meet these growing data demands, 
+% researchers increasingly turn to large-scale 
+% web scraping to expand their training corpora, 
+% raising new concerns about data quality, and security.
+
+% \textbf{Large Language Models for code generation.} 
+% Large language models have demonstrated 
+% remarkable capabilities in generating code, 
+% enabling them to assist in software 
+% development tasks such as code completion, 
+% bug fixing, and even synthesizing entire 
+% programs from natural language prompts. 
+% Recent models trained explicitly on 
+% extensive code corpora, such as 
+% OpenAI's Codex\citep{chen2021evaluating}, 
+% DeepSeek-Coder\citep{zhu2024deepseek, 
+% guo2024deepseek}, and Google's Gemini\citep{team2023gemini}, 
+% show that domain-targeted training enhances 
+% performance on Python-focused code 
+% generation benchmarks like 
+% HumanEval\citep{chen2021evaluating} and 
+% MBPP\citep{austin2021program}. Claude\citep{TheC3} from 
+% Anthropic has also been evaluated for its 
+% reasoning and code generation abilities, 
+% especially in multi-turn interactions. These 
+% advances have spurred a wave of research into 
+% both the capabilities and limitations of 
+% code-generating LLMs, as well as the potential 
+% security risks posed by automatically generated 
+% code, especially in cases where the training of a 
+% model is outsourced\citep{cina2023wild}.
+

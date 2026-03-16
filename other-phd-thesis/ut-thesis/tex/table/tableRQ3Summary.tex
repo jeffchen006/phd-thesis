@@ -1,0 +1,37 @@
+\begin{table*}[h!]
+    \caption{{\name} results summary under different settings.}
+    \flushleft
+    {\raggedright Notes: 
+    \textbf{n} and \textbf{n+x} denote the initial number of data points and total number
+    data points with counterexample-driven loop.
+    \textbf{Avg.Time} represents average time for {\name} to stop, excluding initial data collection time.
+    \textbf{Avg.Data Points} represents average number of total data points when {\name} stops.
+    \par}
+
+        
+    \centering
+    %\scriptsize
+    \setlength{\tabcolsep}{4pt}
+\begin{tabular}{|l|llllllll|}
+    \hline
+    & \multicolumn{8}{c|}{\textbf{Polynomial} }      \\ \hline
+    & \textbf{200}  & \textbf{200+x} & \textbf{500}  & \textbf{500+x} & \textbf{1000} & \textbf{1000+x} & \textbf{2000} & \textbf{2000+x}  \\ \hline
+Avg. Time (s)           & 1253      & 1514      & 1687      & 2293  & 1721  & 2276   & 1778  & 2430   \\
+Avg. Data Points        & 584       & 1042      & 1432      & 2376  & 2795 & 3571   & 5445 & 6367   \\
+Avg. Normalized Profit  & 0.793     & 0.829     & 0.846     & 0.922  & 0.762 & 0.786  & 0.717 & 0.945    \\ 
+\# Benchmarks Solved    & 15        & 15        & 15   & 16    & 15   & 15     & 15   & 16    \\ \hline
+\end{tabular}
+
+\begin{tabular}{|l|llllllll|}
+    \hline
+    & \multicolumn{8}{c|}{\textbf{Interpolation}} \\ \hline
+    &  \textbf{200}  & \textbf{200+x} & \textbf{500}  & \textbf{500+x} & \textbf{1000} & \textbf{1000+x} & \textbf{2000} & \textbf{2000+x}  \\ \hline
+Avg. Time (s)            & 3265 & 4174  & 3588 & 4324  & 3856 & 4679   & 3966 & 4521   \\
+Avg. Data Points         & 584  & 1338  & 1432 & 2450  & 2795 & 3656   & 5445 & 6248   \\
+Avg. Normalized Profit   & 0.539 & 0.555  & 0.630 & 0.634  & 0.535 & 0.580   & 0.594 & 0.641    \\ 
+\# Benchmarks Solved     & 13   & 13    & 14   & 14    & 13   & 13     & 13   & 13  \\ \hline
+\end{tabular}
+
+\label{tab:RQ3Summary}
+\vspace{-5mm}
+\end{table*}

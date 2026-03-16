@@ -1,0 +1,265 @@
+\vspace{-2ex}
+\section{Introduction} 
+\label{sec:introduction}
+
+Blockchain technology has revolutionized the creation of global, secure, and
+programmable ledgers, fundamentally altering how digital transactions are
+conducted. Central to this innovation are smart contracts, which operate on
+blockchains, allowing developers to define and enforce complex
+transactional rules directly on the ledger. This capability has positioned
+smart contracts as the backbone of various decentralized
+financial (DeFi) services. As of March 13th, 2025, the total value locked in
+3,973 DeFi protocols has surged to approximately \$87.82
+billion~\cite{defillama}, highlighting the substantial economic impact and
+growth of this technology.
+
+However, by the same date, vulnerabilities in DeFi smart contracts have resulted in 
+financial losses exceeding \$11.21 billion USD~\cite{defillamahacks}. 
+In response, researchers have developed program analysis and verification techniques 
+to secure smart contracts~\cite{luu2016making, torres2018osiris, 
+liu2018reguard, feist2019slither, zhang2019mpro, bose2022sailfish, 
+ma2021pluto, zheng2022park, wang2024efficiently, albert2020taming, 
+zhang2023your}, and developers often commission security audits prior to deployment.
+
+
+% However, the increasing reliance on smart contracts has brought security
+% concerns to the forefront. By the same date, vulnerabilities in DeFi smart
+% contracts have resulted in financial losses exceeding \$11.21 billion
+% USD~\cite{defillamahacks}. In response to these growing threats, researchers have
+% developed an array of program analysis and verification techniques and tools aimed at
+% securing smart contracts~\cite{luu2016making, torres2018osiris, liu2018reguard,
+% feist2019slither, zhang2019mpro, bose2022sailfish, ma2021pluto, zheng2022park,
+% wang2024efficiently, albert2020taming, zhang2023your}. 
+% Additionally, to mitigate risks and ensure the
+% integrity of smart contracts, developers often commission thorough security
+% audits to identify and address potential errors and vulnerabilities prior to the
+% contract deployment.
+
+
+
+Despite these advancements in security measures, the evolving landscape of smart 
+contracts has continually outpaced traditional defenses.
+Modern smart
+contracts are now designed with the flexibility to support the layering of
+additional contracts, a feature particularly vital in DeFi ecosystem. In DeFi, smart contracts facilitate a diverse array of
+financial products and services, such as lending and
+yield farming. These interlinked contracts are often referred to as ``DeFi
+legos,'' emphasizing their modularity. The ability to combine various DeFi smart
+contracts, a concept known as ``DeFi composability,'' is widely regarded as one
+of the key advantages of DeFi~\cite{popescu2020decentralized, amler2021defi,
+schar2021decentralized}. 
+However, this complexity and interdependence introduce
+significant challenges to securing smart contracts with conventional methods.
+The security of a DeFi protocol depends not only on the correct design and 
+implementation of its own contracts but also on the integrity of external 
+contracts it interacts with. Additionally, experienced users or attackers can 
+deploy their own smart contracts to invoke functions across 
+multiple DeFi protocols in arbitrary sequences. 
+Considering all possible interactions a DeFi 
+protocol may encounter prior to deployment is infeasible for traditional 
+security approaches.
+
+
+%This interconnectedness exacerbates the difficulty of addressing well-known
+%vulnerabilities. \chen{ the third sentence doesn't go well with the previous 
+%two sentences, since simple re-entrancy like DAO 2016 attack wasn't not caused by 
+%the interconnectedness. So, I think it is better to remove this sentence since 
+%reviewers might assume that we think DAO 2016 attack is related to 
+%interconnectedness and assume we don't know what we are talking about.
+%} For instance, the re-entrancy vulnerability, infamously
+%exploited in the 2016 DAO hack, allowed a hacker to repeatedly invoke a
+%vulnerable contract function~\cite{liu2018reguard, coindesk_dao_hack}. Despite
+%heightened awareness of this kind of vulnerabilities, attackers have since
+%developed a variety of new sophisticated
+%techniques~\cite{caversaccio_reentrancy_attacks} to exploit smart contracts,
+%including read-only re-entrancy, cross-function re-entrancy, cross-contract
+%re-entrancy, and cross-chain re-entrancy~\cite{callens2024temporarily,
+%valixconsulting_cross_function_reentrancy_2023, wang2024efficiently,
+%valixconsulting_cross_contract_reentrancy_2023, cross_chain_reentrancy}. These
+%evolving attack methods highlight the inherent limitations of current security
+%measures.
+
+\if 0
+Yet, with the increasing significance of smart contracts in the blockchain
+ecosystem, their security has emerged as a pivotal issue. As of August 14th,
+2024, vulnerabilities in DeFi smart contracts have led to financial damages
+exceeding \$6.05 billion USD~\cite{defillamahacks}. Consequently, reinforcing
+the reliability and security of smart contracts is crucial to maintaining the
+integrity of decentralized applications.
+
+As demands for more functionalities increase, smart contracts have become
+significantly more complex. Additionally, they are designed with the
+flexibility to support the building of additional contracts on top of one
+another. This is particularly crucial in the DeFi ecosystem, where smart
+contracts enable a wide range of financial products and services such as
+lending, borrowing, trading, and yield farming. These smart contracts are
+sometimes referred to as ``DeFi legos''. The ability to compose different DeFi
+smart contracts, known as ``DeFi composability,'' is often seen as one of the
+main benefits of DeFi~\cite{popescu2020decentralized, amler2021defi,
+schar2021decentralized}.
+
+However, this flexibility also introduces security vulnerabilities. While the
+composability of DeFi smart contracts enables ethical developers to craft
+innovative applications atop existing contracts, it also opens the door for
+malicious actors to exploit unforeseen uses of these contracts to orchestrate
+exploits in ways that developers did not predict. 
+
+Current approaches to securing smart contracts are only partially effective
+against unforeseen exploits. Developers typically commission security audits to
+identify vulnerabilities, but these audits are costly and time-consuming.
+Moreover, they may not detect all potential threats. When alerted to new
+threats, developers can also promptly inspect their smart contracts for
+weaknesses and update them using proxies~\cite{bodell2023proxy}. However, this
+reactive strategy requires constant vigilance regarding emerging security
+breaches, and developers often find it challenging to outpace hackers in
+identifying and patching vulnerabilities. A notable example is the re-entrancy
+flaw, infamously exploited during the DAO hack of 2016, where a hacker managed
+to re-entrant a single function of the vulnerable
+contract~\cite{liu2018reguard, coindesk_dao_hack}. Despite increased awareness
+of this flaw, attackers have developed multiple new methods to exploit many
+protocols~\cite{caversaccio_reentrancy_attacks}, including read-only
+re-entrancy, cross-function re-entrancy, cross-contract re-entrancy, and
+cross-chain re-entrancy~\cite{callens2024temporarily,
+valixconsulting_cross_function_reentrancy_2023, wang2024efficiently,
+valixconsulting_cross_contract_reentrancy_2023, cross_chain_reentrancy}. These
+innovations underscore the limitations of current security measures. This
+ongoing challenge highlights the inadequacy of existing security protocols in
+adapting to the evolving threat landscape with unforeseen exploits.
+\fi
+
+A critical observation in hack transaction analysis is that they often
+\emph{exploit unintended control flows across multiple functions}, deviating
+from the original design intentions of the developers. For instance,
+re-entrancy attacks leverage an unforeseen recursive control flow through
+default handlers in custom contracts, enabling repeated execution of a critical
+function within one transaction. Similarly, flash loan attacks manipulate
+multiple functions in a precisely timed sequence, utilizing large asset
+transfers to coerce the victim contract into executing unfavorable trades.
+We conducted an empirical study analyzing transaction histories of 
+\revise{$37$} compromised Ethereum protocols. 
+Our findings reveal that control flows are relatively constrained, 
+with attack transactions introducing novel flows never observed 
+previously in all but one hacked protocol.
+
+
+% To further explore this phenomenon, we conducted an empirical study analyzing
+% transaction histories of \revise{$37$} compromised protocols on
+% Ethereum. Our findings reveal that the number of different control flows is
+% relatively constrained. In all but one cases, attack transactions
+% introduced novel control flows that had never been observed in any previous
+% transaction.
+
+%Based on our findings, we developed a control flow integrity technique, {\name}, that combines
+%dynamic and static analysis to track and whitelist control flows in smart
+%contracts. {\name} consists of simple control flow whitelisting policies and a set of control flow
+%reduction rules. It captures control flows and runtime behaviors, enforcing
+%these policies and rules on the fly. 
+
+\noindent \textbf{{\name}:} 
+Building on the above observations, we developed {\name}, a novel framework to
+enforce \emph{control flow integrity} to secure smart contracts. Given a DeFi
+protocol, {\name} instruments its existing smart contracts with additional code
+to track control flow data. {\name} also deploys a new guard contract that
+collects control flow data from these instrumented contracts, and enforces four
+whitelisting policies at runtime to detect and neutralize any attacks that
+attempt to exploit unexpected control flows. Unlike many previous invariant
+enforcement tools~\cite{chen2024demystifying, liu2022invcon}, {\name} does not
+rely on inferring its security rules from prior benign transaction traces and
+therefore can apply to smart contracts immediately at their initial
+deployments, leaving no gap of unprotected periods.
+
+% Note that control flow integrity is a well-established security technique in
+% traditional software to prevent memory attacks from hijacking a program's
+% control flow~\cite{burow2017control, abadi2009control, goktas2014out}. Though
+% our proposed techniques in this paper are dramatically different from prior
+% control flow integrity techniques for traditional software, we adapt this
+% concept here to emphasize the critical role of control flow in our approach.
+
+
+% One of the primary challenges for {\name} is to accurately detect potentially
+% malicious control flows while minimizing false positives. Although the number
+% of unique control flows is inherently limited, a naive whitelisting approach
+% could still produce numerous false positives or demand substantial human
+% intervention. To overcome this, {\name} leverages read-after-write dependency
+% analysis to simplify control flow traces. It does so by recording the ledger
+% state accessed by each function call and monitoring the dependencies between
+% these calls. When function calls within a trace are independent—that is, they
+% do not rely on one another--{\name} treats them as separate control flows and
+% applies whitelisting policies individually. This strategy effectively
+% eliminates redundant traces and significantly lowers the false positive rate.
+
+% A key challenge arises from {\name}'s whitelisting-only design. 
+% To prevent false positives, {\name} employs heuristics to simplify control flows: 
+% excluding read-only calls that don't alter state, 
+% tracking read-after-write dependencies, and treating independent calls as 
+% separate flows. These heuristics effectively reduce redundant traces 
+% and lower false positive rates.
+
+
+
+% A key challenge for {\name} arises from its fundamental design to only
+% whitelist control flows rather than using prior knowledge of hacks to blacklist
+% potentially malicious ones. 
+
+A key challenge arises from {\name}'s whitelisting-only design. 
+This approach, while enhancing security by adhering
+strictly to known safe paths, could inherently lead to an increase in false
+positives if not meticulously managed. Although the number of unique control
+flows is inherently limited, a naive whitelisting approach could still produce
+numerous false positives or demand substantial human intervention. To address
+this issue,  {\name} employs heuristics to simplify control flows: 
+excluding read-only calls that don't alter state, 
+tracking read-after-write dependencies, and treating independent calls as 
+separate flows. These heuristics effectively simplify control flows,
+and lower false positive rates.
+
+% Specifically, {\name} excludes all read-only function
+% calls from the control flows, as these calls do not alter the blockchain
+% ledger's state. Additionally, {\name} records the ledger state accessed by each
+% function call and tracks the read-after-write dependencies of these calls. If
+% function calls in a control flow trace do not have any dependencies with each
+% other, {\name} will treat them as separate control flows and assess them with
+% whitelisting policies individually. These heuristics effectively reduce
+% redundant traces and significantly lower the false positive rate for {\name}. 
+
+\noindent \textbf{Experimental Results:}
+We evaluated {\name} on the deployed smart contracts and their transactions 
+of the \revise{$37$} hacked DeFi protocols
+included in our empirical study. Our results indicate 
+that, when 
+configured only once at deployment, {\name} can effectively prevent 
+\revise{$35$} out of \revise{$37$}
+attacks analyzed in our study, maintaining a low average false positive rate of
+just \revise{0.26\%}. Unlike traditional methods, {\name} does not depend on historical
+transactions. Despite this, {\name} still surpasses the state-of-the-art which 
+instruments the smart contracts with invariants learned from historical transactions.
+Moreover, after implementing \revise{four}
+optimization techniques, {\name} achieves a minimal gas consumption overhead of
+\revise{3.53\%} on average. These results demonstrate the usefulness of our empirical
+findings and {\name}. 
+
+\noindent\textbf{Contributions:} This paper makes the following contributions. 
+% \noindent \textbf{Contributions:} To summarize, we make the following
+% contributions in this paper: 
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Empirical Study:} To the best of our knowledge, we conducted
+        the first comprehensive empirical study of control flows in historical
+        transactions of compromised DeFi protocols. Our analysis uncovers
+        critical insights into the control flow patterns prevalent in DeFi protocols and
+        explores various use cases of DeFi composability.
+
+    \item \textbf{{\name} Technique:} This paper proposes the first control flow integrity
+        technique for smart contracts with whitelisting policies and
+        simplification heuristics. This paper also details methods for implementing 
+        these policies and heuristics through static and dynamic analysis, and describes
+        how they are instrumented in contracts and enforced on the fly. 
+
+    \item \textbf{Evaluation and Tools:} This paper evaluates the effectiveness
+        of {\name} in preventing attacks. To support ongoing research and
+        facilitate community engagement, we provide open access to the
+        study results, experimental results, and our tool,
+        available at our website~\cite{website}.
+\end{itemize}
+\vspace{-2mm}
+
+

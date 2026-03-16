@@ -1,0 +1,120 @@
+\vspace{-1mm}
+\section{Related Works} \label{sec:related}
+
+
+\noindent
+\textbf{Invariant Generation and Enforcement.}
+Prior research generates and enforces invariants for contract security.
+Cider~\cite{liu2022learning} derives arithmetic overflow invariants 
+via deep reinforcement learning, 
+while InvCon~\cite{liu2022invcon} and InvCon+~\cite{liu2024automated} 
+combine dynamic inference with static verification for function-level invariants. 
+Trace2Inv~\cite{chen2024demystifying} learns invariants from transaction 
+history to prevent attacks. 
+Unlike these approaches, which focus on individual 
+contracts or specific bugs, {\name} is a general-purpose 
+framework that
+targets control 
+flows across multiple protocol contracts with a one-time 
+pre-deployment configuration.
+
+
+
+
+% A significant body of research has focused on generating and enforcing
+% invariants for smart contracts to ensure their security.
+% % Solythesis~\cite{Solythesis} enforces human defined invariants with its
+% % source-to-source compiler. 
+% Cider~\cite{liu2022learning} employs deep
+% reinforcement learning to derive invariants that prevent arithmetic overflows
+% from contract source code. InvCon~\cite{liu2022invcon} and
+% InvCon+~\cite{liu2024automated} combine dynamic inference with static
+% verification to produce verified, expressive contract invariants based on
+% function preconditions and postconditions. 
+% %\citeauthor{callens2024temporarily} has designed strategies to prevent the same function from being called twice within a single transaction. 
+% Furthermore, Trace2Inv~\cite{chen2024demystifying}
+% dynamically learns invariants from transaction history, analyzing the
+% effectiveness of $23$ invariants in preventing attacks. These studies
+% predominantly focus on invariants tailored to individual contracts or specific
+% kinds of vulnerabilities. In contrast, {\name} focuses on control flows across
+% multiple contracts within the protocol. Unlike these prior studies, {\name} can
+% achieve better true positive and false positive rates with a one-time configuration 
+% pre-deployment.
+% % without human
+% % intervention or the availability of history traces.
+
+
+% \noindent
+% \textbf{Control Flow Restriction.}
+% In industry, SphereX~\cite{spherex}, a smart contract security firm, offers
+% services to manually restrict control flows within smart contracts. While their
+% goals align closely with ours, their approach requires protocol developers to
+% manually select which control flows to whitelist or blacklist. This manual
+% intervention contrasts sharply with our methodology, which not only automates
+% the whitelisting of unseen control flows but also simplifies the overall
+% control flow structure, significantly reducing the burden on developers and
+% increasing the system's adaptability.
+
+
+\noindent
+\textbf{Control Flow Restriction.}
+SphereX~\cite{spherex} in industry offers services to manually restrict control flows, 
+requiring developers to explicitly whitelist or 
+blacklist paths. 
+In contrast, {\name} automates the whitelisting of unseen control 
+flows and simplifies the overall structure, 
+significantly reducing developer burden and increasing 
+system adaptability compared to manual intervention.
+
+
+
+
+\noindent
+\textbf{Re-entrancy Attack Defense and Secure Type System.}
+Numerous tools restrict control flows to combat re-entrancy attacks. 
+Static analysis tools~\cite{luu2016making,torres2018osiris,liu2018reguard,feist2019slither,
+zhang2019mpro,bose2022sailfish,ma2021pluto,zheng2022park,wang2024efficiently,
+albert2020taming} identify re-entrancy vulnerabilities and apply guards. 
+Runtime frameworks like Sereum~\cite{rodler2018sereum} and 
+\citeauthor{grossman2017online} protect deployed contracts, 
+while \citeauthor{callens2024temporarily} prevent duplicate 
+function calls within transactions. Unlike these 
+re-entrancy-focused approaches, {\name} adopts broader 
+control flow restriction targeting comprehensive vulnerability classes.
+\citeauthor{cecchetti2020securing} propose a security type system to 
+enforce information flow and re-entrancy controls~\cite{cecchetti2020securing,
+cecchetti2021compositional}. Conversely, 
+{\name} is a purely runtime system built entirely on the EVM, 
+operating without supplementary type systems or language modifications.
+
+
+
+
+% Many researchers have proposed approaches to restrict smart contract control
+% flows specifically to combat re-entrancy attacks. Tools like
+% Oyente~\cite{luu2016making}, Osiris~\cite{torres2018osiris},
+% Reguard~\cite{liu2018reguard}, Slither~\cite{feist2019slither},
+% MPro~\cite{zhang2019mpro}, Sailfish~\cite{bose2022sailfish},
+% Pluto~\cite{ma2021pluto}, Park~\cite{zheng2022park},
+% SliSE~\cite{wang2024efficiently}, \citeauthor{albert2020taming}, 
+% employ static analysis and symbolic execution to identify potential re-entrancy
+% vulnerabilities, then apply re-entrancy guards as preventive measures. Notably,
+% Sereum~\cite{rodler2018sereum} and \citeauthor{grossman2017online} offer
+% runtime validation frameworks to protect deployed contracts against re-entrancy
+% attacks. \citeauthor{callens2024temporarily} have designed strategies to prevent
+% the same function from being called twice within a transaction. Unlike
+% these approaches, our work adopts a broader perspective on control flow
+% restriction, targeting a more comprehensive set of vulnerabilities beyond just
+% re-entrancy.
+
+
+% \noindent
+% \textbf{Secure Type System.}
+% \citeauthor{cecchetti2020securing} introduce a security type system that,
+% alongside runtime mechanisms, enforces secure information flow and
+% re-entrancy controls, even amidst unknown code~\cite{cecchetti2020securing,
+% cecchetti2021compositional}. In contrast, our system is designed purely for
+% runtime operation built entirely on the EVM, operating without the need for any
+% supplementary type system.
+
+

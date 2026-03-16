@@ -1,0 +1,61 @@
+\vspace{-1ex}
+\section{Background}
+\vspace{-0.5ex}
+
+% In this section, we provide the necessary background for the rest of the paper.
+
+% \subsection{Concepts}
+
+\noindent\textbf{Blockchain} is a distributed and immutable ledger technology that records transactions across multiple nodes in a network. It employs cryptographic techniques to ensure data integrity and consensus algorithms to maintain final consistency across all participating nodes. \noindent\textbf{Smart contracts} are self-executing programs with the terms of the agreement directly written into code. Deployed on blockchains, they are immutable and transparent, enabling trustless transactions without the need for intermediaries. \noindent \textbf{Invariant guards \camera{(also called circuit breakers)}} are runtime checks around contract invariant conditions that shall always hold during contract execution, aiming to secure smart contracts on the fly.
+
+\noindent\textbf{Ethereum Virtual Machine (EVM)}  is the runtime environment for smart contract execution on Ethereum. It is a Turing-complete virtual machine that interprets and executes the bytecode compiled from contracts programmed in a high-level language like Solidity. \noindent\textbf{Gas} is a unit of transaction fee on Ethereum, used to quantify the computational efforts for the execution of EVM operations. It is paid in \textbf{Ether}, the native cryptocurrency of Ethereum.
+\noindent\textbf{Externally Owned Account (EOA) and contract account} are two types of accounts on Ethereum. EOAs are owned by normal users only who have the right to send transactions to blockchains, while contract accounts are controlled by the code deployed at a certain blockchain address and its code will be executed when the contract function is invoked. \noindent\textbf{ERC20} is a standard interface for fungible tokens on Ethereum. Almost all valuable tokens on Ethereum are ERC20 tokens.
+
+
+%Invariants of a smart contract are conditions that always remain true at a certain program location of the contarct. Invariant guards are runtime checks inserted into the smart contract code to ensure that these invariants hold, thereby enhancing the contract's reliability and security.
+
+
+% \subsection{Smart Contract Vulnerabilities}
+
+%Smart contracts are computer programs running atop blockchains to facilitate the value transfer process among users.
+%Smart contract executions are triggered by blockchain transactions sent by external-owned accounts (EOAs)
+%and the interoperability between smart contracts fosters a booming DApp ecosystem like DeFis.
+%Managing a large sum of digital assets, smart contracts are vulnerable to security attacks which
+%may cause significant financial loss.
+
+\noindent \textbf{Common smart contract vulnerabilities} include integer overflow/underflow~\cite{BECoverflow},
+reentrancy~\cite{DAOattacks}, dangerous delegatecall~\cite{Paritystolen}, etc.
+% For instance, the Parity wallet contract was hacked in 2017 due to a missing protection of the
+% delegatecall operation.
+% As a result, the attacker captured the wallet ownership and stole 150K ETH which worth \$30M in USD.
+\textbf{DeFi vulnerabilities }are smart contract vulnerabilities that are specific to DeFi applications. They are
+more subtle to detect and attacks usually involve more sophisticated steps~\cite{zhou2023sok}.
+DeFi protocols are major targets for smart contract attacks, which have experienced \$5.53 billion loss
+out of the overall \$6.94 billion caused by recent blockchain incidents~\cite{defillama}.
+
+%Especially, with the advent of dencentralized finance application (DeFi), billions of dollars
+%worth asset is run by these applications.
+%However, according to the hack statistics~\cite{defillama}, as of 12 September 2023, DeFi hacks
+%brought 5.53 billion dollars out of the overall 6.94 billion dollars loss in blockchain incidents.
+
+
+
+% Well-known DeFi attacks include governance attacks and oracle price manipulation~\cite{werner2022sok, zhou2023sok}.
+%To achieve decentralization, DeFi protocols often implement decentralized governance mechanisms
+%based on governance tokens used for proposing and voting on protocol upgrades.
+%However, once attackers had sufficient amount of governance tokens to execute malicious proposals,
+%the security of the whole DeFi protocols is likely undermined.
+
+
+% For example, to support asset trading, DeFi applications may rely on price oracles, mostly provided by
+% Automated Market Makers (AMMs). If an oracle is designed poorly, attackers can manipulate the oracle price: they first use large amounts of funds to create an imbalance in the liquidity pools within an AMM, leading to a price slippage.
+% Since the trading within DeFi applications depends on AMM's price, attackers can make a profit by
+% buying DeFi's assets with a lower price and reselling them with a higher price.
+% Similar attacks include front-running, where a transaction is submitted purposefully to be executed
+% before certain pending user transactions and makes a profit with the price gap.
+
+
+%Back-running~\cite{bibid} and sandwich attacks~\cite{bibid} can be considered variants of this
+%attack.
+%
+

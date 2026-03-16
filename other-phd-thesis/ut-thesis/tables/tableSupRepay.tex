@@ -1,0 +1,47 @@
+\begin{table*}[t]
+    \caption{Summary of Repaying Flash Loan}
+    \flushleft
+    {\raggedright 
+    \textbf{Legends:} 
+    ``\textbf{Initial Balance}'' represents initial token balances at the start of {\name}.  
+    ``\textbf{Profit}'' represents adjusted calculated using constant token prices. 
+    ``\textbf{Pay Back?}'' represents whether final token balances are strictly greater than initial balances.
+    \par}
+
+    \label{tab:SupRepay}
+    \centering
+    \scriptsize
+    \begin{tabular}{|l|l|l|l|l|lll|}
+    \hline
+    benchmark    & Initial Balance                                                         & {\name}'s Result                                                                               & Profit & Pay Back?   & \multicolumn{1}{l|}{Result after Swapping}                                            & \multicolumn{1}{l|}{Profit} & \multicolumn{1}{l|}{Pay Back?} \\ \hline
+    bZx1         & \begin{tabular}[c]{@{}l@{}}112 WBTC \\ 4500 ETH\end{tabular}            & \begin{tabular}[c]{@{}l@{}}59 WBTC \\ 9009 ETH\end{tabular}                                              & 2438            & \xmark*  &                                                                                             &                                    &                            \\ \hline
+    Harvest\_USDT & \begin{tabular}[c]{@{}l@{}}50000000 USDT \\ 20000000 USDC\end{tabular} & \begin{tabular}[c]{@{}l@{}}52635352 USDT  \\ 17502461 USDC\end{tabular}                                  & 137813          & \xmark   & \multicolumn{1}{l|}{\begin{tabular}[c]{@{}l@{}}50000000 USDT  \\ 20139106 USDC\end{tabular}} & \multicolumn{1}{l|}{139106}          & \multicolumn{1}{l|}{\cmark} \\ \hline
+    Harvest\_USDC & \begin{tabular}[c]{@{}l@{}}18308555 USDT \\ 50000000 USDC\end{tabular} & \begin{tabular}[c]{@{}l@{}}15106415 USDT \\ 53312192 USDC\end{tabular}                                   & 110051          & \xmark   & \multicolumn{1}{l|}{\begin{tabular}[c]{@{}l@{}}18415434 USDT  \\ 50000000 USDC\end{tabular}} & \multicolumn{1}{l|}{106878}          & \multicolumn{1}{l|}{\cmark} \\ \hline
+    Warp         & \begin{tabular}[c]{@{}l@{}}500000 WETH\\ 5000000 DAI\end{tabular}       & \begin{tabular}[c]{@{}l@{}}3917914 USDC\\ 493733 WETH\\ 8472025 DAI\end{tabular}                         & 3368718         & \xmark   & \multicolumn{1}{l|}{\begin{tabular}[c]{@{}l@{}}504549 WETH \\ 5000000 DAI\end{tabular}}      & \multicolumn{1}{l|}{2918865}         & \multicolumn{1}{l|}{\cmark} \\ \hline
+    ValueDeFi    & \begin{tabular}[c]{@{}l@{}}116000000 DAI \\ 100000000 USDT\end{tabular} & \begin{tabular}[c]{@{}l@{}}102223937 DAI\\ 69829957 USDT  \\ 32023919 USDC  \\ 20300381 CRV\end{tabular} & 8378194         & \xmark   & \multicolumn{1}{l|}{\begin{tabular}[c]{@{}l@{}}116000000 DAI\\ 108225064 USDT\end{tabular}}  & \multicolumn{1}{l|}{8225064}         & \multicolumn{1}{l|}{\cmark} \\ \hline
+    Yearn        & \begin{tabular}[c]{@{}l@{}}130000000 DAI \\ 134000000 USDC\end{tabular} &                                                                                                          &                 &          &                                                                                              &                                      &                             \\ \cline{1-5}
+    Eminence     & 15000000 DAI                                                            & 1601468 DAI                                                                                              & 1601468         & \cmark   &                                                                                              &                                      &                             \\ \hline
+    CheeseBank   & 21000 ETH                                                               & \begin{tabular}[c]{@{}l@{}}20550 ETH  \\ 1435304 USDC  \\ 710427 USDT \\ 0 DAI\end{tabular}              & 1946291         & \xmark   & \multicolumn{1}{l|}{25493 ETH}                                                               & \multicolumn{1}{l|}{1991297}         & \multicolumn{1}{l|}{\cmark} \\ \hline
+    InverseFi    & 27000 WBTC                                                              &                                                                                                          &                 &          &                                                                                              &                                      &                             \\ \cline{1-5}
+    ElevenFi     & 130001 BUSD                                                             & 259742 BUSD                                                                                              & 129741          & \cmark   &                                                                                              &                                      &                             \\ \cline{1-5}
+    bEarnFi      & 7804239 BUSD                                                            & 7818022 BUSD                                                                                             & 13783           & \cmark   &                                                                                              &                                      &                             \\ \hline
+    ApeRocket    & 1615000 CAKE                                                            & \begin{tabular}[c]{@{}l@{}}16849 WBNB\\ 1276757 CAKE\end{tabular}                                        & 1333            & \cmark   & \multicolumn{1}{l|}{\begin{tabular}[c]{@{}l@{}}1553 WBNB \\1615000 CAKE\end{tabular}}        & \multicolumn{1}{l|}{1553}            & \multicolumn{1}{l|}{\cmark} \\ \hline
+    AutoShark    & 100001 WBNB                                                             & 101373.63 WBNB                                                                                           & 1372            & \cmark   &                                                                                              &                                      &                             \\ \cline{1-5}
+    Novo         & 2000 WBNB                                                               & 25084 WBNB                                                                                               & 23084           & \cmark   &                                                                                              &                                      &                             \\ \cline{1-5}
+    Wdoge        & 3000 WBNB                                                               & 3078 WBNB                                                                                                & 78              & \cmark   &                                                                                              &                                      &                             \\ \cline{1-5}
+    OneRing      & 150000000 USDC                                                          & 151893085 USDC                                                                                           & 1893085         & \cmark   &                                                                                              &                                      &                             \\ \cline{1-5}
+    Puppet       & \begin{tabular}[c]{@{}l@{}}1000 DVT \\ 25 ETH\end{tabular}              & 100000 DVT  15 ETH                                                                                       & 89000           & \xmark** &                                                                                              &                                      &                             \\ \cline{1-5}
+    PuppetV2     & \begin{tabular}[c]{@{}l@{}}10000 DVT \\ 20 ETH\end{tabular}             & \begin{tabular}[c]{@{}l@{}}886996 DVT\\ 1 ETH\\ 0 WETH\end{tabular}                                      & 857996          & \xmark** &                                                                                              &                                      &                             \\ \hline
+    \end{tabular}
+    \flushleft
+    \scriptsize{
+    *: bZx1 attack is the earliest flash loan attack (ETH block 9484688) among all benchmarks, 
+    and we fail to find DEX with enough liquidity to perform the swap in the same transaction. 
+    In history, after the exploit, bZx1 attacker purchased WBTC in small amounts over two days on DEX, 
+    to repay the WBTC borrowed.   
+
+    **: Unlike other benchmarks, Puppet and PuppetV2 are community security challenges instead of 
+    flash loan attacks in history. We don't consider paying back flash loan in these two cases. 
+    }  
+
+\end{table*}

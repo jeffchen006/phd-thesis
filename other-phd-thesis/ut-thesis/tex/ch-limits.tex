@@ -1,0 +1,57 @@
+\chapter{Limitations}
+\label{sec:threats}
+
+\section{Scope of FlashSyn}
+
+In principle, FlashSyn can be applied to help detect any smart contracts vulnerability 
+
+\begin{itemize}
+\item that can be exploited by a trace calling \textbf{existing} DeFi contracts in \textbf{one} attack transaction,
+
+\item that do not exploit the vulnerability of flash loan providers
+
+\item whose exploitation generates financial profits.
+
+\end{itemize}
+
+Although FlashSyn can apply to other simpler smart contract vulnerabilities like overflows, our proposed techniques and evaluations focus on vulnerabilities leading to flash loan attacks because prior analysis techniques cannot appropriately handle such vulnerabilities. 
+
+Our evaluation validated the capability of FlashSyn by applying FlashSyn to detect different flash loan attacks that exploit various kinds of design flaws in smart contracts including oracle manipulation (Harvest\_USDC), pump and arbitrage (bZx1), inconsistent asset denomination (bEarnFi), design flaw of total supply (Eminence), design flaw of depositSafe (OneRing), forced investment (Yearn), deflationary token (Wdoge), and design flaw of transferFrom (Novo). 
+
+Indeed, the current implementation of FlashSyn cannot handle certain types of flash loan attacks such as the attacks exploiting the re-entrancy vulnerability (i.e., the attacker contract has a callback function). 
+
+
+\section{Required Annotations}
+
+In the current implementation, users provide a list of top-level functions as candidate actions to drive the synthesis process and this is a standard setup (and limitation) for many program synthesis tools. We agree with Reviewer-2 that the identified list will influence the search space and the tractability of FlashSyn. Note that for flash loan attacks, the attack vector typically only contains functions that move or trade digital assets. Users of FlashSyn can therefore select only these functions as candidate actions. 
+
+Also note that we propose an approach to overcome the adversity of symbolic execution for very complex functions implementing DeFi protocols that are much more complicated than simple token smart contracts. This addresses the critical challenge of function complexity for any program synthesis technique tackling the problem of finding attack vectors. Indeed, any program synthesis technique tackling the problem of finding attack vectors must have mechanisms to identify and enumerate all possible interleaving of candidate functions that can be part of the attack vector. In principle, FlashSyn main contribution, counterexample-driven approximation, is agnostic to the mechanisms to identify candidate functions.
+
+
+\section{Failure Analysis}
+
+
+For Yearn and InverseFi, the approximation fails because for both cases small miss-approximation errors might cause FlashSyn to miss finding attack vectors and accurate parameters. For instance, for Yearn, FlashSyn needs to synthesize 7 actions to reach the same attack vector as the hacker and execute it 2 iterations to get positive profit. Compared to initial large parameters (130M DAI and 134M USDC), the profit of the attack vector is very small (5 iterations gave the hacker 127k profit), which puts a high requirement on the precision of approximation and selection of parameters. Thus, the optimizer fails to find a good solution due to step size. 
+
+
+
+
+%Another threat to validity 
+%In the profit calculation, prices
+%of tokens can be dynamic, and they affect the profits reported by {\name}. However,
+%the reported profit difference is unlikely to affect the validity of the corresponding attack vector,
+%In the initial data points collection, we adopted simple random sampling strategy. 
+%Thus, adopting different sampling strategies may yield to different outcomes. 
+%In the profit calculation, prices of tokens can be dynamic, and they affect the profits reported by {\name}. 
+%However, in general the final reported profits will not change too much, and 
+%the corresponding attack vector returned by {\name} still prove the existence of vulnerabilities. 
+%Finally, the correctness of {\name} relies on the correctness of the modules \textbf{sklearn.preprocessing}, \textbf{sklearn.linear\_model}, \textbf{scipy.interpolate}, and \textbf{shgo} used in our implementation. 
+%As demonstrated 
+
+%Second, our manually crafting prestates/poststates for each action might not be accurate, 
+%and our implementation might contain bugs.
+%Anyhow, such mistakes would only influence the effectiveness negatively 
+%and our experimental results would remain valid.
+%Third, although we tried our best to collect benchmarks in the scope of our research. {\name}
+%may not completely carry over to unexplored new attack patterns or new programming languages other 
+%than Solidity. We leave this issue to the future work.

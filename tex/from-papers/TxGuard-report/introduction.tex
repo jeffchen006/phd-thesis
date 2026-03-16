@@ -1,0 +1,140 @@
+\vspace{-2ex}
+\section{Introduction}
+\vspace{-1ex}
+
+Blockchain technology has paved the way for decentralized, resilient, and
+programmable ledgers on a global scale. One of its most impactful applications
+is smart contracts. These smart
+contracts allow developers to encode intricate transaction rules that govern
+the ledger. This innovation has made both blockchains and smart contracts
+essential infrastructure for decentralized financial services,
+commonly known as DeFi. As of Sept 25th, 2023, the Total digital asset Value Locked (TVL) in
+$2,933$ DeFi protocols has reached an impressive $48.58$
+billion~\cite{defillama2}.
+
+However, the landscape is not without its challenges. Security attacks pose a
+significant threat to the security of smart contracts. Attackers can exploit
+various vulnerabilities by sending malicious transactions, potentially leading
+to the theft of millions of dollars. As of Sept 25th, 2023, the financial
+losses attributed to security attacks on DeFi protocols exceeded $5.53$ billion
+USD~\cite{defillama}.
+
+One key observation is that transactions initiated by attackers often display
+abnormal behaviors when compared to standard transactions from regular DeFi
+contract users. These malicious transactions may exploit control flows in
+corner cases, use abnormally large values to trigger overflows, or manipulate a
+large volume of digital assets to distort the market in DeFi contracts. In
+fact, industry experts have been actively monitoring abnormal digital asset
+movements on-chain to report malicious activities. For example, Forta Network~\cite{Forta}
+deploys monitoring bots to detect on-chain security-related events in real-time. 
+Driven by this observation, smart contract developers have proposed deploying
+runtime checks to detect transactions leading to abnormal behaviors to neutralize
+malicious attacks. These checks involve enforcing various runtime invariants,
+such as restricting the maximum number of digital asset deposits or withdrawals
+in a contract to prevent market manipulation. Another example is to limit the
+interaction between contracts to prevent attackers from crafting sophisticated
+attack strategies. However, these mechanisms are often manually designed and
+tailored for specific DeFi protocols. This raises questions about their
+effectiveness across different types of contracts and whether they maintain an
+acceptable false positive rate without hindering normal user activities.
+
+\noindent \textbf{Smart Contract Invariant Study:}
+This paper presents the first comprehensive, quantitative analysis focused on
+the utilization of dynamically inferred invariants to enhance smart contract security. We
+examine $23$ invariant templates, which are advocated by leading auditing firms,
+academic research, and DeFi protocol developers. Our findings indicate that
+dynamically inferred dynamic invariants serve as effective mechanisms for 
+thwarting security
+breaches. This paper then proposes new strategies to combine multiple invariants effectively.
+Our combined invariants can neutralize over
+74.1\% of malicious attacks while maintaining a false positive rate of less than
+0.28\%.
+
+\noindent \textbf{{\name}:}
+To facilitate this study, we have developed {\name}, a scalable and extensible
+invariant synthesis framework. {\name} is designed to automatically derive
+invariants from transaction traces through the use of trace and dynamic taint analysis. 
+{\name} leverages the main feature of public blockchains, 
+transparent databases of transactions histories containing well-organized transaction execution data. 
+Then, for each invariant template under consideration, {\name} employs a specialized inference
+algorithm to dynamically generate the corresponding invariant based on
+historical transaction data. 
+
+\noindent \textbf{Experimental Results:}
+We evaluate {\name} on a benchmark set of $42$ smart contracts that have
+previously fallen victim to security attacks. Our results show that properly
+constructed invariants are effective in neutralizing security threats in $39$
+out of the $42$ benchmark contracts. 
+%Moreover, this efficacy is achieved with an
+%average false positive rate of just $2.98$\%.
+
+In the course of our study, we categorized the $23$ invariant templates into
+eight distinct groups based on their underlying design principles: access
+control, time lock, gas control, re-entrancy, oracle, storage, money flow, 
+and data flow. Subsequently, we conducted a series of in-depth analyses to compare
+the efficacy of invariants within each group. We also manually scrutinized the
+transactions flagged by each invariant template, leading to several key
+findings:
+\vspace{-1mm}
+\begin{itemize}[leftmargin=*]
+\item \textbf{Finding 1:} Certain invariant outperform others in
+    terms of effectiveness. Within each invariant group, we identified at least one
+        invariant template that is quantitatively superior, neutralizing a
+        greater number of attacks while generating fewer false positives.
+        See Section~\ref{sec:rq1}.
+
+\item \textbf{Finding 2:} Invariants remain effective even when attackers are
+    aware of them in the majority of cases. A common concern regarding runtime
+        invariants is their potential vulnerability to informed attackers. Our
+        study reveals that selected invariants in the access control, time lock,
+        gas control,
+        money flow, and data flow groups often directly counter critical elements of
+        attack strategies, such as flash loans and transaction atomicity. These
+        invariants not only neutralize the malicious transactions but also
+        render the attack strategies unfeasible or non-profitable in 84.21\% of
+        cases. See Section~\ref{sec:rq2}.
+
+\item \textbf{Finding 3:} Normal users can possibly circumvent invariant guards, 
+        thereby mitigating the impact on user
+        experience. For example, in the case of data flow and money flow
+        invariants, a user can divide a large transaction into smaller segments
+        to bypass the invariant guard in 80\% false positive instances. 
+        See Section~\ref{sec:rq2}.
+
+\item \textbf{Finding 4:} Combined invariants, formed through disjunction or
+    conjunction, offer enhanced security coverage with lower false positive rate.
+    Different groups of
+        invariants address different attack scenarios. A combined invariant
+        formed through conjunction can cover more attack vectors, while one
+        formed through disjunction may reduce the false positive rate, as
+        malicious attacks often exhibit multiple abnormal behaviors. See
+        Section~\ref{sec:rq3}.
+\end{itemize}
+\noindent \textbf{Contributions:} This paper presents the following contributions:
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Invariant Inference:} This paper conducts an extensive study
+        of $23$ invariant templates, categorized into $8$ distinct groups.
+        Additionally, we introduce innovative techniques for the effective
+        inference of invariants across all studied templates from transaction 
+        history. 
+
+    \item \textbf{{\name}:} This paper presents the design and implementation of {\name},
+        a specialized tool for smart contract trace analysis that is capable of
+        inferring the invariants under study from transaction history.
+
+    \item \textbf{Experimental Results:} This paper presents the first
+        systematic and quantitative evaluation of the effectiveness of runtime
+        invariants on $42$ victim contracts in $27$ real-world exploits with high
+        financial losses.
+        
+        % Our empirical findings
+        % demonstrate that appropriately crafted invariants can effectively guard
+        % against $22$ out of $27$ benchmark attacks, while maintaining a
+        % low false positive rate of 0.4\%.
+
+    \item \textbf{Invariant Study Findings:} Our research uncovers a series of
+        critical insights that will inform the future application and
+        development of dynamic invariants.
+\end{itemize}
+
+% The remaining of this paper is organized as follows. XXX

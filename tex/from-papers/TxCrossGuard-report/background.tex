@@ -1,0 +1,98 @@
+\vspace{-2ex}
+\section{Background and Empirical Study}
+\label{sec:study}
+
+
+% We provide essential background for concepts used throughout this paper. 
+% A \textbf{blockchain} is a decentralized ledger recording transactions across 
+% cryptographically-linked blocks. \textbf{Transactions} transfer assets 
+% or invoke operations on Ethereum, typically involving Ether transfers or 
+% \textbf{Externally Owned Accounts (EOAs)} interacting with smart contracts. 
+% EOAs are user-controlled accounts without associated code.
+% \textbf{Smart contracts} are self-executing blockchain programs that 
+% automatically enforce agreements when conditions are met, residing in
+% \textbf{Contract Accounts}. 
+The \textbf{Ethereum Virtual Machine (EVM)} 
+executes smart contracts and maintains network state. 
+\textbf{Gas} measures computational effort for transaction execution, 
+with storage operations being particularly expensive. 
+\revise{The recent \textbf{TLOAD} and \textbf{TSTORE} 
+opcodes~\cite{eip1153,kraken2024ethereum} provide temporary 
+transaction-scoped storage at reduced gas costs, 
+with variables automatically initialized to zero at transaction start.}
+\textbf{DeFi protocols} are decentralized financial systems using 
+interconnected smart contracts for lending, borrowing, and trading. 
+\textbf{Control Flow} in software engineering is the order in 
+which program instructions execute. In smart contracts, 
+runtime control-flow analysis can be performed at different granularities, 
+from low-level opcodes to high-level function calls, 
+raising the question of which level offers the best 
+trade-off between security coverage and computational cost. 
+% To ground our security framework, we conducted a preliminary study 
+% to assess whether function-level control flow is sufficient to prevent attacks.
+
+
+% \textbf{ERC20} is the standard template for fungible tokens on Ethereum. 
+% \textbf{Etherscan}~\cite{Etherscan} is Ethereum's primary blockchain 
+% explorer, providing address labels for hackers, MEV bots, and protocol deployers.
+% \textbf{DeFi Protocol} is a decentralized financial system consisting of interconnected smart contracts to provide services like lending, borrowing, and trading without traditional intermediaries. \textbf{ERC20} is a standard template for smart contracts specifically designed for creating fungible tokens on Ethereum. The majority of valuable tokens on Ethereum are built using this standard. \textbf{Etherscan} is the most widely-used blockchain explorer for Ethereum. Etherscan provides labels for addresses, identifying them as hackers, MEV bots, or protocol deployers.~\cite{Etherscan}.
+%\noindent
+% \noindent\textbf{Externally Owned Accounts (EOAs)} and \textbf{Contract Accounts} are the two primary account types on Ethereum. EOAs are managed by individual users, who have the ability to initiate transactions on the blockchain. In contrast, Contract Accounts are governed by code deployed at a specific blockchain address, and the associated code is executed when a contract function is called. 
+% \noindent\textbf{Control Flow} in software engineering refers to the sequence in which instructions or statements are executed in a program. In the context of smart contracts, we use control flow to describe the specific order of the invocations of functions within a given set of smart contracts of the same protocol, in one transaction.
+    
+
+
+
+
+%\noindent\textbf{Ethereum Virtual Machine (EVM)} is the runtime environment for executing smart contracts on the Ethereum blockchain. It acts as a decentralized computing machine that processes instructions and maintains the state of all smart contracts and accounts on the network. Each smart contract, once deployed, is represented by a set of EVM opcodes.
+
+%\noindent\textbf{TLOAD and TSTORE} are EVM opcodes introduced by EIP-1153~\cite{eip1153} and implemented in the Cancun upgrade~\cite{kraken2024ethereum} in March 2024. Like SLOAD and SSTORE, which manage persistent storage, TLOAD and TSTORE handle data within a single transaction and reset with each new transaction. These opcodes significantly reduce gas costs for runtime validation, offering a valuable opportunity to enhance control flow integrity in smart contracts.
+
+
+
+
+
+% % \subsection{Smart Contract Vulnerabilities}
+
+% %Smart contracts are computer programs running atop blockchains to facilitate the value transfer process among users.
+% %Smart contract executions are triggered by blockchain transactions sent by external-owned accounts (EOAs)
+% %and the interoperability between smart contracts fosters a booming DApp ecosystem like DeFis.
+% %Managing a large sum of digital assets, smart contracts are vulnerable to security attacks which
+% %may cause significant financial loss.
+
+% \noindent \textbf{Common smart contract vulnerabilities} include integer overflow/underflow~\cite{BECoverflow},
+% reentrancy~\cite{DAOattacks}, dangerous delegatecall~\cite{Paritystolen}, etc.
+% % For instance, the Parity wallet contract was hacked in 2017 due to a missing protection of the
+% % delegatecall operation.
+% % As a result, the attacker captured the wallet ownership and stole 150K ETH which worth \$30M in USD.
+% \textbf{DeFi vulnerabilities }are smart contract vulnerabilities that are specific to DeFi applications. They are
+% more subtle to detect and attacks usually involve more sophisticated steps~\cite{zhou2023sok}.
+% DeFi protocols are major targets for smart contract attacks, which have experienced \$5.53 billion loss
+% out of the overall \$6.94 billion caused by recent blockchain incidents~\cite{defillama}.
+
+% %Especially, with the advent of dencentralized finance application (DeFi), billions of dollars
+% %worth asset is run by these applications.
+% %However, according to the hack statistics~\cite{defillama}, as of 12 September 2023, DeFi hacks
+% %brought 5.53 billion dollars out of the overall 6.94 billion dollars loss in blockchain incidents.
+
+
+
+% % Well-known DeFi attacks include governance attacks and oracle price manipulation~\cite{werner2022sok, zhou2023sok}.
+% %To achieve decentralization, DeFi protocols often implement decentralized governance mechanisms
+% %based on governance tokens used for proposing and voting on protocol upgrades.
+% %However, once attackers had sufficient amount of governance tokens to execute malicious proposals,
+% %the security of the whole DeFi protocols is likely undermined.
+
+
+% % For example, to support asset trading, DeFi applications may rely on price oracles, mostly provided by
+% % Automated Market Makers (AMMs). If an oracle is designed poorly, attackers can manipulate the oracle price: they first use large amounts of funds to create an imbalance in the liquidity pools within an AMM, leading to a price slippage.
+% % Since the trading within DeFi applications depends on AMM's price, attackers can make a profit by
+% % buying DeFi's assets with a lower price and reselling them with a higher price.
+% % Similar attacks include front-running, where a transaction is submitted purposefully to be executed
+% % before certain pending user transactions and makes a profit with the price gap.
+
+
+% %Back-running~\cite{bibid} and sandwich attacks~\cite{bibid} can be considered variants of this
+% %attack.
+% %
+

@@ -1,0 +1,60 @@
+\chapter{Related Work}
+\label{sec:related}
+
+\noindent \textbf{Parametric optimization:} For some flash loan attack cases,
+researchers~\cite{cao2021flashot, qin2021attacking} manually extracted formulas
+of state transition functions of the DeFi smart contracts, defined related
+parameter constraints, and used an off-the-shelf optimizer to search for
+parameters which yield the best profit. However, this technique requires
+significant manual efforts and expert knowledge of the underlying DeFi
+protocols. Furthermore, unlike {\name}, this technique also requires prior
+knowledge of the sequence of attack actions. It is therefore not suitable
+%is sufficient to check whether an attack vector is optimal but might not be
+%enough 
+to detect the possibility of flash attacks before the attacks happen.
+
+\noindent \textbf{Static Analysis:} 
+Slither~\cite{feist2019slither}, Securify~\cite{tsankov2018securify},
+Zeus~\cite{kalra2018zeus}, Park~\cite{zheng2022park} and
+SmartCheck~\cite{tikhomirov2018smartcheck} apply static analysis techniques to
+verify smart contracts. 
+%They detect pre-defined patterns of vulnerabilities and
+%over-approximate program states, which inevitably cause false positives and
+%negatives. 
+There are also several works that use
+symbolic execution~\cite{king1976symbolic} to explore the program states of a
+smart contract, looking for an execution path that violates a user-defined
+invariant, e.g., Mythril~\cite{mythril}, Oyente~\cite{luu2016making},
+FairCon~\cite{liu2020towards}, ETHBMC~\cite{frank2020ethbmc},
+SmartCopy~\cite{feng2019precise}, and Manticore~\cite{mossberg2019manticore}.
+These techniques tend to operate with one contract at a time and therefore cannot handle flash loan attacks that involve multiple contracts.
+When analyzing traces of DeFi contracts, these techniques also may suffer from the
+path explosion and the complicated logics of the DeFi contracts.
+{\name} uses its novel synthesis-via-approximation techniques to avoid these issues.
+
+%These techniques suffer from the path explosion and the complicated logics 
+%and cannot scale to 
+%of DeFi contracts.
+%Also both 
+%
+%However, as we showed in Section~\ref{sec:example}, symbolic execution tools do
+%not scale well and suffer from path explosion. 
+%Slither~\cite{feist2019slither}, Securify~\cite{tsankov2018securify},
+%Zeus~\cite{kalra2018zeus}, Park~\cite{zheng2022park} and
+%SmartCheck~\cite{tikhomirov2018smartcheck} apply static analysis techniques to
+%verify smart contracts. They detect pre-defined patterns of vulnerabilities and
+%over-approximate program states, which inevitably cause false positives and
+%negatives. They are suitable for local analysis of contracts, but not suitable
+%for analysis that must consider interactions between contracts and on-chain
+%states. 
+
+\noindent \textbf{Fuzzing smart contracts:}
+ContractFuzzer~\cite{jiang2018contractfuzzer}, sFuzz~\cite{nguyen2020sfuzz},
+ContraMaster~\cite{wang2020oracle} and SMARTIAN~\cite{choi2021smartian}
+introduce new fuzzing techniques to discover vulnerabilities in smart
+contracts. However, these techniques either only work on one contract or focus
+on specific vulnerabilities like re-entrancy. Almost all flash loan attacks
+interact with multiple contracts with complicated logics. Moreover, for many
+flash loan attacks the action parameters have to be carefully chosen to
+generate positive profits. Such a parameter combination is unlikely to be found
+by random fuzzing.

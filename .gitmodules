@@ -1,0 +1,12 @@
+[submodule "my-papers/DeFi-synthesis-report"]
+	path = my-papers/DeFi-synthesis-report
+	url = https://github.com/jeffchen006/DeFi-synthesis-report.git
+[submodule "my-papers/LLM-poison-report"]
+	path = my-papers/LLM-poison-report
+	url = https://github.com/jeffchen006/LLM-poison-report.git
+[submodule "my-papers/TxCrossGuard-report"]
+	path = my-papers/TxCrossGuard-report
+	url = https://github.com/jeffchen006/TxCrossGuard-report.git
+[submodule "my-papers/TxGuard-report"]
+	path = my-papers/TxGuard-report
+	url = https://github.com/jeffchen006/TxGuard-report.git

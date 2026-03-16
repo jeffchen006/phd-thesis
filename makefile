@@ -1,10 +1,10 @@
-all: main
+all: main.pdf
 
-main: *.tex main.bib tex/* 
-	pdflatex main
-	bibtex main
-	pdflatex main
-	pdflatex main
+main.pdf: *.tex main.bib tex/*
+	-pdflatex -interaction=nonstopmode main
+	-bibtex main
+	-pdflatex -interaction=nonstopmode main
+	-pdflatex -interaction=nonstopmode main
 
 
 cleancache:

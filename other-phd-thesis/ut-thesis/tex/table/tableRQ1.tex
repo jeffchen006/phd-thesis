@@ -1,0 +1,103 @@
+
+\newcommand{\tnote}[1]{$^{\mathrm{#1}}$}
+
+\begin{table*}[]
+    \caption{Summary of {\name} results. }
+    \vspace{-2mm}
+    \label{tab:RQ1}
+    %\addtolength{\tabcolsep}{-2.5pt}
+    \centering
+    %\scriptsize
+
+
+    \flushleft
+    {\raggedright Notes: 
+    \textbf{AC} denotes the number of action candidates.  
+    \textbf{AP} denotes the number of action candidates to approximate. 
+    \textbf{GL} and \textbf{GP} denote the length and the profit of the ground truth attack vector, respectively. 
+    \textbf{IDP} and \textbf{TDP} denote the initial and total number of collected of data points, respectively.
+    \textbf{Time} denotes the time spent in seconds.
+    \par}
+
+% \begin{tabular}{|l|llll|llll|llll|l|}
+%     \hline
+% \multicolumn{5}{|l|}{}                            & \multicolumn{4}{c|}{\textbf{Polynomial}}              & \multicolumn{4}{c|}{\textbf{Interpolation}}      & \textbf{Precise} \\ \hline
+% \textbf{Benchmark}     & \textbf{AC} & \textbf{AP} & \textbf{GL} & \textbf{GP}  & \textbf{IDP}  & \textbf{TDP} & \textbf{Profit} & \textbf{Time}  & \textbf{IDP} & \textbf{TDP}  & \textbf{Profit}  & \textbf{Time} & \textbf{Profit}  \\
+% bZx1          & 3  & 3  & 2  & 1194                         & 5192            & 5849           & 2392         & 1314         & 5192            & 6373           & 2302         & 1333       & cs      \\
+% Harvest\_USDT & 4  & 4  & 4  & 338448                       & 8000            & 9325           & 110139       & 1442         & 8000            & 10289          & 86798        & 8331       & cs      \\
+% Harvest\_USDC & 4  & 4  & 4  & 307416                       & 8000            & 8912           & 59614        & 1498         & 8000            & 10914          & 110051       & 9170       & cs      \\
+% Eminence      & 4  & 4  & 5  & 1674278                      & 8000            & 8780           & 1507174      & 2436         & 8000            & 8104           & 0            & Not Found  & 1606965 \\
+% ValueDeFi     & 6  & 6  & 6  & 8618002                      & 12000           & 19975          & 8378194      & 6369         & 12000           & 15758          & 6428341      & 12767      & cx       \\
+% CheeseBank    & 8  & 3  & 8  & 3270347                      & 2679            & 2937           & 1946291      & 5919         & 2679            & 2715           & 1101547      & 12470      & 2816762 \\
+% Warp          & 6  & 3  & 6  & 1693523                      & 6000            & 6000           & 2773345      & 1893         & 6000            & 6000           & 0            & Not Found  & 2645640 \\
+% bEarnFi       & 2  & 2  & 4  & 18077                        & 4000            & 4854           & 13770        & 857          & 4000            & 4652           & 12329        & 1075       & 13832   \\
+% AutoShark     & 8  & 3  & 8  & 1381                         & 2753            & 2753           & 1372         & 6927         & 2753            & 2753           & 0            & Not Found  & cx       \\
+% ElevenFi      & 5  & 2  & 5  & 129741                       & 4000            & 4070           & 129658       & 693          & 4000            & 4326           & 85811        & 1182       & cx       \\ 
+% ApeRocket     & 7  & 3  & 6  & 1345                         & 6000            & 6402           & 1333         & 1859         & 6000            & 6235           & 1037         & 4364       & cs      \\ 
+% Wdoge         & 5  & 1  & 5  & 78                           & 2000            & 2001           & 75           & 473          & 2000            & 2080           & 75           & 490        & 75      \\ 
+% Novo          & 4  & 2  & 4  & 24857                        & 4000            & 4164           & 20210        & 1320         & 4000            & 4031           & 23084        & 1479       & cx       \\
+% OneRing       & 2  & 2  & 2  & 1534752                      & 4000            & 4710           & 1814882      & 888          & 4000            & 4218           & 1942188      & 670        & cx       \\
+% Puppet        & 3  & 3  & 2  & 89000                        & 6000            & 6301           & 89000        & 1932         & 6000            & 6452           & 87266        & 1967       & 89000   \\
+% PuppetV2      & 4  & 3  & 3  & 953100                       & 4491            & 4836           & 747799       & 3086         & 4491            & 5061           & 362541       & 3480       & 647894  \\ \hline
+% \multicolumn{5}{|l|}{}     & \textbf{Solved}:       & \multicolumn{1}{l}{16/18} & \textbf{Avg. Time}:  & 2430 & \textbf{Solved}: & \multicolumn{1}{l}{13/18} & \textbf{Avg. Time}: & 4521  & \\ \hline       
+
+% \end{tabular}
+
+
+\begin{tabular}{|l|llll|llll|l|}
+    \hline
+\multicolumn{5}{|l|}{}                              & \multicolumn{4}{c|}{\textbf{Interpolation}}      & \textbf{Precise} \\ \hline
+\textbf{Benchmark}     & \textbf{AC} & \textbf{AP} & \textbf{GL} & \textbf{GP}   & \textbf{IDP} & \textbf{TDP}  & \textbf{Profit}  & \textbf{Time} & \textbf{Profit}  \\
+bZx1          & 3  & 3  & 2  & 1194                          & 5192            & 5849           & 2392         & 1314       & cs      \\
+Harvest\_USDT & 4  & 4  & 4  & 338448                        & 8000            & 9325           & 110139       & 1442       & cs      \\
+Harvest\_USDC & 4  & 4  & 4  & 307416                        & 8000            & 8912           & 59614        & 1498       & cs      \\
+Eminence      & 4  & 4  & 5  & 1674278                       & 8000            & 8780           & 1507174      & 2436       & 1606965 \\
+ValueDeFi     & 6  & 6  & 6  & 8618002                       & 12000           & 19975          & 8378194      & 6369       & cx       \\
+CheeseBank    & 8  & 3  & 8  & 3270347                       & 2679            & 2937           & 1946291      & 5919       & 2816762 \\
+Warp          & 6  & 3  & 6  & 1693523                       & 6000            & 6000           & 2773345      & 1893       & 2645640 \\
+bEarnFi       & 2  & 2  & 4  & 18077                         & 4000            & 4854           & 13770        & 857        & 13832   \\
+AutoShark     & 8  & 3  & 8  & 1381                          & 2753            & 2753           & 1372         & 6927       & cx       \\
+ElevenFi      & 5  & 2  & 5  & 129741                        & 4000            & 4070           & 129658       & 693        & cx       \\ 
+ApeRocket     & 7  & 3  & 6  & 1345                          & 6000            & 6402           & 1333         & 1859       & cs      \\ 
+Wdoge         & 5  & 1  & 5  & 78                            & 2000            & 2001           & 75           & 473        & 75      \\ 
+Novo          & 4  & 2  & 4  & 24857                         & 4000            & 4164           & 20210        & 1320       & cx       \\
+OneRing       & 2  & 2  & 2  & 1534752                       & 4000            & 4710           & 1814882      & 888        & cx       \\
+Puppet        & 3  & 3  & 2  & 89000                         & 6000            & 6301           & 89000        & 1932       & 89000   \\
+PuppetV2      & 4  & 3  & 3  & 953100                        & 4491            & 4836           & 747799       & 3086       & 647894  \\ \hline
+\multicolumn{5}{|l|}{}     & \textbf{Solved}: & \multicolumn{1}{l}{16/18} & \textbf{Avg. Time}: & 2430  & \\ \hline       
+
+\end{tabular}
+
+
+
+
+
+\begin{tabular}{|l|llll|llll|l|}
+    \hline
+\multicolumn{5}{|l|}{}                              & \multicolumn{4}{c|}{\textbf{Interpolation}}      & \textbf{Precise} \\ \hline
+\textbf{Benchmark}     & \textbf{AC} & \textbf{AP} & \textbf{GL} & \textbf{GP}   & \textbf{IDP} & \textbf{TDP}  & \textbf{Profit}  & \textbf{Time} & \textbf{Profit}  \\
+bZx1          & 3  & 3  & 2  & 1194                         & 5192            & 6373           & 2302         & 1333       & cs      \\
+Harvest\_USDT & 4  & 4  & 4  & 338448                       & 8000            & 10289          & 86798        & 8331       & cs      \\
+Harvest\_USDC & 4  & 4  & 4  & 307416                       & 8000            & 10914          & 110051       & 9170       & cs      \\
+Eminence      & 4  & 4  & 5  & 1674278                      & 8000            & 8104           & 0            & N/A        & 1606965 \\
+ValueDeFi     & 6  & 6  & 6  & 8618002                      & 12000           & 15758          & 6428341      & 12767      & cx       \\
+CheeseBank    & 8  & 3  & 8  & 3270347                      & 2679            & 2715           & 1101547      & 12470      & 2816762 \\
+Warp          & 6  & 3  & 6  & 1693523                      & 6000            & 6000           & 0            & N/A        & 2645640 \\
+bEarnFi       & 2  & 2  & 4  & 18077                        & 4000            & 4652           & 12329        & 1075       & 13832   \\
+AutoShark     & 8  & 3  & 8  & 1381                         & 2753            & 2753           & 0            & N/A        & cx       \\
+ElevenFi      & 5  & 2  & 5  & 129741                       & 4000            & 4326           & 85811        & 1182       & cx       \\ 
+ApeRocket     & 7  & 3  & 6  & 1345                         & 6000            & 6235           & 1037         & 4364       & cs      \\ 
+Wdoge         & 5  & 1  & 5  & 78                           & 2000            & 2080           & 75           & 490        & 75      \\ 
+Novo          & 4  & 2  & 4  & 24857                        & 4000            & 4031           & 23084        & 1479       & cx       \\
+OneRing       & 2  & 2  & 2  & 1534752                      & 4000            & 4218           & 1942188      & 670        & cx       \\
+Puppet        & 3  & 3  & 2  & 89000                        & 6000            & 6452           & 87266        & 1967       & 89000   \\
+PuppetV2      & 4  & 3  & 3  & 953100                       & 4491            & 5061           & 362541       & 3480       & 647894  \\ \hline
+\multicolumn{5}{|l|}{}     & \textbf{Solved}: & \multicolumn{1}{l}{13/18} & \textbf{Avg. Time}: & 4521  & \\ \hline       
+
+\end{tabular}
+
+
+
+
+
+\end{table*}
