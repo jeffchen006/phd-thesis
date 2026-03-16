@@ -13,6 +13,19 @@ Typically, a thesis proposal is a draft of a substantial portion of the disserta
 The supervisory committee assesses the scope and relevance of the problems the student intends to solve in the proposed PhD dissertation. The thesis proposal is typically completed 6–12 months prior to the Departmental Thesis Examination.
 
 
+Git submodules (my-papers)
+
+This repository tracks past paper repositories as Git submodules under `my-papers/`.
+
+After cloning this repository, initialize and fetch all submodules with:
+
+git submodule update --init --recursive
+
+To pull newer commits for submodules later (when needed):
+
+git submodule update --remote --recursive
+
+
 
 
 
