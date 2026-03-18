@@ -1,0 +1,15 @@
+\section{Traces and State Projections}
+
+We define the core domains used throughout the thesis:
+$\Addr$ (addresses), $\Tok$ (token identifiers), $\Meth$ (callable methods), and $\Val$ (numeric parameter domains).
+
+For state-level reasoning, we use:
+\begin{itemize}
+    \item $\bal(\q,a,t)$: token balance of address $a$ for token $t$ in state $\q$;
+    \item $\stateof{i}(\q)$: selected protocol state component;
+    \item $\tokenmap(\q,a,t)$: map-form balance view.
+\end{itemize}
+
+An action is denoted by $\act=(m,\paras)$ with $m \in \Meth$ and $\paras \in \Val^k$.
+A trace is denoted by $\attackvector=\langle \act_1,\ldots,\act_n\rangle$.
+We use $\symbolic$ for symbolic traces and $\concrete$ for concrete instantiations.

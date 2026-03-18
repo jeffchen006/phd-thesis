@@ -1,0 +1,87 @@
+\vspace{-2ex}
+\section{Evaluation}
+\label{sec:evaluation}
+In this section, we aim to empirically answer the research questions raised in~\Cref{sec:example} 
+by applying invariant guards to real-world exploits on Ethereum Blockchain. 
+We systematically collected economic exploit incidents that cost greater than 
+300K USD financial loss from February 14, 2020, to \revise{August 1, 2022} on Ethereum Blockchain.
+Our benchmark is compiled from a diverse set of sources including academic
+publications~\cite{chen2022flashsyn, qin2021attacking}, industry databases~\cite{Hacked,
+BlockSecMedium}, and open-source GitHub repositories~\cite{DeFiHackLabs,LearnEVMHacks}. It is worth
+noting that we exclude from our benchmarks any hacks targeting individual user wallets, as these
+are primarily the result of private key leakage, rather than protocol vulnerabilities. We also
+exclude hacks where the victim contracts are close-source, as our manual analysis requires the
+source code of the victim contracts.
+Note that \name can also be applied to close-source contracts, as long as their function ABIs and
+storage layout are available.
+
+\input{tables/Benchmarks.tex}
+
+\Cref{tab:benchmarks} presents the benchmark dataset in our study. It comprises 27 hacks which resulted in financial losses over $2$ billion USD. The column \emph{FL} denotes whether the exploit involves flash loans, which require atomicity for the hack transactions. The column \emph{Type} denotes the type of victim contracts.
+For each hack, two types of victim contracts are manually identified: payload (P) refers to the
+ contract that eventually transfers abnormal amounts of tokens out of the protocol, and
+interface (I) refers to the contract that is directly invoked by users to initiate this 
+transfer. The \emph{History} column gives the length of the transaction history up to the
+hack transaction for each victim contract.
+
+
+% for each benchmark contract, we collected all of its transaction history up to the exploit transaction.
+% As RoninBridge has a very long history consisting of over 3 million transactions, we therefore only collected the latest 100k transactions before the exploit transaction. We ignore all reverted transactions and irrelevant transactions that do not invoke any function of the victim contract. \textcolor{red}{Liu Ye:  Check !! such as an ERC20 transfer to the victim contract.}
+
+% \sout{
+% \textcolor{red}{Paragraph 1 introduces the selection, second para introduces column by column. Don't mix them. }
+% }
+
+
+
+%Experiment 1: Invariant Generation from trace summaries and invariant validation.
+%
+%
+%Then we manually analyze true positives and sampled false positives to see whether the invariant guards can be bypassed by history hackers and normal users.
+%
+%
+%Experiment 2: Invariant Combination.
+%
+%
+%Experiment 3: Gas Overhead of Invariant Guards.
+%
+
+
+
+% \subsection{\revise{Evaluate Invariant Effectiveness with {\name}}}
+% % add a graph
+% \begin{figure}[h]
+%   \centering
+%   \includegraphics[width=1.0\textwidth]{figures/Evaluation.png}
+%   \caption{\revise{Invariant Evaluation Framework with {\name}}}
+%   \label{fig:evaluation}
+% \end{figure}
+
+% \revise{Figure~\ref{fig:evaluation} provides an overview of our evaluation framework utilizing {\name}, which illustrates 
+% experiments we conducted for research questions RQ1, RQ3, and RQ4.}
+
+% \revise{
+% To begin, we specify a target contract address and an end block number, then collect the contract's transaction history 
+% up to that block using TrueBlocks~\cite{TrueBlocks}, Following this, we obtain execution trace data for each transaction 
+% from an Ethereum archive node. These transaction traces, along with invariant templates and the target contract, 
+% are fed into {\name}, which then generates specific invariants for each non-read-only function within the contract. 
+% We then instrument the original target contract with the generated invariants. 
+% Finally, we replay all transactions in the history on the instrumented contract to validate 
+% the effectiveness and gas overhead of the invariants.}
+
+
+
+
+\input{sections/experiments/RQ1.tex}
+
+\input{sections/experiments/RQ2.tex}
+
+\input{sections/experiments/RQ3.tex}
+
+\input{sections/experiments/RQ4.tex}
+
+\input{sections/experiments/RQ5.tex}
+
+
+\input{sections/threats.tex}
+

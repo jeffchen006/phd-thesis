@@ -1,0 +1,12 @@
+\subsection{Cross-Contract and Compositional Integrity}
+
+Recent work highlights that many practical exploits violate interaction structure across contract boundaries,
+rather than isolated function-local predicates.
+Dynamic invariant systems such as InvCon and InvCon+\cite{liu2022invcon,liu2024automated},
+as well as empirical studies of invariant effectiveness\cite{chen2024demystifying},
+provide useful evidence about what properties can be enforced in production.
+
+Industry systems such as SphereX adopt control-flow restriction in practice\cite{spherex},
+while language-level security work studies compositional guarantees for unknown and re-entrant code\cite{cecchetti2020securing,cecchetti2021compositional}.
+These lines of work motivate protocol-level control-flow integrity, but they do not fully standardize how to compare cross-protocol policy quality under a unified trace semantics.
+This thesis positions cross-contract integrity as a first-class execution-trace objective to support that comparability.

@@ -1,0 +1,231 @@
+\vspace{-1ex}
+\section{Motivating Example}\label{sec:example}
+\vspace{-1ex}
+
+In this section, we present a motivating example to illustrate how an exploit
+transaction behave differently from other benign transactions in histories and
+how dynamically inferred transactions can neutralize the exploit transaction to
+enhance smart contract security.
+
+
+\noindent \textbf{Exploit Transaction:} Harvest Finance is a Decentralized
+Finance (DeFi) protocol deployed on Ethereum to manage and auto-invest stable
+coins for users. On October 26, 2020, USDC and USDT vaults of the Harvest
+Finance were exploited, causing a financial loss of about USD \$$33.8$ million.
+Harvest Finance internally uses the market data of Curve, another DeFi stable
+coin trading protocol, to determine the market prices of USDC and USDT. In the
+exploit transaction, the attacker distorts the market of Curve to cause the
+Harvest Finance to make sub-optimal investment decisions.
+
+Specifically, the attack transaction first borrows a large
+amount of digital assets and uses the borrowed asset to buy USDC in Curve to
+inflate its price. Then it deposits $49.98$M USDC into Harvest
+vault contract, which increases its USDC balance from $72.83$M to $122.51$M.
+Due to the manipulated oracle price of USDC, Harvest vault contract erroneously
+mints the attacker an inflated $51.46$M fUSDC, which increases the total fUSDC
+supply from $127.58$M to $179.04$M. The attacker then restores the USDC by
+selling the USDC in Curve, and redeems all its fUSDC tokens for $50.30$M USDC,
+yielding a $32$k surplus compared to the initial deposit. This redemption
+decreases the Harvest vault's USDC balance from $122.81$M to $72.51$M and
+restores the total fUSDC supply to its original value of $127.58$M.
+Remarkably, this identical attack vector is executed three times
+within one exploit transaction, consuming an unusually high gas count of
+$9,895,111$, narrowly within the gas limit of $12,065,986$ at the time. 
+\camera{More details of this example can be found at the website~\cite{website}.}
+
+\noindent \textbf{Abnormal Behaviors:} We identify four distinct dimensions of
+abnormal behavior: a high frequency of user interactions with the Harvest vault
+contract, an exceptionally large volume of token flow, abrupt fluctuations in
+the total supply of fUSDC tokens, and remarkably high gas consumption. To
+better understand the abnormality of the exploit transaction, we collect and
+analyze all transaction history of the Harvest vault contract up to the point
+of the exploit, as illustrated in \Cref{fig:harvest_abnormal}. 
+
+\begin{figure}[!htbp]
+  \centering
+  \begin{subfigure}[b]{0.98\textwidth}
+      \centering
+      \includegraphics[width=\textwidth]{figures/Harvest2_fUSDC_accessFrequency2.pdf}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{0.98\textwidth}
+      \centering
+      \includegraphics[width=\textwidth]{figures/Harvest2_fUSDC_moneyFlow2.pdf}
+  \end{subfigure}
+
+  \begin{subfigure}[b]{0.98\textwidth}
+      \centering
+      \includegraphics[width=\textwidth]{figures/Harvest2_fUSDC_totalSupply2.pdf}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{0.98\textwidth}
+      \centering
+      \includegraphics[width=\textwidth]{figures/Harvest2_fUSDC_gasConsumption2.pdf}
+  \end{subfigure}
+  \caption{Statistics of Transactions on Harvest USDC Vault Contract.}
+  \label{fig:harvest_abnormal}
+\end{figure}
+
+
+
+As shown in \Cref{fig:harvest_abnormal}, the last data point in each
+sub-figure, representing the exploit transaction, consistently emerges as an
+outlier. Specifically, we have observed that the exploit transaction is the
+first in the contract's history to: (1) invoke the
+\texttt{withdraw} function from a contract rather than from a user address, (2) call both \texttt{deposit} and
+\texttt{withdraw} functions $3$ times within one transaction, (3)
+consume more gas than any previous transaction, (4) withdraw more USDC from the
+protocol than any other transaction, \revise{(5)} elevate the total supply of fUSDC
+tokens to an all-time high. 
+
+We observed several other outlier data points besides the last data point. 
+For access frequency, two blocks contained two \texttt{withdraw} invocations within the same block, which, 
+upon investigation, were found to originate from separate addresses. 
+We believe it was a coincidence that two users withdrew their funds in the same block. 
+For token flow, a very large USDC deposit occurred immediately after the contract's deployment, 
+which, upon manual analysis, was identified as an initial liquidity provided by the Harvest Finance team. 
+Similarly, the abrupt jump in the total supply of fUSDC tokens in the early stage was also due to this 
+initial liquidity provision. 
+Since users receive fUSDC tokens when they deposit USDC into the vault and these tokens are burned upon withdrawal of USDC,
+a large initial deposit would lead to a corresponding increase in the total supply of fUSDC tokens.
+For gas consumption, a transaction at block 11094671 consumed 5,062,934 gas, which, 
+after manual analysis, was found to be sent by the Harvest Finance team for migrating old vaults to new ones. 
+This migration process involved numerous operations in a single transaction to ensure atomicity, leading to high gas consumption. 
+Overall, while there were anomalies during the early stage of the contract's deployment, 
+the different transaction metrics stabilized after some blocks until significantly changed by the exploit transaction. 
+If contract maintainers can identify the "stable" stage and use these transactions to infer invariants, 
+the inferred invariants can be much more accurate. 
+However, in this paper, we assume such information is not available.
+
+
+
+
+
+
+
+
+
+
+\noindent \textbf{Apply Inferred Invariants:} The multi-dimensional
+abnormalities observed in the exploit transaction highlight a stark departure
+from typical transactional behaviors. This divergence suggests the feasibility
+of crafting and applying runtime invariants that are capable of flagging and
+blocking transactions exhibiting such anomalous characteristics. For example,
+suppose we inferred and enforced an invariant stating that the
+\texttt{withdraw} function may only be invoked by an Externally Owned Account (EOA),
+the exploit transaction could be blocked. This is because the exploit relies on a
+contract to execute complex logic designed to
+extract funds from the vault. Likewise, if we inferred an invariant that the total
+supply of fUSDC should not surpass $160$M, the profitability of each round of the exploit
+would be significantly reduced, making it unable to cover the cost of manipulating
+the market of Curve.
+Importantly, both invariants do not affect any normal user's
+transaction in histories, making them practical for real-world deployment.
+
+\noindent
+\revise{\noindent \textbf{Patch Smart Contracts Post-Deployment:} }
+\revise{Despite the immutable nature of deployed smart contracts,
+developers still have different methods to alter their behavior post-deployment,
+allowing for the addition or modification of invariant guards to shield against future exploits:  
+\textit{(1) Upgradable or Modular Contract Design:} Upgradable contract standards such as
+ERC897~\cite{ERC897} and ERC1167~\cite{ERC1167} incorporate a proxy and an execution contract. The proxy contract delegates function calls to the execution contract,
+whose address can be modified within the proxy, allowing developers to update their smart contracts after deployment. Similarly, 
+developers can segment a protocol into multiple contracts as different modules. A primary contract interfaces with users, subsequently interact with other modular contracts that handle distinct functionalities including invariant checking. The addresses of modular contracts could be updated in the primary contract. 
+\textit{(2) Application Interface Adjustments:} For deployed protocols with neither upgradable nor modular contract designs, addressing vulnerabilities or enforcing invariants can still be achieved by launching a revised protocol version and redirecting users through website or application interfaces. 
+}  
+
+% \begin{enumerate}[leftmargin=*]
+%     \item \revise{\textbf{Upgradable Contract Design:} Utilizing upgradable contract standards such as
+%     ERC897~\cite{ERC897} and ERC1167~\cite{ERC1167}, which incorporate a proxy and an execution contract,
+%     allows developers to update their smart contracts after deployment.
+%     % ERC1822, ERC1967, ERC2535, ERC3448, ERC3561, ERC4886, ERC7511,
+%     The proxy contract delegates function calls to the execution contract,
+%     whose address can be modified within the proxy, allowing for updates.
+%     % For instance, the aforementioned Harvest Finance also adopted the upgradable contract standard ERC897.
+%     % Their proxy contract\footnote{\url{https://etherscan.io/address/0xf0358e8c3cd5fa238a29301d0bea3d63a17bedbe}}
+%     % was upgraded
+%     % from its original execution contract\footnote{\url{https://etherscan.io/address/0x9b3be0cc5dd26fd0254088d03d8206792715588b}}
+%     % to a new
+%     % one,\footnote{\url{https://etherscan.io/address/0x7bd04d55cbba9996e6799fd7b0380cc43e7c493f}}
+%     % integrating a pause feature absent from the original.
+%     Developers can add invariant guards to a new execution contract to enhance its security.
+%     }
+
+%     \item \revise{\textbf{Modular Contract Architecture:} Another method involves segmenting a protocol into multiple contracts as different modules.
+%     A primary contract interfaces with users, subsequently interact with other contracts that handle distinct functionalities.
+%     Developers can implement a separate contract that acts as an invariant guard, to which the
+%     primary contract can pass invariant-related parameters. This guard contract can then revert all
+%     transactions that violate the invariants.
+%     To update the invariants, developers can write a new guard contract and change the address of the invariant guard in the main contract.}
+
+%     \item \revise{\textbf{Application Interface Adjustments:} For deployed protocols with neither upgradable nor segmented contract capabilities,
+%     addressing vulnerabilities or enforcing invariants can still be achieved by launching a revised protocol version and redirecting
+%     users through website or application interfaces.}
+%     % One example is Balancer~\cite{balancerProtocol}, a decentralized exchange with TVL over 1 billion USD.
+%     % After discovering an unfixable vulnerability in some of their pools on August 2023~\cite{balancerStory},
+%     % Balancer replaced the original deposit interface with a withdrawal-only interface on their application front end.
+%     % Multiple new contracts were deployed as backends to handle the withdrawal requests to assist users in withdrawing
+%     % their funds~\cite{balancerExit}.
+%     % Similarly, developers can deploy a new contract incorporating invariant guards as a
+%     % new backend for the application interface, to enhance its security.
+
+% \end{enumerate}
+
+
+
+\noindent \textbf{Research Questions:} Inspired by these observations and their
+implications for enhancing smart contract security, we are motivated to explore
+the following research questions:
+
+% Effectiveness of Invariant Guards:
+\textbf{RQ1: } Given the fact that exploit transactions often exhibit abnormal
+behaviors, \textbf{what kinds of invariant guards are most effective at
+stopping exploit transactions?}
+
+% Bypassing Invariant Guards:
+\textbf{RQ2: } If an exploit transaction or benign transaction violates
+invariant guards, \textbf{how difficult is it for an attacker or a regular user
+to bypass them?}
+
+% Combinatorial Efficacy:
+\textbf{RQ3: } As multiple dimensions of abnormality may be associated with an
+exploit transaction, \textbf{how effective is the combination of different
+invariant guards in preventing exploits?}
+
+% Gas Overheads:
+\textbf{RQ4: } Invariant guards require additional gas at runtime. \textbf{What
+are the gas overheads of different types of invariant guards?}
+
+% Comparative Analysis of Smart Contract Security Frameworks
+\revise{
+    \textbf{RQ5: } In terms of enhancing smart contract security, 
+    \textbf{how does this work compare to other state-of-the-art works in
+     contract invariant generation or transaction anomaly detection?}
+}
+
+
+
+
+% \subsection{Challenges}
+
+% \textcolor{red}{Raise the research questions.}
+
+% Implementing runtime protection in smart contracts presents several challenges, particularly when it comes to inserting invariant guards. We identify the following key challenges:
+
+% \textbf{Challenge 1: Restricted Design Choices for Invariant Guards:} The state variables accessible by a smart contract are constrained by the Ethereum Virtual Machine (EVM). EVM opcodes dictate the operations a contract can perform, and many transaction-related states remain inaccessible. For instance, while a contract can read the remaining gas using the \texttt{gas} opcode, it cannot determine the amount of gas consumed in the current transaction. This limitation poses challenges for extracting comprehensive transaction information.
+
+% \textbf{Challenge 2: Lack of General Approach for Applying Invariants:} DeFi protocols are diverse in design and functionality, making it unclear which invariants are universally applicable. The selection of appropriate invariants and their parameters, as well as the inference of these parameters from typical user behavior, remains an open question.
+
+% \textbf{Challenge 3: Unclear Effectiveness of Invariants:} Even if some invariants have been deployed in real-world smart contracts, their efficacy in preventing malicious transactions is still not well-understood. If a protocol is compromised, the invariants are demonstrably ineffective. Conversely, if a protocol remains secure, it is unclear whether this is due to effective invariants or mere luck.
+
+% In the rest of this paper, we address these challenges as follows:
+% \begin{itemize}
+%   \item For Challenge 1, we conduct a systematic study of real-world smart contract invariant guards, focusing on those employed by high-profile protocols or endorsed by leading security experts.
+%   \item For Challenge 2, we propose a general methodology for deriving invariant parameters from historical transaction data.
+%   \item For Challenge 3, we evaluate the effectiveness of collected invariants by applying them to real-world exploit scenarios and analyzing the transactions they block.
+% \end{itemize}
+
+
+
+
+

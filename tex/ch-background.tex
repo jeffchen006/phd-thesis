@@ -1,64 +1,30 @@
-\chapter{Background}
+\section{Background}
 \label{sec:background}
 
-This chapter briefly gives introductory descriptions of blockchain, smart
-contracts, decentralized finance, and transaction execution.
+This chapter presents the technical background needed for the rest of the thesis.
+Because the core claims in later chapters are execution-sensitive, we emphasize EVM semantics and use application-level concepts (e.g., DeFi workflows) as clients of that execution model.
 
+\noindent \textbf{Chapter Focus:}
+Rather than giving a broad survey, this chapter prioritizes execution details that directly affect security analysis: state transitions, call semantics, gas, rollback behavior, and transaction-level composition.
+This chapter corresponds to the execution-semantic layer in the thesis security-layer view.
 
-\section{Blockchain}
+\section{Ethereum as a State-Transition System}
+Ethereum can be viewed as a deterministic replicated state machine~\cite{ethereum22,buterin2014ethereum}. Let $\q$ denote the global blockchain state immediately before transaction execution, and let $\q'$ denote the resulting state after execution. For a transaction $\tau$, the execution relation is written as $\q \xrightarrow{\tau} \q'$ when execution succeeds, or as $\q \xrightarrow{\tau} \bot$ when execution aborts.
 
+At the consensus layer, blocks impose a total order over transactions. At the execution layer, each transaction is interpreted as a sequence of EVM state transitions constrained by gas, call semantics, and exception propagation. This deterministic transition view is the basis of both formal proofs and empirical replay analyses used in this thesis.
 
-Blockchain is a distributed ledger that broadcasts and stores information of
-transactions across different parties. 
-A blockchain consists of a growing
-number of blocks and a consensus algorithm which decides the order of blocks.
-Each block is constituted of transactions.
-%While Satoshi Nakamoto invented the first decentralized cryptocurrency Bitcoin
-%in 2008~\cite{nakamoto2008bitcoin}, the 
-Ethereum~\cite{ethereum22,buterin2014ethereum} is the first blockchain to
-support, store, and execute Turing complete programs, known as smart contracts.
-In particular, the Ethereum blockchain is constituted of a global state and
-transactions that modify the state. 
-%Ethereum supports two types of accounts:
-%user accounts and smart contract accounts, and each account is associated with
-%a unique address.  
-New popular blockchains
-%, e.g., Binance Smart
-%Chain~\cite{bsc},  Avalanche~\cite{avalanche},
-%Conflux~\cite{li2020decentralized}, and Near~\cite{near}, Fantom~\cite{fantom}
-work with Ethereum virtual machine (EVM) based execution environment due to the
-popularity of the EVM stack for developers. 
+This state-transition perspective also provides the interface used later for synthesis, policy checking, and runtime guards.
 
-%Smart contracts can create internal transactions to other smart contracts. The internal transactions are nested from a top-level transaction, an external transaction, initiated by a user account. If a transaction is aborted then the effects of all nested internal transactions will be reversed. 
+\section{Accounts, Code, and Persistent State}
+Ethereum maintains two account classes:
+\begin{itemize}
+    \item \textbf{Externally owned accounts (EOAs):} controlled by cryptographic keys and capable of initiating top-level transactions.
+    \item \textbf{Contract accounts:} controlled by deployed bytecode and activated via message calls.
+\end{itemize}
 
+Each account is associated with an address, a nonce, a native-token balance, and storage-relevant metadata. Contract accounts additionally contain executable bytecode and persistent key-value storage. High-level languages such as Solidity~\cite{solidity} and Vyper~\cite{vyper} compile to EVM bytecode, and this bytecode is the only representation executed on-chain.
 
-
-
-\section{Smart Contracts} 
-%Smart contracts are programs created to automatically execute those
-%transactions. 
-Each smart contract is associated with a unique address, a
-persistent account's storage trie, a balance of native tokens, e.g., Ether in
-Ethereum and BNB in Binance Smart Chain, and bytecode (e.g., EVM
-bytecode~\cite{ethereum22,buterin2014ethereum}) that executes incoming
-transactions to change the storage and balance. Users interact with a smart
-contract by issuing transactions from their user accounts to the contract
-address. 
-%Smart contracts become
-%immutable once deployed to the blockchain.  
-Smart contracts can also interact with other smart contracts as function calls.
-%create internal
-%transactions to interact with other smart contracts. The internal transactions
-%are nested from a top-level transaction, an external transaction, initiated by
-%a user account. If an external transaction is aborted then the effects of all
-%nested internal transactions will be reversed as well. 
-Currently, there are several human-readable high-level programming languages,
-e.g., Solidity~\cite{solidity} and Vyper~\cite{vyper}, to write smart contracts
-that compile to the EVM bytecode. 
-%In Figure~\ref{fig:ERC20}. we show an
-%excerpt of the ERC20 token smart contract written in Solidity. The listed
-%function {transfer} allows an address, {from}, to transfer ERC20 tokens to
-%another address, {to}. 
+This distinction is important for security reasoning: source-level patterns are informative, but exploitability is ultimately determined by bytecode-level behavior under EVM semantics.
 
 \input{solidity-highlighting.tex}
 \begin{figure}[t]
@@ -71,50 +37,48 @@ that compile to the EVM bytecode.
     \vspace{-2mm}
 \end{figure}
 
+\section{EVM Execution Semantics}
+\subsection{Machine Configuration and Step Relation}
+An EVM execution frame is characterized by program counter, stack, memory, gas counter, and an execution context (caller, callee, call value, calldata, and return-data buffers). Execution proceeds by repeatedly decoding and applying opcodes until a halting condition is reached.
 
+Semantically, opcode execution induces a small-step relation over machine configurations. Multi-contract transactions form a call tree through message calls (e.g., \texttt{CALL}, \texttt{DELEGATECALL}, \texttt{STATICCALL}), where child-frame outcomes feed back into parent frames via return values or propagated exceptions. This call-tree structure explains why cross-contract analysis is necessary even when auditing one protocol.
 
+The remaining subsections characterize the execution dimensions most relevant to security behavior.
 
-\section{Decentralized Finance (DeFi)}
+\subsection{Storage Classes and Lifetime Guarantees}
+The EVM exposes storage classes with distinct persistence properties:
+\begin{itemize}
+    \item \textbf{Stack and memory:} ephemeral to the current call frame.
+    \item \textbf{Persistent storage:} contract-scoped and transaction-independent; updates survive across blocks.
+    \item \textbf{Transient storage:} transaction-scoped scratch space introduced by recent EVM extensions (e.g., \texttt{TLOAD}/\texttt{TSTORE}); values are reset at transaction boundaries.
+\end{itemize}
+These distinctions are not merely implementation details: they shape both attack feasibility and defense cost models.
 
-Decentralized finance (DeFi) is a peer-to-peer financial ecosystem built on top of
-blockchains~\cite{wust2018you}. The building blocks of DeFi are smart contracts
-that manages digital assets. 
-%that constitute the DeFi
-%protocols~\cite{popescu2020decentralized,cao2021flashot}. 
-A few DeFi protocols dominate the DeFi market and serve as references for other
-decentralized applications: stable coins (e.g., USDC and USDT), price oracles,
-decentralized exchanges, and lending and borrowing platforms. 
-%\subsubsection{Flash loan} 
-In DeFi, a special type of loan called \emph{flash
-loan} allows lenders to offer loans to borrowers without upfront collaterals
-deposits. The loan is only valid within a single transaction and must be repaid
-with fees before the completion of the transaction (otherwise the transaction
-is reverted). 
- 
-%These money legos can be composed to form various applications. For instance, 1inch~\cite{1inch} is a DEX aggregator that assist users to find the best crypto prices across DEXes, and reroutes trades between them. 
-%Composability is one of the most important feature of DeFi.
-%However, referencing external protocols also introduces new risks to a DeFi application, since external protocols' unusual behaviors could easily lead to the applications' unexpected behaviors without rigorous checks. 
+\subsection{Gas Accounting and Halting Behavior}
+Every opcode consumes gas. A transaction specifies a gas limit and terminates successfully only if cumulative consumption remains within this budget and no uncaught exception occurs. Out-of-gas errors, invalid opcodes, and explicit \texttt{REVERT} induce exceptional control flow; in particular, state changes in the failing frame (and descendants) are rolled back according to call semantics.
 
+Gas therefore acts simultaneously as an economic mechanism and a semantic guardrail. Security analyses that ignore gas may misclassify feasible execution paths, especially in deep multi-call traces where gas-sensitive branches are common.
 
+\subsection{Atomicity and Revert Propagation}
+At transaction granularity, Ethereum execution is atomic: either all committed effects of the top-level frame are recorded in $\q'$, or the transaction is rejected and the pre-state $\q$ is preserved (modulo fee-related accounting in protocol semantics). Within a transaction, nested calls can fail locally and be handled by parent code, but unhandled failures propagate and may invalidate larger portions of execution.
 
-\section{Transaction Execution} 
+This atomic-yet-nested behavior is critical for reasoning about DeFi attacks, invariant enforcement, and control-flow guards, where success often depends on subtle interactions between local checks and global rollback semantics.
 
-A transaction is constituted of a sender address, a recipient address, a
-transferred value of native token (can be zero), a transaction data (can be
-empty), and a gas value to pay the transaction fees. If the transaction
-recipient address is associated with a user account then the transaction is
-called \emph{simple payment} transaction that transfers the value of native
-token from the sender account to the recipient account and the transaction's
-data is empty in this case. Otherwise, if the transaction recipient address is
-associated with a smart contract account then the transaction's data identifies
-a method of the recipient smart contract's code together with arguments passed
-to execute the method. When the transaction is received by the block miners,
-the corresponding smart contract's method is executed in the EVM, modifying the
-smart contract's balance and storage trie accordingly. Note that the execution
-of each EVM instruction, such as read/write operations on the underlying
-storage trie, is associated with a gas fee. The transaction's gas value must
-exceed the accumulated gas fees at the end of execution, otherwise the
-transaction is aborted~\cite{ethereum22,buterin2014ethereum}.
+Consequently, any analysis framework that reasons only about local function semantics is likely to be incomplete for compositional attack scenarios.
+
+\section{Transactions and Inter-Contract Composition}
+A transaction contains sender, recipient, nonce, value, calldata, and gas parameters. If the recipient has no code, the effect is value transfer; otherwise the recipient bytecode is invoked with calldata-decoded arguments.
+
+In modern DeFi systems, a single top-level transaction can trigger complex inter-contract compositions: exchanges, lending pools, vaults, and oracle updates may all be traversed before termination. Consequently, transaction behavior is determined jointly by local code and global execution context induced by prior calls and shared state dependencies.
+
+This observation directly motivates the later technical chapters: each method in this thesis is designed to reason about traces, rather than isolated function bodies.
+
+\section{DeFi Protocol Context}
+Decentralized finance (DeFi) comprises financial protocols implemented as composable smart contracts~\cite{wust2018you}. Core primitives include decentralized exchanges, lending/borrowing markets, stablecoins, and oracle services. A distinctive property is \emph{composability}: protocol endpoints can be chained atomically in one transaction.
+
+This composability enables efficient financial workflows but also creates high-order attack surfaces. Flash loans, for example, permit large uncollateralized borrowing if and only if repayment occurs within the same transaction; this feature amplifies adversarial capital and directly interacts with EVM atomicity and rollback semantics.
+
+In summary, EVM semantics and DeFi composability are inseparable in security analysis. The next chapter builds on this background by fixing a unified notation that remains consistent across all subsequent technical threads.
 
 
 

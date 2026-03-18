@@ -1,0 +1,78 @@
+% \vspace{1mm}
+\noindent
+\textbf{Threats to Validity:}
+% The \textit{construct} threat to validity  
+% \textbf{Construct validity.} Firstly, our research involves the collection and reimplementation of historical 
+% flash loan attacks. While we have made every effort to ensure full coverage and accurate replication, 
+% it must be acknowledged that this process may not be flawless (See Section~\rtoef{sec:evaluation}). 
+% Secondly, the initial data point collection process could also introduce a threat to validity. 
+% We used a simple random sampling strategy in \textit{{\name}}, 
+% and different sampling strategies could potentially yield different synthesis results. Although we believe our approach is suitable given the research's scope, adopting a more 
+% advanced collection strategy may indeed enhance overall performance and increase accuracy in future studies.
+% \noindent
+The \textit{internal} threat to validity mainly lies in human mistakes in the
+study. 
+%Specifically, we may understand results of {\name} incorrectly, or make
+%mistakes in the implementation of {\name}. 
+Note that all authors have extensive smart
+contract security analysis experience and software engineering expertise in
+general. To further reduce this threat, we manually check the balance changes
+for the best results given by {\name} in each benchmark. We verify that with
+the help of on-chain exchanges, these attack vectors can generate a
+post-balance strictly larger than initial capital (see extended
+version~\cite{chen2022flashsynArxiv} Appendix E). 
+The \textit{external} threat to validity mainly lies in the subjects used in
+our study. The flash loan attacks we study might not be representative.
+\revise{We mitigate this risk by using diverse and reputable data sources,
+including academic papers~\cite{qin2021attacking,cao2021flashot} and an
+industrial database~\cite{SlowMistStats}.}
+
+
+\noindent
+\revise{
+\textbf{Limitations:}
+Like most synthesis tools, {\name} faces scalability challenges. The search space grows exponentially with the number of actions and attack vector length. A practical approach is to assess protocols on a module by module basis. By focusing only on inter-dependent actions within, we can maintain both the number of actions and the attack vector length at manageable levels, thereby mitigating the scaling issue.
+}
+
+
+
+%Another threat to validity 
+%In the profit calculation, prices
+%of tokens can be dynamic, and they affect the profits reported by {\name}. However,
+%the reported profit difference is unlikely to affect the validity of the corresponding attack vector,
+%In the initial data points collection, we adopted simple random sampling strategy. 
+%Thus, adopting different sampling strategies may yield to different outcomes. 
+%In the profit calculation, prices of tokens can be dynamic, and they affect the profits reported by {\name}. 
+%However, in general the final reported profits will not change too much, and 
+%the corresponding attack vector returned by {\name} still prove the existence of vulnerabilities. 
+%Finally, the correctness of {\name} relies on the correctness of the modules \textbf{sklearn.preprocessing}, \textbf{sklearn.linear\_model}, \textbf{scipy.interpolate}, and \textbf{shgo} used in our implementation. 
+%As demonstrated 
+
+%Second, our manually crafting prestates/poststates for each action might not be accurate, 
+%and our implementation might contain bugs.
+%Anyhow, such mistakes would only influence the effectiveness negatively 
+%and our experimental results would remain valid.
+%Third, although we tried our best to collect benchmarks in the scope of our research. {\name}
+%may not completely carry over to unexplored new attack patterns or new programming languages other 
+%than Solidity. We leave this issue to the future work.
+
+
+
+
+
+% \section{Threats to Validity}
+% \label{sec:threats}
+
+% \textbf{Construct validity.} 
+% % refers to whether the verification results actually provides fairness guarantee of the models. 
+% We leveraged the fairness definitions from prior work and then encoded using well studied weakest precondition and constraint based methodologies. 
+% In \secref{subsec:fairness-def}, we argued why individual fairness is useful for verification. However, as mentioned by Corbett-Davies and Goel \cite{corbett2018measure}, the property can fall short in bias quantification. Our evaluation shows that based on the number of certified partitions, future work can be done to quantify individual fairness.
+% The proposed sound-pruning strategy leverages interval arithmetic which is sound by construction; as shown by [47] i.e., NNs have well-defined transformers (addition, subtraction, scaling) and hence interval analysis provides sound approximation. For individual verification, we used SMT based constraint solving which is always sound. Additionally, input partitioning (\algoref{algo:partition}) creates disjoint partitions of attributes and covers the complete domain.
+% Furthermore, to be able to verify symbolically, we converted the models into Python functions using the weights and biases extracted from the actual model. We followed the same approach taken by prior work for such conversion \cite{albarghouthi2017fairsquare}.
+
+% \textbf{External validity.}
+% % is concerned about the generalizability of our approach. 
+% We evaluated Fairify on the popular structured datasets extensively used in prior works \cite{biswas21fair,urban2020perfectly,john2020verifying,albarghouthi2017fairsquare,galhotra2017fairness,aggarwal2019black,udeshi2018automated,bastani2019probabilistic,chakraborty2020fairway,hort2021fairea,chakraborty2021bias,zhang2021ignorance,zhang2020white}. As pointed out by \cite{urban2020perfectly,john2020verifying}, verifying ML models trained on unstructured data including image or natural-language would require different approach. Yet, because of the wide usage in real-world (loan approval, criminal sentencing, etc.), this line of work only considered such structured data. 
+% In addition, followed by \cite{zhang2020white,urban2020perfectly,mazzucato2021reduced,aggarwal2019black,udeshi2018automated}, we considered the ReLU based NNs. To further demonstrate the applicability, we collected top-rated models from practice, which are state-of-the-art accurate models for respective tasks. 
+% Verifying fairness of other classes of NNs such as CNN or LSTM could be potential future improvements.
+% Finally, Fairify is built on top of the popular open source libraries and SMT solver Z3 so that other works can leverage the tool.

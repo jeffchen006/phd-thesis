@@ -1,0 +1,19 @@
+\subsection{Threats to Validity}
+
+The \emph{internal} threat to validity mainly lies in human mistakes in the study. Specifically,
+when analyzing the possibilities of bypassing invariant guards, we may miss some possible bypassing
+strategies.
+To mitigate this threat, two of the authors independently labeled the results, and whenever a
+conflict arises, it was resolved by the third author.
+All authors have more than two years' smart contract security analysis experience.
+
+The \emph{external} threat to validity lies in the subject selection of our study.
+The type of hacks studied in our experiments may be limited and biased.
+To mitigate this issue, we systematically collected all the well-known hacks from a diverse set of
+sources and finally included $27$ representative hacks in our benchmark.
+These attacks attribute to many different root causes, including compromised keys, hash collisions,
+oracle manipulation, etc.
+Their affected contracts are from diverse application domains, e.g., bridges, lending, and
+yield-earning.
+Therefore, we believe they are representative and can be used to evaluate the effectiveness of the
+invariant guards.

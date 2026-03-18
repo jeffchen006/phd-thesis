@@ -1,0 +1,39 @@
+\section{Impact Statement}
+
+This work exposes a critical security risk in LLM-assisted code generation: 
+models can embed malicious URLs in response to developer-style prompts. 
+
+\noindent \textbf{Advancing Model Safety.} 
+The primary impact of this work is improved awareness and detection 
+tooling, enabling researchers and practitioners to audit production LLMs and 
+design effective mitigations. 
+The released evaluation resources facilitate reproducible 
+security testing for new and existing LLMs.
+
+\noindent \textbf{Ethical Considerations.} 
+We acknowledge that publicizing failure patterns could theoretically lower 
+the barrier for crafting adversarial inputs. 
+We mitigate this risk by focusing on measurement methodologies 
+rather than exploit instructions and by actively reporting 
+discovered scam domains to database maintainers. 
+Given that this threat vector is already active in the wild 
+(Section~\ref{sec:example}), this work serves to demystify an 
+existing security gap rather than introducing a novel threat.
+
+
+
+% This work analyzes a security risk in LLM-assisted code generation: 
+% models can generate code that embeds malicious URLs in response to developer-style prompts. 
+% The primary positive impact is improved awareness and diagnostic tooling for this failure mode, 
+% which can help researchers and practitioners evaluate model safety, 
+% audit training data pipelines, and design mitigations. 
+% The released evaluation resources can support reproducible security testing new and existing LLMs.
+% There are potential negative impacts. Publicizing concrete failure patterns and releasing 
+% prompts could lower the barrier for attackers to probe systems or craft inputs 
+% that elicit unsafe outputs. We mitigate this by focusing on auditing and measurement 
+% rather than providing exploit instructions, and by reporting newly discovered scam domains to database maintainers.
+% Overall, we believe the benefits of exposing and measuring 
+% this security risk outweigh the risks, provided that responsible disclosure and defensive practices are 
+% followed. Given that this threat vector is already active in the wild 
+% (Section~\ref{sec:example}), this work serves to demystify an existing 
+% security gap rather than introducing a novel threat.

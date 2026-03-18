@@ -1,0 +1,9 @@
+\section{EVM Transition Model}
+
+We model blockchain execution as a state-transition system.
+Let $\q \in \mathcal{Q}$ denote the global state and let $\tau$ denote a transaction or action trace.
+Execution is written as $\q \xrightarrow{\tau} \q'$ for successful runs, and $\q \xrightarrow{\tau} \bot$ for failing runs.
+
+This model captures the semantics needed for rigorous security analysis:
+call-stack behavior, gas-bounded feasibility, and exception/rollback propagation.
+The notation is intentionally aligned with the execution discussion in Chapter~\ref{sec:background}.

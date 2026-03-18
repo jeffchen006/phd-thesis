@@ -1,0 +1,124 @@
+
+% \section{Empirical Study - Understanding Control Flows in Hacked DeFi Protocols} 
+% \label{sec:study}
+
+
+\begin{figure*}[!h]
+\centering
+\includegraphics[width=0.8\textwidth]{figures/guard_new_new.pdf}
+    \vspace{-2mm}
+    \caption{Running example showing \textsc{CrossGuard}'s response to simple invocation 
+    (left) and re-entrancy attack (right)}
+    \Description{Two-panel running example. Left: a benign/simple invocation sequence. Right: a re-entrancy attack sequence. The figure illustrates how \textsc{CrossGuard} observes function-level control flow and reacts differently in benign versus attack cases.}
+    \label{fig:example}
+\end{figure*}
+
+
+To ground our framework, we hypothesize that \emph{function-level} 
+control flows are sufficient to distinguish malicious from 
+benign transactions, while remaining practical overheads
+for runtime monitoring. 
+To evaluate this hypothesis, we analyze each 
+victim protocol's 
+transaction history prior to the incident. 
+Because protocols typically 
+operate for some time 
+before being exploited and attract many 
+interacting actors, benign behavior can 
+evolve over time, diversifying and introducing 
+previously unseen control flows. 
+This motivates the following research question:
+
+
+
+\noindent \textbf{RQ1: 
+How do \revise{(function level)} control flows in hack transactions differ 
+from those in other 
+(benign) transactions 
+prior to a hack?}
+
+To answer RQ1, we conducted a study on a systematically collected 
+benchmark comprising \revise{$37$} victim protocols involved in security 
+hacking incidents. \revise{The scope of this work is described in 
+Section~\ref{sec:preli}, and the details of our benchmark collection 
+methodology are provided in Section~\ref{subsec:study_methodology}.} 
+For each hacking incident, we examine the uniqueness 
+of the control flows in the hack transactions, determining whether 
+they differ from all 
+previously observed transactions. The detailed study results are available 
+in the ``RQ1'' column in Table~\ref{tab:studyTable} in 
+Section~\ref{sec:evaluation}. 
+In this study, we only collect the top-level function calls 
+to contracts of the victim protocol, 
+ignoring deeper control flows within external calls.
+
+
+% \revise{
+% Our hypothesis is that function-level control flow patterns can effectively 
+% distinguish between benign and malicious transactions, 
+% making them a practical choice for runtime security monitoring. 
+% To test this hypothesis, we examine historical transactions 
+% of victim DeFi protocols leading up to security incidents. 
+% Typically, a victim protocol operates for a period before 
+% being compromised, during which various blockchain actors 
+% may build upon the protocol, introducing novel control flows. 
+% Our goal is to thoroughly examine these control flows and answer 
+% the following research question:
+% }
+
+
+% \noindent \textbf{RQ1}: 
+% How do \revise{(function level)} control flows in hack transactions differ 
+% from those in other 
+% (benign) transactions 
+% prior to a hack?
+
+
+
+
+
+\noindent \textbf{Results:}
+Out of the \revise{$37$} studied hack incidents, 
+\revise{$32$} demonstrated control flows that
+were distinct from any previously observed transaction patterns (marked as
+\cmark in Table~\ref{tab:studyTable}), highlighting the novel mechanisms by
+which these exploits were conducted. However, in $5$ cases (bZx, VisorFi, 
+Opyn, DODO and
+Bedrock\_DeFi), the control flows had been observed previously in benign
+transactions. A detailed investigation into these exceptions revealed
+insightful nuances. In particular, the Bedrock\_DeFi hack
+(marked as \xmark) was traced back to an issue which mistakenly set the
+conversion ratio of ETH/uniBTC to 1:1. This exploit was executed
+through one function call to steal funds, which, while not novel in terms
+of control flow pattern, leveraged a specific code vulnerability to 
+breach the
+protocol~\cite{bedrock2025}. Catching this hack involves
+combining control flow analysis with data flow analysis.
+The remaining $4$ hacks posed a different complexity: 
+each involved various
+types of re-entrancy (marked as $\halfmark$). 
+Although these attacks appeared to have familiar top-level 
+function calls, they triggered unique and sophisticated control 
+flows at deeper interaction levels. 
+This shows that, even the
+simple control flow-based analysis 
+can detect \revise{$32$} hacks,
+it misses $4$ that require a more refined control 
+flow-based approach to identify. 
+Thus, we propose to enhance the control flow analysis 
+framework 
+to more accurately detect and classify attacks with 
+intricate control flows, 
+such as these $4$ re-entrancy hacks. 
+The details of this enhanced 
+approach are presented in Section~\ref{sec:approach}. 
+Unless otherwise stated, 
+we use the term ``control flow'' throughout 
+the rest of this paper to refer to function-level control flow.
+
+\noindent \textbf{Finding:} 
+the vast majority of hack transactions introduce
+unique function-level control flows that differ from all 
+previously observed benign transactions.
+
+
