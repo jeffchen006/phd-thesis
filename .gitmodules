@@ -10,3 +10,6 @@
 [submodule "my-papers/TxGuard-report"]
 	path = my-papers/TxGuard-report
 	url = https://github.com/jeffchen006/TxGuard-report.git
+[submodule "my-papers/phd-thesis-topic-proposal"]
+	path = my-papers/phd-thesis-topic-proposal
+	url = https://github.com/jeffchen006/phd-thesis-topic-proposal.git

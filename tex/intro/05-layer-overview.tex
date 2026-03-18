@@ -1,10 +1,13 @@
 \section{Security Layers Covered in This Thesis}
 
-\noindent \textbf{Layer I: Execution-Semantic Foundations.}
-We establish precise EVM-grounded models for reasoning about transaction effects and feasibility.
+\noindent \textbf{Layer I (Smart Contracts): Invariants.}
+We study runtime invariant generation and enforcement for smart-contract security.
 
-\noindent \textbf{Layer II: Runtime and Interaction Integrity.}
-We study enforcement strategies for runtime invariants and cross-contract control-flow consistency, emphasizing effectiveness and operational overhead.
+\noindent \textbf{Layer II (Smart Contracts): Control Flow Integrity.}
+We study control-flow-integrity enforcement across contract interactions, emphasizing deployability and overhead control.
 
-\noindent \textbf{Layer III: AI-Assisted Development Risk.}
-We formalize the risk of malicious artifacts in generated code under developer-style prompts and connect this risk to secure software lifecycle concerns.
+\noindent \textbf{Layer III (LLMs): Auditing.}
+We audit LLM-assisted code generation for harmful artifacts under realistic developer-style prompts.
+
+\noindent \textbf{Layer IV (LLMs): Search- and Documentation-Level Poisoning of Coding Agents.}
+We study how poisoned external content retrieved by coding agents can propagate into harmful coding outcomes, and how to defend against this pipeline.
