@@ -1,8 +1,32 @@
 \section{Preamble}
 
-Next-generation web systems increasingly combine decentralized execution, compositional smart contracts, and AI-assisted software development.
-This convergence enables powerful applications, but it also amplifies security risk.
-In these systems, vulnerabilities often emerge from interactions across components and abstraction layers, rather than from a single local coding error.
+Blockchain platforms and smart contracts have become core infrastructure for decentralized services,
+especially in DeFi ecosystems with large and continuously growing economic exposure~\cite{DeFillama}.
+At the same time, these systems have experienced repeated high-impact attacks,
+showing that real-world security failures are not rare corner cases but recurring operational risks.
 
-This thesis takes a systems-security perspective on this challenge.
-Its central argument is that robust protection requires layered reasoning: one must model execution semantics precisely, enforce runtime policies under realistic constraints, and evaluate risks introduced by modern software-generation pipelines.
+A central reason is compositional complexity.
+Modern smart-contract systems are no longer isolated programs;
+they are deeply interconnected ``DeFi legos'' where behaviors emerge from cross-function and cross-contract interaction patterns.
+Even if each local component appears correct in isolation,
+unsafe interaction structure can still create exploitable execution paths.
+This is why many damaging attacks are better understood as \emph{interaction-level failures}
+rather than single-line coding mistakes.
+
+In parallel, software development itself is being transformed by LLM-based coding assistants.
+This shift improves productivity, but it also introduces a second security channel:
+unsafe artifacts can enter production through generated code,
+including risky endpoints, unsafe recommendations, or misleading external references.
+The risk is amplified when coding agents and assistants rely on search-visible and documentation-level content,
+because poisoning in those channels can influence retrieval, reasoning, and final code actions.
+
+These two trends motivate the thesis perspective: Web3 security must be treated as a \emph{cross-layer systems problem}.
+Defenses at a single layer are valuable but insufficient;
+security reasoning must connect runtime integrity for deployed contracts
+with upstream risk control in AI-assisted development pipelines.
+
+This dissertation therefore develops a four-layer security framing.
+Layers I and II focus on smart contracts (invariants and control-flow integrity),
+while Layers III and IV focus on LLM-centered risk (auditing and search/documentation-level poisoning of coding agents).
+The goal is not only to provide isolated techniques,
+but to produce a coherent, comparable framework for engineering secure next-generation web systems.

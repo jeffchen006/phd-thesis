@@ -1,8 +1,31 @@
 \section{The Workflow of Security-Layer Reasoning}
 
-We structure the technical workflow in three steps.
-First, we formalize the execution substrate, with emphasis on EVM state transitions, call behavior, rollback, and gas-sensitive feasibility.
-Second, we encode security policies over transaction traces and cross-contract interactions, then evaluate enforceability under deployment constraints.
-Third, we extend the analysis boundary to AI-assisted development and model the risk that malicious artifacts enter systems through generated code.
+We structure the technical workflow in four connected layers,
+with two layers for smart contracts and two layers for LLM-centered software risk.
 
-This workflow mirrors how security decisions are made in practice: from low-level execution guarantees, to protocol-level enforcement, to software-supply-chain exposure.
+\noindent \textbf{Layer I (Invariants).}
+We begin from runtime invariants over transaction behavior.
+The objective is to capture regular protocol behavior from execution evidence
+and enforce constraints that can block anomalous attack traces while preserving benign activity.
+
+\noindent \textbf{Layer II (Control Flow Integrity).}
+We then elevate from value/property constraints to interaction-structure constraints.
+This layer focuses on function-level control-flow integrity across compositional contract interactions,
+targeting attacks that exploit unexpected invocation structure.
+
+\noindent \textbf{Layer III (Auditing).}
+After establishing on-chain runtime defenses,
+we shift to off-chain software-generation risk and audit production LLM behavior
+under realistic developer-style prompts.
+This layer measures whether harmful artifacts are already emitted in ordinary coding workflows.
+
+\noindent \textbf{Layer IV (Search- and Documentation-Level Poisoning of Coding Agents).}
+Finally, we analyze an upstream channel where external search-visible and documentation-level content
+can poison coding-agent decision pipelines.
+This layer studies how compromise propagates from retrieval to trust to code action,
+and evaluates practical defenses under security--utility constraints.
+
+The resulting workflow is deliberately cumulative:
+it starts from execution-grounded enforcement in deployed contracts,
+and extends to AI-assisted development pipelines where risky artifacts may be introduced before deployment.
+This progression mirrors how real systems fail and how practical security decisions are made.

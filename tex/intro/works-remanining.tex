@@ -4,7 +4,7 @@
 This remaining work is the fourth layer of the dissertation.
 Layers I and II focus on smart-contract runtime defense (invariants and control-flow integrity),
 Layer III focuses on auditing harmful artifacts in LLM-generated code,
-and Layer IV extends the off-chain line to an upstream channel:
+and Layer IV extends the security layer to an upstream channel:
 search- and documentation-level poisoning of coding agents.
 
 \paragraph{Motivation.}
@@ -55,11 +55,9 @@ The empirical study will evaluate at least two open-source coding-agent stacks
 (e.g., OpenHands-style and SWE-agent-style systems)
 using task suites that require external lookup.
 To ensure reproducibility, the main benchmark will use a fixed local corpus
-combining benign and attacker-controlled documents,
-with a smaller live-web case study as supplementary evidence.
+combining benign and attacker-controlled documents.
 Attack variants include:
-rank poisoning, content poisoning, consensus poisoning,
-and snippet/title poisoning.
+rank poisoning, content poisoning, and consensus poisoning.
 
 \paragraph{Defenses and expected deliverables.}
 The planned defense study will compare lightweight and deployable mechanisms:
@@ -69,8 +67,7 @@ Expected deliverables are:
 \begin{itemize}
     \item a reproducible benchmark for search/documentation poisoning of coding agents,
     \item a stage-aware empirical analysis of compromise pathways,
-    \item a security--utility characterization of practical defenses, and
-    \item deployment-oriented guidance for reducing upstream AI-assisted development risk in Web3 pipelines.
+    \item deployment-oriented guidance for reducing upstream AI-assisted development risk.
 \end{itemize}
 
 \paragraph{Scope control.}
