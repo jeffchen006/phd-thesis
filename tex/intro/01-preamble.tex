@@ -1,32 +1,49 @@
 \section{Preamble}
 
-Blockchain platforms and smart contracts have become core infrastructure for decentralized services,
-especially in DeFi ecosystems with large and continuously growing economic exposure~\cite{DeFillama}.
-At the same time, these systems have experienced repeated high-impact attacks,
-showing that real-world security failures are not rare corner cases but recurring operational risks.
+Software systems are becoming increasingly autonomous. 
+They are no longer limited to reporting information or 
+executing narrowly specified commands. Instead, 
+emerging software systems are expected to act as 
+assistants: they customize behavior for individual users, 
+carry out multi-step tasks, and make operational decisions 
+under vague natural-language instructions. 
+A future software system may optimize a user's calendar,
+plan and rebook activities, or identify and execute 
+financial investment decisions according to user 
+preferences without receiving a fully rigorous 
+specification of every intermediate step. 
+Intelligence is therefore becoming an essential part of software systems, 
+because it allows them to operate even when user 
+requests are underspecified, ambiguous, or expressed 
+in natural language rather than in precise specifications.
 
-A central reason is compositional complexity.
-Modern smart-contract systems are no longer isolated programs;
-they are deeply interconnected ``DeFi legos'' where behaviors emerge from cross-function and cross-contract interaction patterns.
-Even if each local component appears correct in isolation,
-unsafe interaction structure can still create exploitable execution paths.
-This is why many damaging attacks are better understood as \emph{interaction-level failures}
-rather than single-line coding mistakes.
+This trend of emergent software is exciting and promising, 
+but it also changes the security 
+problem fundamentally. Once software is expected to act under 
+vague instructions and open-ended interaction, its working environments can no 
+longer be assumed to be fully trusted or fully well-defined. 
+The system must interpret arbitrary user inputs, external signals, 
+and contextual information that may be incomplete, misleading, or 
+adversarial. In addition, many emerging software systems now rely on 
+large language models (LLMs) or related learning-based components 
+whose internal behavior is partially opaque. 
+Unlike conventional software logic that is explicitly written 
+and can often be inspected or reasoned about directly, 
+these components are not fully predictable in advance. 
+When such systems operate in high-stakes settings, 
+especially those involving financial assets, 
+code execution, or sensitive data, failures can quickly 
+translate into financial loss, unsafe actions, or information leakage.
 
-In parallel, software development itself is being transformed by LLM-based coding assistants.
-This shift improves productivity, but it also introduces a second security channel:
-unsafe artifacts can enter production through generated code,
-including risky endpoints, unsafe recommendations, or misleading external references.
-The risk is amplified when coding agents and assistants rely on search-visible and documentation-level content,
-because poisoning in those channels can influence retrieval, reasoning, and final code actions.
+This dissertation studies how to defend such high-stakes software systems 
+in untrusted environments. Two families of systems are central in the thesis. 
+The first is smart contracts in decentralized finance (DeFi), 
+that is, blockchain-based financial services such as trading, 
+lending, and asset exchange, which now represent a large and economically 
+important class of deployed autonomous software~\cite{DeFillama}. 
 
-These two trends motivate the thesis perspective: Web3 security must be treated as a \emph{cross-layer systems problem}.
-Defenses at a single layer are valuable but insufficient;
-security reasoning must connect runtime integrity for deployed contracts
-with upstream risk control in AI-assisted development pipelines.
+Smart contracts already embody one form of software autonomy: once deployed, they execute financial logic directly on-chain and must accept transactions from arbitrary users, including strategic attackers. The second family is LLM-based coding systems, including coding assistants and coding agents that can search for information, generate code, and sometimes take actions on a machine. These systems represent a second form of software autonomy: they translate vague human goals into concrete code and system actions, while relying on opaque model behavior and weakly trusted online information such as tutorials, package pages, documentation, and search results.
 
-This dissertation therefore develops a four-layer security framing.
-Layers I and II focus on smart contracts (invariants and control-flow integrity),
-while Layers III and IV focus on LLM-centered risk (auditing and search/documentation-level poisoning of coding agents).
-The goal is not only to provide isolated techniques,
-but to produce a coherent, comparable framework for engineering secure next-generation web systems.
+The common challenge across these families is that harmful behavior may be induced by factors that are difficult to enumerate or validate in advance: adversarial interactions, unexpected execution patterns, opaque training data, or misleading external content. This shared setting motivates the structure of the thesis. The first two works study how to constrain high-stakes execution at runtime for smart contracts already exposed to public, adversarial environments. The first line of work is based on the observation that malicious transactions often exhibit abnormal behaviors compared with normal transactions, for example in asset movements, invocation patterns, or state updates. This motivates runtime invariants, namely rules that should continue to hold during benign executions. The second line of work is based on a complementary observation: many attacks exploit unexpected control flows across functions and across contracts, even when each local component may appear harmless in isolation. This motivates control-flow integrity defenses that validate whether a transaction follows legitimate interaction patterns.
+
+The latter two works shift to LLM-centered coding systems. Layer III asks whether production models already emit harmful artifacts in ordinary developer workflows. Layer IV asks whether weakly trusted online information can poison coding agents before code is even deployed. Taken together, the dissertation develops and evaluates defenses across multiple stages of modern software operation. Some defenses directly constrain execution when software is already acting in a high-stakes environment. Others reveal or measure harmful behavior induced by untrusted information sources upstream. Under this view, smart contracts and coding agents are not two unrelated topics. They are two important instances of emerging software systems that increasingly act with autonomy in environments that cannot be fully trusted.

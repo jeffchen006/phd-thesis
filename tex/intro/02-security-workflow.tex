@@ -1,21 +1,23 @@
 \section{The Workflow of Security-Layer Reasoning}
 
-We structure the technical workflow in four connected layers,
-with two layers for smart contracts and two layers for LLM-centered software risk.
+We structure the thesis as four connected defense layers for increasingly autonomous software systems operating in untrusted environments.
+The first two layers focus on constraining high-stakes execution in smart contracts under open on-chain interaction.
+The latter two layers focus on revealing or reducing harmful behavior in LLM-centered coding systems induced by opaque models and weakly trusted information sources.
 
 \noindent \textbf{Layer I (Invariants).}
-We begin from runtime invariants over transaction behavior.
+We begin from runtime invariants over transaction behavior, where an invariant is a rule that should remain true during normal protocol execution.
 The objective is to capture regular protocol behavior from execution evidence
 and enforce constraints that can block anomalous attack traces while preserving benign activity.
 
 \noindent \textbf{Layer II (Control Flow Integrity).}
 We then elevate from value/property constraints to interaction-structure constraints.
-This layer focuses on function-level control-flow integrity across compositional contract interactions,
+This layer focuses on function-level control-flow integrity across compositional contract interactions.
+Informally, it checks that functions are invoked through legitimate call patterns rather than attacker-crafted sequences,
 targeting attacks that exploit unexpected invocation structure.
 
 \noindent \textbf{Layer III (Auditing).}
-After establishing on-chain runtime defenses,
-we shift to off-chain software-generation risk and audit production LLM behavior
+After establishing on-chain runtime defenses, meaning protections enforced during blockchain execution,
+we shift to off-chain software-generation risk, meaning risks introduced by tools and content outside the blockchain itself, and audit production large language model (LLM) behavior
 under realistic developer-style prompts.
 This layer measures whether harmful artifacts are already emitted in ordinary coding workflows.
 
@@ -25,7 +27,7 @@ can poison coding-agent decision pipelines.
 This layer studies how compromise propagates from retrieval to trust to code action,
 and evaluates practical defenses under security--utility constraints.
 
-The resulting workflow is deliberately cumulative:
-it starts from execution-grounded enforcement in deployed contracts,
-and extends to AI-assisted development pipelines where risky artifacts may be introduced before deployment.
-This progression mirrors how real systems fail and how practical security decisions are made.
+The resulting workflow is deliberately cumulative.
+It starts from direct constraints on high-stakes execution in deployed autonomous systems,
+and then moves upstream to the information channels and model behaviors that can shape software behavior before deployment or execution.
+This progression mirrors how emerging software assistants fail and how practical defenses must be deployed across stages.
