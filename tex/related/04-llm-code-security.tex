@@ -1,17 +1,39 @@
 \subsection{Security of LLM-Assisted Code Generation}
 
 \noindent \textbf{Poison Detection in LLM Code Generation.}
-Recent studies investigate malicious behavior during inference for code-generation assistants.
-Prior work shows that vulnerable code generation can be induced through malicious external content or tool-mediated contexts\cite{zeng2025inducing,yi2025benchmarking}.
-These findings motivate systematic assessment of prompt-conditioned attack surfaces in practical developer workflows.
+Recent studies investigate malicious behavior during inference 
+for code-generation assistants.
+Prior works\cite{zeng2025inducing,yi2025benchmarking} show that vulnerable code generation can 
+be induced through malicious external content or tool-mediated 
+contexts.
+These findings motivate systematic assessment of prompt-conditioned 
+attack surfaces in practical developer workflows.
+In contrast, this thesis demonstrates a more fundamental 
+problem that does not require the LLM to 
+access any external sources during inference. 
+
 
 \noindent \textbf{Poisoning in LLM Training Pipelines.}
-Data poisoning has emerged as a major threat to modern ML systems, with early analyses in computer vision and broader surveys of poisoning defenses\cite{cina2023wild,raghavan2022improved,goldblum2022dataset}.
-For LLMs specifically, web-scale poisoning feasibility has been demonstrated\cite{carlini2024poisoning},
-with subsequent studies analyzing poisoning across pretraining and fine-tuning regimes\cite{zhao2025data,jiang2024turning}.
+Data poisoning has emerged as a major threat to modern ML systems, 
+with early analyses in computer vision and broader surveys of poisoning 
+defenses\cite{cina2023wild,raghavan2022improved,goldblum2022dataset}.
+For LLMs specifically, web-scale poisoning feasibility has been 
+demonstrated\cite{carlini2024poisoning},
+with subsequent studies analyzing poisoning across pretraining and 
+fine-tuning regimes\cite{zhao2025data,jiang2024turning}.
+This thesis differs by (i) targeting malicious code 
+generation, which poses immediate execution risks, rather 
+than natural-language outputs, and (ii) auditing production 
+LLMs for evidence of existing, passive poisoning in 
+their training corpora, rather than new inference-time active attacks.
+
+
 
 \noindent \textbf{Security Benchmarks for LLM-Generated Code.}
-Another line of work builds benchmark suites for security evaluation of generated code,
-including SecCodePLT, SafeGenBench, and CodeLMSec\cite{yang2024seccodeplt,li2025safegenbench,debenedetti2023a}.
+Another line of work builds benchmark suites for security 
+evaluation of generated code,
+including SecCodePLT, SafeGenBench, and 
+CodeLMSec\cite{yang2024seccodeplt,li2025safegenbench,debenedetti2023a}.
 These benchmarks mainly emphasize CWE-oriented vulnerabilities,
-while this thesis additionally focuses on harmful artifact reproduction in generated code (e.g., malicious URLs and endpoints).
+while this thesis additionally focuses on harmful 
+artifact reproduction in generated code (e.g., malicious URLs and endpoints).

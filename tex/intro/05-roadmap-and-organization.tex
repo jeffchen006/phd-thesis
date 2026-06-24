@@ -1,14 +1,39 @@
 \section{Completed Work and Remaining Work}
 
-This thesis studies two families of high-stakes software systems operating in untrusted environments.
-The first family is on-chain: deployed smart contracts that execute directly on a blockchain and must tolerate arbitrary user interactions in public ecosystems.
-The second family is off-chain: AI-assisted coding systems that operate over external tools and online information, where behavior may be influenced by opaque training data and weakly trusted content.
-Within this framing, the on-chain track studies runtime protection for deployed smart contracts,
-while the off-chain track studies security risks introduced through AI-assisted software development.
-Within this scope, the dissertation is grounded in three completed projects and one planned project.
-The completed projects establish the core technical results; the planned project defines the final extension.
-Conceptually, the section below is organized as a status-oriented roadmap: what has been completed,
-what evidence those completed projects already provide, and what concrete work remains to close the thesis.
+% This thesis studies two families of high-stakes software systems operating in untrusted environments.
+% The first family is on-chain: deployed smart contracts that execute directly on a blockchain and must tolerate arbitrary user interactions in public ecosystems.
+% The second family is off-chain: AI-assisted coding systems that operate over external tools and online information, where behavior may be influenced by opaque training data and weakly trusted content.
+% Within this framing, the on-chain track studies runtime protection for deployed smart contracts,
+% while the off-chain track studies security risks introduced through AI-assisted software development.
+% Within this scope, the dissertation is grounded in three completed projects and one planned project.
+% The completed projects establish the core technical results; the planned project defines the final extension.
+% Conceptually, the section below is organized as a status-oriented roadmap: what has been completed,
+% what evidence those completed projects already provide, and what concrete work remains to close the thesis.
+
+
+\subsection{Overall Plan and Current Status}
+
+The completed and ongoing work follows the timeline below.
+\begin{itemize}
+	\item Oct 2022 -- Oct 2023: \textsc{Trace2Inv} research and implementation;
+	later revised and published at FSE 2024.
+	\item Nov 2023 -- Sept 2024: \textsc{CrossGuard} research and implementation;
+	published at ICSE 2026.
+	\item Apr 2025 -- Oct 2025: \textsc{Scam2Prompt} research and large-scale evaluation;
+	submitted to ICML 2026.
+	\item Current remaining phase: one final project on AI-era scam and malware 
+	distribution in developer pipelines.
+\end{itemize}
+
+At this point, I have already finished work on
+(i) invariant-centered runtime defense,
+(ii) control-flow-integrity runtime defense, and
+(iii) auditing of malicious artifacts in LLM-assisted coding.
+The remaining work is to study how poisoned external content 
+retrieved by coding agents 
+can propagate into harmful coding outcomes, and how to 
+defend against this pipeline.
+
 
 \subsection{Completed Work}
 
@@ -35,7 +60,7 @@ The system uses whitelist-based policies derived from benign invocation structur
 including independent invocation validation, read-only invocation filtering,
 runtime detection of read-only functions, and restore-on-exit storage handling.
 A key engineering objective is deployability: guard enforcement is performed while preserving compatibility
-with existing decentralized finance (DeFi) contracts, namely blockchain programs for services such as trading and lending, and while limiting overhead.
+with existing DeFi contracts, namely blockchain programs for services such as trading and lending, and while limiting overhead.
 Empirically, \textsc{CrossGuard} achieved strong protection with 15.5\% average gas overhead, that is, additional transaction cost paid on the blockchain.
 Relative to \textsc{Trace2Inv}, this project advances the thesis from property-level constraints
 to interaction-structure integrity, broadening defense coverage under realistic deployment constraints.
@@ -57,40 +82,19 @@ Taken together, these completed projects establish the first three layers of the
 Layer I (invariants), Layer II (control-flow integrity), and Layer III (auditing).
 Layer IV is the planned remaining work on search- and documentation-level poisoning of coding agents.
 
-\subsection{Milestones and Current Status}
 
-The completed and ongoing work follows the timeline below.
-\begin{itemize}
-	\item Oct 2022 -- Oct 2023: \textsc{Trace2Inv} research and implementation;
-	later revised and published at FSE 2024.
-	\item Nov 2023 -- Sept 2024: \textsc{CrossGuard} research and implementation;
-	after major revision, accepted at ICSE 2026.
-	\item Apr 2025 -- Oct 2025: \textsc{Scam2Prompt} research and large-scale evaluation;
-	submitted to ICML 2026.
-	\item Current remaining phase: one final project on AI-era scam and malware distribution in developer pipelines.
-\end{itemize}
-
-At this point, the dissertation already contains mature results on
-(i) invariant-centered runtime defense,
-(ii) control-flow-integrity runtime defense, and
-(iii) empirical auditing of malicious artifacts in LLM-assisted coding.
-The remaining work is therefore not exploratory in scope definition;
-it is a targeted extension that consolidates the off-chain threat model and mitigation layer.
 
 \input{tex/intro/works-remaining}
 
 
 
 
-\section{Organization}
+% \section{Organization}
 
-The thesis is organized as follows.
-Chapter~\ref{sec:preli} defines the formal preliminaries and unified notation, including Section~\ref{sec:background} on execution-semantic background.
+% The thesis is organized as follows.
+% Chapter~\ref{sec:preli} defines the formal preliminaries and 
+% unified notation, including Section~\ref{sec:background} on execution-semantic background.
 
-The prior work discussion is integrated into this introduction chapter,
-so the first chapter serves as a comprehensive entry point covering context,
-prior literature, contributions, and roadmap.
-
-Across these chapters, we follow a consistent structure: problem context,
-formal model, methodological choices, and implications.
-This organization is designed to keep cross-layer reasoning explicit and technically auditable.
+% Across these chapters, we follow a consistent structure: problem context,
+% formal model, methodological choices, and implications.
+% This organization is designed to keep cross-layer reasoning explicit and technically auditable.

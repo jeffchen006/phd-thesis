@@ -1,23 +1,55 @@
-\subsection{Runtime Enforcement and Invariant Guards}
+\subsection{Runtime Enforcement and Invariant Guards for Smart Contracts}
 
 \noindent \textbf{Invariant Generation and Enforcement.}
-Prior research has proposed multiple approaches to derive and enforce smart-contract invariants.
-Cider\cite{liu2022learning} learns arithmetic-overflow invariants using reinforcement learning,
-InvCon and InvCon+\cite{liu2022invcon,liu2024automated} combine dynamic inference with static validation,
-and Trace2Inv\cite{chen2024demystifying} studies transaction-history-based invariant learning.
-These directions provide practical invariant families and evidence for runtime protection,
-especially when the objective is to reject abnormal executions with low deployment friction.
+Prior research has proposed multiple approaches to 
+derive and enforce smart-contract invariants.
+Cider\cite{liu2022learning} learns arithmetic-overflow invariants 
+using reinforcement learning,
+InvCon and InvCon+\cite{liu2022invcon,liu2024automated} combine 
+dynamic inference with static validation. 
+These directions provide practical invariant families 
+and evidence for runtime protection,
+especially when the objective is to reject abnormal executions 
+with low deployment friction. However, 
+these works only cover a limited set of invariant types and 
+more importantly, do not propose methods for 
+patching existing smart contracts after their deployment, 
+making their approach limited to pre-deployment use cases. 
+Our thesis contributes a broader framework for runtime safety enforcement,
+including pre-deployment and post-deployment use cases.
 
-\noindent \textbf{Control-Flow Restriction in Practice.}
-Industry systems such as SphereX use control-flow restriction to harden deployed protocols\cite{spherex}.
-This line of work emphasizes operationally actionable policy gates,
-including whitelist/blacklist style control decisions over execution paths.
 
-\noindent \textbf{Re-entrancy Defense and Type-System Approaches.}
-Many tools target re-entrancy-specific control-flow risks using static and symbolic analyses,
-including Oyente, Osiris, ReGuard, Slither, MPro, Sailfish, Pluto, Park, SliSE,
-and callback-oriented analyses\cite{luu2016making,torres2018osiris,liu2018reguard,feist2019slither,zhang2019mpro,bose2022sailfish,ma2021pluto,zheng2022park,wang2024efficiently,albert2020taming}.
-Runtime defenses such as Sereum and online callback monitoring also protect deployed contracts\cite{rodler2018sereum,grossman2017online},
-while temporary interaction restrictions are explored for reducing dangerous call patterns\cite{callens2024temporarily}.
-In parallel, secure type-system research formalizes information-flow and compositional re-entrancy guarantees\cite{cecchetti2020securing,cecchetti2021compositional}.
-Taken together, these works motivate broader runtime policy frameworks that can go beyond single-vulnerability families.
+\noindent \textbf{Control-Flow Restriction in industry.}
+Industry systems such as SphereX use control-flow 
+restriction to restrict control flows over deployed smart contracts\cite{spherex}.
+However, their approach requires 
+customers to manually define the allowed control flows, 
+which is not scalable for complex DeFi protocols. Our thesis 
+contributes an automated approach 
+to deploy template-based control-flow guards that can be applied 
+to a wide range of DeFi protocols with minimal manual effort and minimal 
+number of falsely blocked transactions.
+
+
+
+
+\noindent
+\textbf{Re-entrancy Attack Defense and Secure Type System.}
+Numerous tools restrict control flows to combat re-entrancy attacks. 
+Static analysis tools~\cite{luu2016making,torres2018osiris,
+liu2018reguard,feist2019slither,
+zhang2019mpro,bose2022sailfish,ma2021pluto,zheng2022park,wang2024efficiently,
+albert2020taming} identify re-entrancy vulnerabilities and apply guards. 
+Runtime frameworks like Sereum~\cite{rodler2018sereum} and 
+\citeauthor{grossman2017online} protect deployed contracts, 
+while \citeauthor{callens2024temporarily} prevent duplicate 
+function calls within transactions. Unlike these 
+re-entrancy-focused approaches, our thesis adopts broader 
+control flow restriction targeting comprehensive vulnerability classes.
+\citeauthor{cecchetti2020securing} propose a security type system to 
+enforce information flow and re-entrancy controls~\cite{cecchetti2020securing,
+cecchetti2021compositional}. Conversely, 
+our thesis contributes a purely runtime system built entirely on the EVM, 
+operating without supplementary type systems or language modifications.
+
+

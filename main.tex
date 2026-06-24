@@ -14,7 +14,7 @@
 \renewcommand{\ALG@beginalgorithmic}{\footnotesize}
 \makeatother
 
-\setcounter{tocdepth}{1}
+\setcounter{tocdepth}{2}
 \usepackage{eqnarray}
 \usepackage{alltt}
 \usepackage{textcomp}
@@ -135,7 +135,7 @@
 \newcommand*{\numOfAttacksFantom}{one}
 \newcommand*{\numOfAttacksDVD}{two}
 
-\providecommand{\revise}[1]{#1}
+\providecommand{\revise}[1]{\textcolor{blue}{#1}}
 \providecommand{\camera}[1]{#1}
 \providecommand{\chen}[1]{#1}
 \providecommand{\framework}{Framework}
@@ -150,9 +150,11 @@
 \begin{document}
   \frontmatter
     \maketitle
-    \begin{abstract}
-      \input{tex/abstract}
-    \end{abstract}
+
+
+    % \begin{abstract}
+    %   \input{tex/abstract}
+    % \end{abstract}
     
     % \begin{dedication}
     %   \input{tex/dedication}
@@ -163,13 +165,52 @@
     % \end{acknowledgements}
     
     \tableofcontents
-    \listoftables
-    \listoffigures
+    % \listoftables
+    % \listoffigures
 
   \mainmatter
 
-    \input{tex/ch-intro}
-    \input{tex/ch-preliminary}
+    %% ============================ Part I ============================
+    \part{Prologue}
+
+    \input{tex/ch-intro}        % Chapter 1: Introduction
+    \input{tex/ch-preliminary}  % Chapter 2: Background
+
+    %% ============================ Part II ===========================
+    \part{Securing Upstream Development}
+
+    \chapter{Auditing Malicious Scam Endpoints in LLM-Assisted Code Generation}
+    % TODO: chapter body (scam2prompt / malicious endpoint auditing)
+    \section{Related Work}
+    \input{tex/related/04-llm-code-security}
+
+    \chapter{Unfinished Work}
+    % TODO: chapter body (Defending Coding Agents against External Poisoning)
+    \section{Related Work}
+    \input{tex/related/05-security-RAG}
+
+    %% ============================ Part III ==========================
+    \part{Securing Unexpected Usage}
+
+    \chapter{Securing Smart Contracts with Runtime Invariants}
+    % TODO: chapter body (Trace2Inv)
+    \section{Related Work}
+    \input{tex/related/02-runtime-enforcement}
+
+    \chapter{Securing Smart Contracts with Control-Flow Integrity}
+    % TODO: chapter body (TxCrossGuard)
+    \section{Related Work}
+    \input{tex/related/01-smart-contract-analysis}
+
+    %% ============================ Part IV ===========================
+    \part{Epilogue}
+
+    \chapter{Conclusion and Future Work}
+    % TODO: conclusion
+    % NOTE: 06-summary-positioning ("Thesis Positioning") parked here; relocate as needed.
+    \input{tex/related/06-summary-positioning}
+
+
   \appendix
 
 

@@ -1,0 +1,43 @@
+\subsection{Security of RAG-Enabled Coding Agents}
+
+\noindent \textbf{Poisoning of Retrieved Knowledge Sources.}
+Recent work shows that retrieval-augmented generation (RAG) systems
+can be attacked by poisoning the external content they retrieve.
+\textsc{PoisonedRAG}~\cite{zou2025poisonedrag} studies knowledge corruption attacks
+in which an adversary modifies the retrieval database so that the model produces
+an attacker-chosen answer for a target query.
+\textsc{AgentPoison}~\cite{chen2024agentpoison} further studies poisoning attacks
+against agents' long-term memory or RAG knowledge bases across several application domains,
+including autonomous driving, knowledge-intensive question answering, and healthcare.
+Together, these works show that once an agent relies on external retrieved knowledge,
+the knowledge source itself becomes a practical attack surface.
+
+\noindent \textbf{Black-Box Attacks on Transparent RAG Pipelines.}
+\textsc{RAG Paradox}~\cite{choi2025rag} identifies a structural
+weakness in RAG systems that explicitly expose retrieved sources and content to users.
+Although this transparency is intended to improve trust,
+it also helps attackers observe which sources are used and how retrieved evidence is phrased,
+making it easier to craft poisoned documents that are likely to be retrieved later.
+This threat is directly relevant to coding agents,
+because many practical agent frameworks reveal citations,
+retrieved snippets, or tool outputs as part of their reasoning process.
+
+\noindent \textbf{Defenses Against Retrieval Corruption.}
+Recent defenses against RAG poisoning focus on consolidating knowledge
+from multiple sources in order to reduce the influence of conflicting or malicious inputs.
+\textsc{TrustRAG}~\cite{zhou2025trustrag} uses clustering to consolidate knowledge
+from the model's internal state and external retrieved documents.
+\textsc{Astute RAG}~\cite{wang2025astute} adaptively integrates internal and external knowledge,
+using source-aware reasoning to resolve conflicts across different information sources.
+\textsc{Certified Robust RAG}~\cite{xiang2024certifiably} proposes an isolate-then-aggregate strategy
+that generates a separate response for each retrieved passage and then combines these
+responses using a robust aggregation procedure.
+However, these defenses are evaluated mainly in relatively simple tasks such as 
+question answering.
+It remains an open question how to design effective defenses for coding agents such as 
+Codex~\cite{openai_codex_2026} or OpenCode~\cite{opencode_2026},
+which typically require complex reasoning, 
+and may execute code or take external actions.
+These settings make compromise substantially more consequential 
+and more difficult to defend against
+than single-answer RAG tasks.

@@ -1,26 +1,46 @@
-\subsection{Smart Contract Analysis and Verification}
+\subsection{Program Analysis for Smart Contracts}
 
-\noindent \textbf{Parametric Optimization.}
-For some flash-loan attack cases, prior work manually extracted formulas of candidate functions,
-manually defined parameter constraints, and applied off-the-shelf optimization to search for profitable parameters\cite{cao2021flashot,qin2021attacking}.
-These methods demonstrate feasibility for specific incidents, but their manual workflow and protocol-specific expertise requirements
-limit scalability when the attack space is large.
+% \noindent \textbf{Parametric Optimization.}
+% For some flash-loan attack cases, prior work manually extracted formulas of candidate functions,
+% manually defined parameter constraints, and applied off-the-shelf optimization to search for profitable parameters\cite{cao2021flashot,qin2021attacking}.
+% These methods demonstrate feasibility for specific incidents, but their manual workflow and protocol-specific expertise requirements
+% limit scalability when the attack space is large.
 
 \noindent \textbf{Static Analysis and Symbolic Execution.}
-Static analyzers such as Slither, Securify, Zeus, Park, and SmartCheck\cite{feist2019slither,tsankov2018securify,kalra2018zeus,zheng2022park,tikhomirov2018smartcheck}
-have been widely used to verify smart contracts.
-Symbolic-execution-based tools and techniques\cite{king1976symbolic,mythril,luu2016making,liu2020towards,frank2020ethbmc,feng2019precise,mossberg2019manticore}
+Static analyzers such as Slither, Securify, Zeus, Park, and 
+SmartCheck\cite{feist2019slither,tsankov2018securify,
+kalra2018zeus,zheng2022park,tikhomirov2018smartcheck}
+have been widely used to detect vulnerabilities in smart contracts.
+Symbolic-execution-based tools and 
+techniques\cite{king1976symbolic,mythril,luu2016making,liu2020towards,
+frank2020ethbmc,feng2019precise,mossberg2019manticore}
 systematically explore path conditions to find property-violating traces.
-These approaches are highly effective for many vulnerability classes,
-but compositional DeFi behaviors across multiple contracts remain challenging due to state coupling and path explosion.
+These approaches are highly effective for many vulnerability classes. 
+However, for complex DeFi smart contracts, real-world attacks typically 
+involves multiple contracts and long execution traces, 
+which can lead to state coupling and path explosion 
+challenges for static and symbolic methods.
 
 \noindent \textbf{Fuzzing.}
-ContractFuzzer, sFuzz, ContraMaster, SMARTIAN, and ItyFuzz\cite{jiang2018contractfuzzer,nguyen2020sfuzz,wang2020oracle,choi2021smartian,shou2023ityfuzz}
+ContractFuzzer, sFuzz, ContraMaster, SMARTIAN, 
+and ItyFuzz\cite{jiang2018contractfuzzer,nguyen2020sfuzz,wang2020oracle,
+choi2021smartian,shou2023ityfuzz}
 introduce effective fuzzing strategies for smart-contract security testing.
-However, many methods remain contract-local or vulnerability-specific,
-which makes long multi-action DeFi attack traces difficult to cover efficiently.
+However, these techniques either only work on one contract or focus
+on specific vulnerabilities like re-entrancy. 
+Moreover, real-world DeFi smart contract attacks can 
+involve tens of contract interactions and tens of chosen parameters,
+which is unlikely to be found by random fuzzing. 
 
-\noindent \textbf{Flash-Loan Attack Studies and Monitoring.}
-Prior studies analyze flash-loan attacks and related DeFi transaction strategies\cite{qin2021attacking,cao2021flashot,werapun2022flash,wang2021towards,gan2022understanding}.
-Monitoring-oriented systems have also been proposed for post-hoc or online flash-loan attack detection\cite{xia2023detecting,ramezany2023midnight,wang2022defiscanner}.
-Together, these works provide strong empirical and methodological foundations for understanding attack dynamics in DeFi ecosystems.
+
+\noindent \textbf{Smart Contract Attack Monitoring.}
+Prior studies analyze DeFi smart contract attacks and related
+ DeFi transaction strategies\cite{qin2021attacking,cao2021flashot,
+ werapun2022flash,wang2021towards,gan2022understanding}.
+Monitoring-oriented systems have also been proposed 
+for post-hoc or real-time attack detection
+\cite{xia2023detecting,ramezany2023midnight,wang2022defiscanner}.
+Despite these efforts and the good coverage of known attack patterns, 
+these works do not propose systematic generalized methods for defending 
+against novel attack vectors that may arise in the future. 
+

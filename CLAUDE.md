@@ -1,0 +1,1 @@
+Make sure our changes are all in blue, and keep any update inside notes/changeList.md which we stores what we changed and where are the changes are and how each change maps to the points inside my notes 

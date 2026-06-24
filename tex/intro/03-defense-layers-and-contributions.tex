@@ -1,0 +1,93 @@
+\section{Contributions}
+
+This dissertation, \emph{Defending Emerging Software Systems in Untrusted Environments}, 
+studies a common security problem across two families of 
+increasingly autonomous software systems. 
+Smart contracts already execute valuable financial logic with 
+no human intervention and must tolerate arbitrary 
+on-chain interaction. 
+LLM-based coding agents increasingly translate vague specifications 
+in natural language
+into concrete code while relying on opaque models and weakly 
+trusted online information. 
+In both cases, harmful behavior may be induced by factors that cannot 
+be fully enumerated or validated in advance. This thesis 
+therefore studies how to constrain harmful behavior 
+of a software system under untrusted environments
+such as 
+arbitrary user inputs, 
+adversarial interactions, opaque model behavior, 
+and weakly trusted online information.
+
+
+We organize the technical contribution as four connected layers. 
+Layers I and II focus on smart contracts, where 
+the main challenge is runtime protection 
+under arbitrary adversarial interaction. 
+Layers III and IV focus on LLM-centered coding systems, 
+where the main challenge is that preventing malicious code generation
+before it gets executed.  
+Together, these layers form one defense story: 
+how to secure high-stake software systems that 
+operate in untrusted environments. 
+
+
+This thesis makes the following contributions.
+\begin{itemize}
+    \item \textbf{A unified defense framing for emerging software 
+    systems in untrusted environments.}
+    We formulate a common perspective for software systems whose behavior 
+    may be shaped by arbitrary user actions,
+    adversarial interactions, opaque models, contaminated training data, 
+    or weakly trusted online information.
+
+    % \item \textbf{Layer I: Runtime invariants for smart contracts.}
+    % We study how to learn and enforce runtime invariants, namely rules 
+    % that should continue to hold during benign executions,
+    % in order to stop abnormal transaction behaviors in deployed financial software.
+
+    % \item \textbf{Layer II: Control-flow integrity for smart contracts.}
+    % We study how to constrain unexpected invocation patterns across 
+    % functions and contracts,
+    % thereby protecting deployed smart contracts against attacks that exploit 
+    % unintended interaction structure.
+
+    % \item \textbf{Layer III: Auditing harmful artifacts in production LLMs.}
+    % We study to what extent production models can emit harmful artifacts in ordinary 
+    % developer workflows,
+    % providing an empirical view of upstream risk before generated 
+    % code is trusted or deployed.
+
+    % \item \textbf{Layer IV: Search- and documentation-level poisoning of coding agents.}
+    % We study how weakly trusted external content can poison 
+    % coding agents through retrieval and reasoning,
+    % and how practical defenses can reduce this risk before 
+    % harmful actions are taken.
+
+    \item \noindent \textbf{Layer I: Demystifying invariant effectiveness for securing smart contracts.}
+    it proposes runtime invariant generation  and enforcement techniques
+    for smart contract security, where invariants are rules that 
+    should continue to hold during normal execution.
+
+    \item \noindent \textbf{Layer II: Enforcing control flow integrity on DeFi smart contracts.}
+    it proposes algorithms for control flow integrity 
+    enforcement across contract interactions, 
+    with minimal runtime overhead; informally, 
+    this layer ensures that contract functions are called 
+    in legitimate patterns.
+
+    \item \noindent \textbf{Layer III: Auditing malicious scam endpoints in production LLMs.}
+    it audits LLMs when generating code under realistic developer-style prompts, 
+    and finds that LLMs can generate malicious scam URLs with high frequency. 
+    This layer reveals a new attack vector in LLMs, and proposes 
+    a practical detection system to audit malicious endpoints in the pre-training 
+    data of LLMs.
+
+    \item \noindent \textbf{Layer IV: Defending Search- and Documentation-Level Poisoning of Coding Agents.}
+    it studies how poisoned external content retrieved by coding agents 
+    can propagate into harmful coding outcomes, and how to defend against this pipeline.
+
+
+
+
+\end{itemize}

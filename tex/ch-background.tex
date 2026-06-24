@@ -1,30 +1,61 @@
-\section{Background}
-\label{sec:background}
+% \section{Background}
+% \label{sec:background}
 
-This chapter presents the technical background needed for the rest of the thesis.
-Because the core claims in later chapters are execution-sensitive, we emphasize EVM semantics and use application-level concepts (e.g., DeFi workflows) as clients of that execution model.
+% This chapter presents the technical background needed for the rest of the thesis.
+% Because the core claims in later chapters are execution-sensitive, we emphasize EVM semantics and use application-level concepts (e.g., DeFi workflows) as clients of that execution model.
 
-\noindent \textbf{Chapter Focus:}
-Rather than giving a broad survey, this chapter prioritizes execution details that directly affect security analysis: state transitions, call semantics, gas, rollback behavior, and transaction-level composition.
-This chapter corresponds to the execution-semantic layer in the thesis security-layer view.
+% \noindent \textbf{Chapter Focus:}
+% Rather than giving a broad survey, this chapter prioritizes execution details that directly affect security analysis: state transitions, call semantics, gas, rollback behavior, and transaction-level composition.
+% This chapter corresponds to the execution-semantic layer in the thesis security-layer view.
 
 \section{Ethereum as a State-Transition System}
-Ethereum can be viewed as a deterministic replicated state machine~\cite{ethereum22,buterin2014ethereum}. Let $\q$ denote the global blockchain state immediately before transaction execution, and let $\q'$ denote the resulting state after execution. For a transaction $\tau$, the execution relation is written as $\q \xrightarrow{\tau} \q'$ when execution succeeds, or as $\q \xrightarrow{\tau} \bot$ when execution aborts.
+Ethereum is a blockchain that can be viewed as a deterministic replicated 
+state machine~\cite{ethereum22,buterin2014ethereum}. 
+A transaction is 
+one execution which consists of a sequence of state transitions.
+Let $\q$ denote the global blockchain state 
+immediately before transaction execution, 
+and let $\q'$ denote the resulting state after 
+execution. For a transaction $\tau$, the execution 
+relation is written as $\q \xrightarrow{\tau} \q'$ when 
+execution succeeds, or as $\q \xrightarrow{\tau} \bot$ when 
+execution reverts.
 
-At the consensus layer, blocks impose a total order over transactions. At the execution layer, each transaction is interpreted as a sequence of EVM state transitions constrained by gas, call semantics, and exception propagation. This deterministic transition view is the basis of both formal proofs and empirical replay analyses used in this thesis.
+At the consensus layer, blocks impose a total order over 
+transactions. At the execution layer, each transaction 
+is interpreted as a sequence of Ethereum Virtual Machine (EVM)
+state transitions 
+constrained by gas, call semantics, and exception propagation. 
+This deterministic transition view is the basis 
+of empirical transaction replays used in this thesis to 
+evaluate the effectiveness of runtime defenses. 
+This state-transition perspective also provides 
+the data collection used later for invariant generation 
+ and runtime guard deployment.
 
-This state-transition perspective also provides the interface used later for synthesis, policy checking, and runtime guards.
-
-\section{Accounts, Code, and Persistent State}
 Ethereum maintains two account classes:
 \begin{itemize}
-    \item \textbf{Externally owned accounts (EOAs):} controlled by cryptographic keys and capable of initiating top-level transactions.
-    \item \textbf{Contract accounts:} controlled by deployed bytecode and activated via message calls.
+    \item \textbf{Externally owned accounts (EOAs):} 
+    controlled by cryptographic keys and capable of 
+    initiating top-level transactions.
+    \item \textbf{Contract accounts:} controlled 
+    by deployed bytecode and activated via message calls.
 \end{itemize}
 
-Each account is associated with an address, a nonce, a native-token balance, and storage-relevant metadata. Contract accounts additionally contain executable bytecode and persistent key-value storage. High-level languages such as Solidity~\cite{solidity} and Vyper~\cite{vyper} compile to EVM bytecode, and this bytecode is the only representation executed on-chain.
+Each account is associated with an address, 
+a nonce, a native-token balance, and storage-relevant 
+metadata. Contract accounts additionally 
+contain executable bytecode and persistent key-value 
+storage. High-level languages such as 
+Solidity~\cite{solidity} and Vyper~\cite{vyper} compile to 
+EVM bytecode, and this bytecode is the only 
+representation executed on-chain. Figure
+~\ref{fig:ERC20} shows an example of a Solidity contract. 
 
-This distinction is important for security reasoning: source-level patterns are informative, but exploitability is ultimately determined by bytecode-level behavior under EVM semantics.
+% This distinction is important for security 
+% reasoning: source-level patterns are informative, 
+% but exploitability is ultimately determined 
+% by bytecode-level behavior under EVM semantics.
 
 \input{solidity-highlighting.tex}
 \begin{figure}[t]
@@ -37,48 +68,213 @@ This distinction is important for security reasoning: source-level patterns are 
     \vspace{-2mm}
 \end{figure}
 
-\section{EVM Execution Semantics}
-\subsection{Machine Configuration and Step Relation}
-An EVM execution frame is characterized by program counter, stack, memory, gas counter, and an execution context (caller, callee, call value, calldata, and return-data buffers). Execution proceeds by repeatedly decoding and applying opcodes until a halting condition is reached.
 
-Semantically, opcode execution induces a small-step relation over machine configurations. Multi-contract transactions form a call tree through message calls (e.g., \texttt{CALL}, \texttt{DELEGATECALL}, \texttt{STATICCALL}), where child-frame outcomes feed back into parent frames via return values or propagated exceptions. This call-tree structure explains why cross-contract analysis is necessary even when auditing one protocol.
+\subsection{EVM Semantics and Execution}
 
-The remaining subsections characterize the execution dimensions most relevant to security behavior.
+EVM refers to the Ethereum Virtual Machine, which is the runtime 
+environment for executing smart contract bytecode.
+An EVM execution frame is characterized by program counter, 
+stack, memory, gas counter, and an execution context 
+(caller, callee, call value, calldata, and return-data buffers). 
+Execution proceeds by repeatedly decoding 
+and applying opcodes until a halting condition is reached.
+EVM consists a list of 
+low-level opcodes, such as \texttt{ADD}, \texttt{SLOAD},
+which manipulate the execution frame and global state, 
+and perform state transitions.
 
-\subsection{Storage Classes and Lifetime Guarantees}
-The EVM exposes storage classes with distinct persistence properties:
+Semantically, opcode execution induces a small-step 
+relation over machine configurations. Multi-contract 
+transactions form a call tree through 
+message calls (e.g., \texttt{CALL}, 
+\texttt{DELEGATECALL}, \texttt{STATICCALL}), 
+where child-frame outcomes feed back into parent 
+frames via return values or propagated exceptions. 
+This call-tree structure explains why cross-contract 
+analysis is necessary even when auditing one protocol.
+
+% The remaining subsections characterize the execution 
+% dimensions most relevant to security behavior.
+
+\subsection{EVM Storage Classes}
+The EVM exposes storage classes with distinct 
+persistence properties:
 \begin{itemize}
-    \item \textbf{Stack and memory:} ephemeral to the current call frame.
-    \item \textbf{Persistent storage:} contract-scoped and transaction-independent; updates survive across blocks.
-    \item \textbf{Transient storage:} transaction-scoped scratch space introduced by recent EVM extensions (e.g., \texttt{TLOAD}/\texttt{TSTORE}); values are reset at transaction boundaries.
+    \item \textbf{Stack and memory:} 
+    ephemeral to the current call frame.
+    \item \textbf{Persistent storage:} 
+    contract-scoped and transaction-independent; 
+    updates survive across blocks, accessed via
+    opcodes such as \texttt{SLOAD} and \texttt{SSTORE}.
+    \item \textbf{Transient storage:} 
+    transaction-scoped scratch space accessible 
+    by recent introduced EVM opcodes 
+    (e.g., \texttt{TLOAD}/\texttt{TSTORE}); 
+    values are reset at transaction boundaries.
 \end{itemize}
-These distinctions are not merely implementation details: they shape both attack feasibility and defense cost models.
+These distinctions are not merely implementation 
+details: they also shape both attack feasibility 
+and defense cost models which will be explored in later chapters.
 
-\subsection{Gas Accounting and Halting Behavior}
-Every opcode consumes gas. A transaction specifies a gas limit and terminates successfully only if cumulative consumption remains within this budget and no uncaught exception occurs. Out-of-gas errors, invalid opcodes, and explicit \texttt{REVERT} induce exceptional control flow; in particular, state changes in the failing frame (and descendants) are rolled back according to call semantics.
+\subsection{Gas and Transaction Atomicity}
+Every EVM opcode consumes gas. Gas is a measure of 
+computational effort and is paid by the transaction sender,
+in units of the native token (Ether). 
+ A transaction specifies 
+a gas limit and terminates successfully only if 
+cumulative consumption remains within this budget 
+and no uncaught exception occurs. 
+There is an upper limit on 
+per-block gas consumption, which constrains the
+feasibility of complex transactions and deep call trees.
+Out-of-gas errors, invalid opcodes, and 
+explicit \texttt{REVERT} induce exceptional 
+control flow; in particular, state changes 
+in the failing frame (and descendants) are 
+rolled back according to call semantics.
+Gas therefore can act simultaneously as an economic 
+mechanism and a semantic guardrail. 
 
-Gas therefore acts simultaneously as an economic mechanism and a semantic guardrail. Security analyses that ignore gas may misclassify feasible execution paths, especially in deep multi-call traces where gas-sensitive branches are common.
+At transaction level, Ethereum execution 
+is atomic: either all committed effects of 
+the top-level frame are recorded in $\q'$, 
+or the transaction is rejected and the pre-state $\q$ 
+is preserved. Within a transaction, 
+nested calls can fail locally and be handled by parent 
+code, but unhandled failures propagate and may 
+invalidate larger portions of execution until either 
+the transaction fails or a successful error handle is reached.
 
-\subsection{Atomicity and Revert Propagation}
-At transaction granularity, Ethereum execution is atomic: either all committed effects of the top-level frame are recorded in $\q'$, or the transaction is rejected and the pre-state $\q$ is preserved (modulo fee-related accounting in protocol semantics). Within a transaction, nested calls can fail locally and be handled by parent code, but unhandled failures propagate and may invalidate larger portions of execution.
+This atomic behavior is critical for 
+reasoning about DeFi attacks, invariant 
+enforcement, and control-flow guards, where success 
+often depends on subtle interactions between local 
+checks and global rollback semantics.
+Consequently, any analysis framework that 
+reasons only about local function semantics 
+is likely to be incomplete for compositional
+attack scenarios.
 
-This atomic-yet-nested behavior is critical for reasoning about DeFi attacks, invariant enforcement, and control-flow guards, where success often depends on subtle interactions between local checks and global rollback semantics.
+\subsection{Transactions and Inter-Contract Composition}
+A transaction contains sender, recipient, nonce, 
+value, calldata, and gas parameters. If the 
+recipient has no code, the effect is Ether 
+transfer; otherwise the recipient bytecode 
+is invoked with calldata-decoded arguments.
 
-Consequently, any analysis framework that reasons only about local function semantics is likely to be incomplete for compositional attack scenarios.
+In modern DeFi smart contract systems, a single top-level 
+transaction can trigger complex inter-contract 
+compositions: exchanges, lending pools, 
+vaults, and oracle updates may all be traversed 
+before termination. Consequently, transaction 
+behavior is determined jointly by local code and global 
+execution context induced by prior calls and shared 
+state dependencies.
 
-\section{Transactions and Inter-Contract Composition}
-A transaction contains sender, recipient, nonce, value, calldata, and gas parameters. If the recipient has no code, the effect is value transfer; otherwise the recipient bytecode is invoked with calldata-decoded arguments.
+This observation directly motivates the later 
+technical chapters: each method in this thesis is 
+designed to reason about traces, rather than 
+isolated function bodies.
 
-In modern DeFi systems, a single top-level transaction can trigger complex inter-contract compositions: exchanges, lending pools, vaults, and oracle updates may all be traversed before termination. Consequently, transaction behavior is determined jointly by local code and global execution context induced by prior calls and shared state dependencies.
+\subsection{DeFi Protocol}
+Decentralized finance (DeFi) comprises 
+financial protocols implemented as composable 
+smart contracts~\cite{wust2018you}. Core primitives 
+include decentralized exchanges, 
+lending/borrowing markets, stablecoins, and oracle services. 
+A distinctive property is \emph{composability}: 
+protocol endpoints can be chained atomically 
+in one transaction.
+This composability enables efficient financial 
+workflows but also creates many attack 
+surfaces. Flash loans, for example, permit 
+large uncollateralized borrowing if and only 
+if repayment occurs within the same transaction; 
+this feature amplifies adversarial capital 
+and directly interacts with EVM atomicity and 
+rollback semantics.
+In summary, EVM semantics and DeFi composability 
+are inseparable in security analysis. 
+The remainder of this chapter introduces the corresponding
+background for the LLM-centered layers of the thesis.
 
-This observation directly motivates the later technical chapters: each method in this thesis is designed to reason about traces, rather than isolated function bodies.
+\section{LLM-Assisted Coding Systems}
+LLMs are increasingly used as software assistants
+that translate natural-language requests into 
+code, edits, recommendations,
+and sometimes direct tool invocations.
+Unlike traditional software, whose behavior is 
+formally defined  by explicit source code,
+LLM-based systems are influenced jointly by prompts, 
+model weights,
+and, in many practical deployments, external information 
+retrieved at task time.
+This combination creates a different security setting 
+from the smart-contract case:
+the system may act on underspecified requests,
+while part of the information shaping its behavior may be weakly trusted.
 
-\section{DeFi Protocol Context}
-Decentralized finance (DeFi) comprises financial protocols implemented as composable smart contracts~\cite{wust2018you}. Core primitives include decentralized exchanges, lending/borrowing markets, stablecoins, and oracle services. A distinctive property is \emph{composability}: protocol endpoints can be chained atomically in one transaction.
+\subsection{Direct Prompt-to-Code Generation}
+We first consider the simpler model-centered setting
+in which a language model
+maps a prompt directly to a code artifact.
+Let $\mathcal{M}$ denote a language model, 
+let $p$ denote a user prompt,
+and let $c=\mathcal{M}(p)$ denote the generated 
+code snippet or patch.
+To reason about risk, we use an output-risk 
+oracle $\mathcal{O}$ that determines
+whether the generated artifact is benign or malicious.
+In Layer III, this oracle is instantiated by checks 
+for harmful code artifacts,
+such as scam URLs or malicious endpoints.
 
-This composability enables efficient financial workflows but also creates high-order attack surfaces. Flash loans, for example, permit large uncollateralized borrowing if and only if repayment occurs within the same transaction; this feature amplifies adversarial capital and directly interacts with EVM atomicity and rollback semantics.
+Because this dissertation focuses on ordinary 
+developer workflows rather than
+active jailbreak attacks, we also use a prompt 
+classifier $\mathcal{P}$
+that distinguishes \emph{developer-style} prompts 
+from prompts that are
+clearly adversarial or otherwise outside normal 
+software-development practice.
+The core risk-discovery set is therefore
+\[
+\mathcal{S}
+=
+\{(p,c)\mid \mathcal{P}(p)=\text{developer-style},\;
+c=\mathcal{M}(p),\;
+\mathcal{O}(c)=\text{malicious}\}.
+\]
+This formulation captures the central Layer III question:
+under ordinary developer-style requests, when does the model itself emit
+harmful code artifacts that a user may later trust or execute?
 
-In summary, EVM semantics and DeFi composability are inseparable in security analysis. The next chapter builds on this background by fixing a unified notation that remains consistent across all subsequent technical threads.
+\subsection{Retrieval-Augmented Coding Agents}
+Many modern coding assistants extend the base model with retrieval,
+tool use, and multi-step reasoning.
+To capture this setting, let $\mathcal{D}$ denote an external document corpus,
+such as official documentation, tutorials, issue discussions, package pages,
+or search-indexed content.
+Let $\mathcal{R}(p,\mathcal{D}) \subseteq \mathcal{D}$ denote the evidence
+retrieved for task $p$, and let $\mathcal{A}$ denote a coding agent that produces
+an output $y$ from the prompt and retrieved evidence:
+\[
+y=\mathcal{A}(p,\mathcal{R}(p,\mathcal{D})).
+\]
+Here, $y$ may be a code patch, a recommendation, a dependency choice,
+or a tool-mediated action taken during task execution.
 
+This notation separates two distinct sources of risk.
+In the direct-generation setting, harmful behavior may 
+already be latent in $\mathcal{M}$.
+In the agent setting, harmful behavior may additionally be induced by
+poisoned or weakly trusted content inside $\mathcal{D}$ that 
+is retrieved and followed at task time.
 
-
+Together, these preliminaries provide necessary background knowledge 
+and a shared notation list for the rest of
+ the thesis.
+% The next sections reuse the same notation to relate EVM execution, 
+% runtime enforcement,
+% LLM output auditing, and retrieval-induced compromise under one 
+% defense perspective.

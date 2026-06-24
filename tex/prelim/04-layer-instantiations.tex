@@ -1,17 +1,21 @@
-\section{Layer-Specific Instantiations}
+% \section{Layer-Specific Instantiations}
 
-\noindent \textbf{Execution-semantic layer.}
-State transitions and trace feasibility provide the base semantics for all subsequent analyses.
+% \noindent \textbf{Execution-semantic layer.}
+% State transitions and trace feasibility provide the base semantics for all subsequent analyses.
 
-\noindent \textbf{Runtime and interaction layer.}
-A runtime guard is modeled as a predicate $G(\q,\tau)$ enforced on execution traces.
-Cross-contract integrity is modeled by a projection $\Pi(\tau)$ constrained by a safe-language condition $\Pi(\tau)\in\mathcal{L}_{\text{safe}}$.
+% \noindent \textbf{Runtime and interaction layer.}
+% A runtime guard is modeled as a predicate $G(\q,\tau)$ enforced on execution traces.
+% Cross-contract integrity is modeled by a projection $\Pi(\tau)$ constrained by a safe-language condition $\Pi(\tau)\in\mathcal{L}_{\text{safe}}$.
 
-\noindent \textbf{AI-assisted development layer.}
-Let $\mathcal{M}$ be a language model, $\mathcal{P}$ a prompt classifier, and $\mathcal{O}$ a code-risk oracle.
-The risk discovery set is
-\[
-\mathcal{S}=\{(p,c)\mid \mathcal{P}(p)=\text{developer-style},\; c=\mathcal{M}(p),\; \mathcal{O}(c)=\text{malicious}\}.
-\]
+% \noindent \textbf{AI-assisted development layer.}
+% Let $\mathcal{M}$ be a language model, $\mathcal{P}$ a prompt classifier, and $\mathcal{O}$ an output-risk oracle.
+% The risk discovery set is
+% \[
+% \mathcal{S}=\{(p,c)\mid \mathcal{P}(p)=\text{developer-style},\; c=\mathcal{M}(p),\; \mathcal{O}(c)=\text{malicious}\}.
+% \]
+% For retrieval-augmented coding agents, let $\mathcal{D}$ be an external document corpus,
+% let $\mathcal{R}(p,\mathcal{D})$ be the retrieved evidence for task $p$,
+% and let $\mathcal{A}$ be an agent that produces output
+% $y=\mathcal{A}(p,\mathcal{R}(p,\mathcal{D}))$.
 
-These instantiations share one notation interface to keep results comparable across layers.
+% These instantiations share one notation interface to keep results comparable across layers.

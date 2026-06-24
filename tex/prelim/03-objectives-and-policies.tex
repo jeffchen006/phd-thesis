@@ -1,16 +1,16 @@
-\section{Objectives and Policy Constraints}
+% \section{Objectives and Policy Constraints}
 
-For objective-driven tasks, we use a common optimization form:
-\[
-\max_{\paras} \; \profit(\paras) \quad \text{subject to} \quad \mathcal{C}(\paras,\q).
-\]
-Here, $\mathcal{C}$ captures semantic feasibility and policy constraints.
+% For objective-driven tasks, we use a common optimization form:
+% \[
+% \max_{\paras} \; \profit(\paras) \quad \text{subject to} \quad \mathcal{C}(\paras,\q).
+% \]
+% Here, $\mathcal{C}$ captures semantic feasibility and policy constraints.
 
-For defense-oriented tasks, the objective is inverted:
-we seek policy predicates that reject unsafe traces while preserving benign behavior and acceptable overhead.
+% For defense-oriented tasks, the objective is inverted:
+% we seek policy predicates that reject unsafe traces while preserving benign behavior and acceptable overhead.
 
-Given analysis principal $\adr$, we use value-flow change:
-\[
-\Delta_{\adr}(\q,\q') = \sum_{t\in\Tok} \omega_t\cdot\big(\bal(\q',\adr,t)-\bal(\q,\adr,t)\big).
-\]
-This term is used both as an attack utility signal and as an impact metric for policy evaluation.
+% Given analysis principal $\adr$, we use value-flow change:
+% \[
+% \Delta_{\adr}(\q,\q') = \sum_{t\in\Tok} \omega_t\cdot\big(\bal(\q',\adr,t)-\bal(\q,\adr,t)\big).
+% \]
+% This term is used both as an attack utility signal and as an impact metric for policy evaluation.

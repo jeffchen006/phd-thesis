@@ -1,9 +1,10 @@
-\subsection{Work Remaining (Layer IV: Search- and Documentation-Level Poisoning of Coding Agents)}
+\subsection{Work Remaining}
 
 \noindent \textbf{Position in the thesis.}
 This remaining work constitutes the fourth layer of the dissertation.
-Layers I and II study runtime defenses for smart contracts, including invariant enforcement and control-flow integrity.
-Layer III studies harmful artifacts in code suggested by large language models (LLMs).
+Layers I and II study runtime defenses for smart contracts, including invariant enforcement 
+and control-flow integrity.
+Layer III studies harmful artifacts in code suggested by LLMs.
 Layer IV moves one step further upstream by examining an external attack surface:
 search- and documentation-level poisoning of coding agents.
 
@@ -11,7 +12,8 @@ search- and documentation-level poisoning of coding agents.
 Modern coding agents increasingly rely on external resources such as official documentation,
 API references, tutorials, and search results, when solving software engineering tasks.
 While this substantially improves utility, it also introduces a new attack surface:
-an adversary may influence agent behavior by manipulating the external content that the agent retrieves and trusts,
+an adversary may influence agent behavior by manipulating the external 
+content that the agent retrieves and trusts,
 without changing model weights or injecting harmful prompts.
 
 The core question is therefore end-to-end:
@@ -19,7 +21,8 @@ when poisoned content is present in retrieval channels, how often is it
 (1) retrieved,
 (2) treated as credible,
 and (3) translated into concrete harmful actions?
-This question is especially important because human developers do not treat all external sources equally.
+This question is especially important because human developers do not 
+treat all external sources equally.
 Experienced developers often distinguish between mature and trustworthy libraries,
 less reliable packages, unofficial tutorials, and low-quality discussions,
 and they adjust their reliance accordingly. 
@@ -30,7 +33,8 @@ the extra effort and engineering time that doing so requires.
 However, it remains unclear whether coding agents exhibit a similar notion of source reliability,
 or whether poisoned search results or documentation can alter their preferences 
 and induce unsafe decisions.
-This work therefore studies the interaction between an agent's prior tendencies and the external evidence it retrieves,
+This work therefore studies the interaction between an agent's prior tendencies and 
+the external evidence it retrieves,
 with a focus on when that interaction becomes security-critical.
 
 \paragraph{Problem statement.}
@@ -62,7 +66,8 @@ The central research challenge is to measure and explain compromise across the f
 \end{itemize}
 
 \paragraph{Threat model.}
-We assume a black-box attacker, meaning an attacker who cannot directly modify the internal model or agent implementation.
+We assume a black-box attacker, meaning an attacker who cannot directly 
+modify the internal model or agent implementation.
 More specifically, the attacker cannot modify model weights, namely the learned internal parameters of the model,
 agent system prompts, namely the hidden instructions that guide the agent's behavior, or the agent's internal implementation.
 However, the attacker can control part of the external content visible through search and documentation channels
@@ -99,15 +104,19 @@ cross-source agreement gating,
 and post-generation security checking.
 The expected deliverables include:
 \begin{itemize}
-    \item a benchmark for search- and documentation-level poisoning of coding agents,
-    \item deployment-oriented guidance for reducing upstream risk in AI-assisted software development.
+    \item a benchmark for search- and documentation-level 
+    poisoning of coding agents,
+    \item deployment-oriented guidance for reducing upstream 
+    risk in AI-assisted software systems.
 \end{itemize}
 
-\paragraph{Scope control.}
+\paragraph{Scope.}
 To keep this dissertation layer focused and publishable,
 the work targets coding agents and documentation/search poisoning only.
 It does not attempt to cover all browser-agent environments,
 all prompt-injection settings,
 or all forms of model poisoning.
-This scope aligns Layer IV with the dissertation's overall goal of developing practical 
-techniques for hardening the software-development pipeline against security threats.
+This scope aligns Layer IV with the dissertation's 
+overall goal of developing practical 
+techniques for hardening the software-development 
+pipeline against security threats.
