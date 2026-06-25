@@ -187,7 +187,7 @@
     \part{Prologue}
 
 
-    \chapter{Introduction and Motivation}
+    \chapter{Introduction}
     \label{chapter:intro}
 
     \input{tex/intro/motivation}
@@ -198,41 +198,29 @@
 
     \input{tex/intro/outline}
 
+
+
     %% ============================ Part II ===========================
     \part{Securing High-Stakes Software Development}
+    \label{part:development}
 
     \chapter{Auditing Malicious Scam Endpoints in LLM-Assisted Code Generation}
     
     \input{tex/prelim/dev-llm-background}   % LLM-assisted coding background (moved from Ch. Background sec. 2.2)
 
-
-
     \chapter{Defending Search- and Documentation-Level Poisoning of Coding Agents (Unfinished Work)}
-    % TODO: chapter body (Defending Coding Agents against External Poisoning)
-
 
     \input{tex/chap-software-dev/related_works.tex}
 
-
     %% ============================ Part III ==========================
     \part{Securing High-Stakes Software Deployment}
-
+    \label{part:use}
 
     \chapter{Securing Smart Contracts with Runtime Invariants}
     \input{tex/prelim/deploy-evm-background} 
 
-    % \section{Preliminaries}
-    %   % Ethereum/smart-contract background (moved from Ch. Background sec. 2.1)
-
-
-
-
     \chapter{Securing Smart Contracts with Control-Flow Integrity}
-    % TODO: chapter body (TxCrossGuard)
-
     \input{tex/chap-software-deploy/related_works.tex}
-
-    
 
     %% ============================ Part IV ===========================
     \part{Epilogue}
@@ -245,11 +233,9 @@
 
   \appendix
 
-
   \backmatter
 
-
-%   \printbibliography[heading=bibintoc]
+  % \printbibliography[heading=bibintoc]
 
 
 % bibliography
