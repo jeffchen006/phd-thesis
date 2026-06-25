@@ -1,0 +1,244 @@
+% Standalone document for the thesis progress/roadmap section.
+% This content is NOT part of the thesis (main.tex); it tracks completed and
+% remaining work and is compiled on its own via `make roadmap`.
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage[colorlinks]{hyperref}
+\usepackage{amsmath,amssymb}
+\usepackage{cite}
+
+\title{Thesis Progress: Completed and Remaining Work}
+\author{Zhiyang Chen}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Completed Work and Remaining Work}
+
+% This thesis studies two families of high-stakes software systems operating in untrusted environments.
+% The first family is on-chain: deployed smart contracts that execute directly on a blockchain and must tolerate arbitrary user interactions in public ecosystems.
+% The second family is off-chain: AI-assisted coding systems that operate over external tools and online information, where behavior may be influenced by opaque training data and weakly trusted content.
+% Within this framing, the on-chain track studies runtime protection for deployed smart contracts,
+% while the off-chain track studies security risks introduced through AI-assisted software development.
+% Within this scope, the dissertation is grounded in three completed projects and one planned project.
+% The completed projects establish the core technical results; the planned project defines the final extension.
+% Conceptually, the section below is organized as a status-oriented roadmap: what has been completed,
+% what evidence those completed projects already provide, and what concrete work remains to close the thesis.
+
+
+\subsection{Overall Plan and Current Status}
+
+The completed and ongoing work follows the timeline below.
+\begin{itemize}
+	\item Oct 2022 -- Oct 2023: \textsc{Trace2Inv} research and implementation;
+	later revised and published at FSE 2024.
+	\item Nov 2023 -- Sept 2024: \textsc{CrossGuard} research and implementation;
+	published at ICSE 2026.
+	\item Apr 2025 -- Oct 2025: \textsc{Scam2Prompt} research and large-scale evaluation;
+	submitted to ICML 2026.
+	\item Current remaining phase: one final project on AI-era scam and malware 
+	distribution in developer pipelines.
+\end{itemize}
+
+At this point, I have already finished work on
+(i) invariant-centered runtime defense,
+(ii) control-flow-integrity runtime defense, and
+(iii) auditing of malicious artifacts in LLM-assisted coding.
+The remaining work is to study how poisoned external content 
+retrieved by coding agents 
+can propagate into harmful coding outcomes, and how to 
+defend against this pipeline.
+
+
+\subsection{Completed Work}
+
+\noindent \textbf{Trace2Inv (completed; published at FSE 2024).}
+\textsc{Trace2Inv}~\cite{chen2024demystifying} was developed from Oct 2022 to Oct 2023.
+The project addresses a central gap in contract protection: manually specified invariants, namely rules that should remain true during normal execution, are often incomplete,
+and static specifications frequently miss protocol-level behavioral assumptions observed only in deployment.
+\textsc{Trace2Inv} learns invariants from decoded transaction history and enforces them as runtime guards, that is, checks inserted to stop suspicious executions while the contract is running.
+Its design supports 23 invariant templates across 8 categories, including access control, time locks,
+gas usage, re-entrancy, oracle slippage, special storage, money flow, and data flow.
+The pipeline contains four stages: invocation-tree construction, invariant-relevant data extraction,
+template-based invariant generation, and runtime enforcement.
+In evaluation, the resulting guard policies achieved strong protection with low false-positive rates (0.32\%).
+This project establishes the thesis's first technical pillar: execution-trace-grounded runtime invariants
+as a practical security primitive for deployed protocols.
+
+\noindent \textbf{CrossGuard (completed; published at ICSE 2026).}
+\textsc{CrossGuard}~\cite{chen2025secure} was developed from Nov 2023 to Sept 2024.
+This project studies an orthogonal runtime-defense question: whether protocol attacks can be blocked
+through control-flow integrity, meaning that functions are allowed to execute only in legitimate call patterns, rather than vulnerability-specific signatures.
+\textsc{CrossGuard} enforces function-level control-flow integrity through pre-deployment instrumentation
+and runtime invocation validation.
+The system uses whitelist-based policies derived from benign invocation structure,
+including independent invocation validation, read-only invocation filtering,
+runtime detection of read-only functions, and restore-on-exit storage handling.
+A key engineering objective is deployability: guard enforcement is performed while preserving compatibility
+with existing DeFi contracts, namely blockchain programs for services such as trading and lending, and while limiting overhead.
+Empirically, \textsc{CrossGuard} achieved strong protection with 15.5\% average gas overhead, that is, additional transaction cost paid on the blockchain.
+Relative to \textsc{Trace2Inv}, this project advances the thesis from property-level constraints
+to interaction-structure integrity, broadening defense coverage under realistic deployment constraints.
+
+\noindent \textbf{Scam2Prompt (completed; accepted to ICML 2026).}
+\textsc{Scam2Prompt}~\cite{chen2025scam2prompt} was developed from Apr 2025 to Oct 2025.
+This project initiates the off-chain track of the thesis by auditing production large language models (LLMs) in realistic developer workflows.
+Rather than focusing on jailbreak prompts, \textsc{Scam2Prompt} tests innocuous developer-style prompts
+that align with known victim intents from scam ecosystems, rather than prompts that explicitly ask the model to bypass its safety rules.
+Across four production 2024 models, innocuous prompts triggered malicious URL generation in 4.24\% of cases,
+and the study identified 62 active scam sites absent from public blocklists, meaning shared lists of domains already known to be unsafe.
+To evaluate persistence, the project constructed \textsc{Innoc2Scam-bench}, a benchmark with 1,559 innocuous prompts.
+Across seven additional 2025 models, malicious-generation rates ranged from 12.7\% to 43.8\%,
+while contemporary guardrails detected less than 0.3\% of these cases.
+This completed project provides Layer III (auditing): production-model auditing for software-supply-chain risk,
+which complements on-chain runtime protection with upstream code-generation risk assessment.
+
+Taken together, these completed projects establish the first three layers of the thesis:
+Layer I (invariants), Layer II (control-flow integrity), and Layer III (auditing).
+Layer IV is the planned remaining work on search- and documentation-level poisoning of coding agents.
+
+
+
+
+\subsection{Work Remaining}
+
+\noindent \textbf{Position in the thesis.}
+This remaining work constitutes the fourth layer of the dissertation.
+Layers I and II study runtime defenses for smart contracts, including invariant enforcement 
+and control-flow integrity.
+Layer III studies harmful artifacts in code suggested by LLMs.
+Layer IV moves one step further upstream by examining an external attack surface:
+search- and documentation-level poisoning of coding agents.
+
+\paragraph{Motivation.}
+Modern coding agents increasingly rely on external resources such as official documentation,
+API references, tutorials, and search results, when solving software engineering tasks.
+While this substantially improves utility, it also introduces a new attack surface:
+an adversary may influence agent behavior by manipulating the external 
+content that the agent retrieves and trusts,
+without changing model weights or injecting harmful prompts.
+
+The core question is therefore end-to-end:
+when poisoned content is present in retrieval channels, how often is it
+(1) retrieved,
+(2) treated as credible,
+and (3) translated into concrete harmful actions?
+This question is especially important because human developers do not 
+treat all external sources equally.
+Experienced developers often distinguish between mature and trustworthy libraries,
+less reliable packages, unofficial tutorials, and low-quality discussions,
+and they adjust their reliance accordingly. 
+Experienced human developers might choose to ignore or discount 
+less reliable sources, and implement their own checks or artifacts despite 
+the extra effort and engineering time that doing so requires. 
+
+However, it remains unclear whether coding agents exhibit a similar notion of source reliability,
+or whether poisoned search results or documentation can alter their preferences 
+and induce unsafe decisions.
+This work therefore studies the interaction between an agent's prior tendencies and 
+the external evidence it retrieves,
+with a focus on when that interaction becomes security-critical.
+
+\paragraph{Problem statement.}
+This work studies \emph{external-content poisoning against coding agents}.
+The attacker controls a subset of externally visible content,
+such as documentation pages, API references, tutorial fragments, issue discussions, 
+package descriptions, or search snippets,
+while the victim is a coding agent that retrieves such content during task solving.
+The attacker's goal is to induce harmful outcomes, including insecure patches,
+plausible but incorrect patches, unsafe dependency choices, or unsafe recommendations in the final output.
+The central research challenge is to measure and explain compromise across the full decision pipeline:
+\emph{retrieval}, \emph{trust}, and \emph{action}.
+
+\paragraph{Research questions.}
+\begin{itemize}
+    \item \textbf{RQ1.}
+    To what extent are open-source coding agents (e.g., OpenCode) vulnerable to poisoned search results
+    and documentation pages during realistic software-engineering tasks that require external lookup?
+
+    \item \textbf{RQ2.}
+    How does compromise vary with attacker budget, retrieval rank, corroborating poisoned sources,
+    source reputation, and detectability constraints?
+    In particular, do coding agents distinguish between sources of different reliability,
+    or can poisoning override such preferences?
+
+    \item \textbf{RQ3.}
+    Which practical and deployable defenses reduce compromise
+    while preserving benign task performance and agent utility?
+\end{itemize}
+
+\paragraph{Threat model.}
+We assume a black-box attacker, meaning an attacker who cannot directly 
+modify the internal model or agent implementation.
+More specifically, the attacker cannot modify model weights, namely the learned internal parameters of the model,
+agent system prompts, namely the hidden instructions that guide the agent's behavior, or the agent's internal implementation.
+However, the attacker can control part of the external content visible through search and documentation channels
+by publishing or manipulating publicly visible web content.
+The victim is a coding agent that is allowed to browse or retrieve such content while solving a task.
+The primary outcomes of interest are:
+(1) security-degrading patches,
+(2) unsafe dependency selections or API usage,
+and
+(3) unsafe recommendations or citations in final outputs.
+
+\paragraph{Experimental design.}
+The empirical study will evaluate at least two open-source coding-agent stacks
+(e.g., an OpenCode-style system and a SWE-agent-style system)
+on task suites that genuinely require external lookup.
+To ensure reproducibility, the main benchmark will be executed over a controlled local retrieval corpus
+that combines benign resources with attacker-controlled content, where a retrieval corpus is the document collection from which the agent searches and retrieves information.
+This design enables systematic manipulation of rank, visibility, source agreement, and source reputation.
+
+The evaluation will consider several poisoning strategies, including:
+(1) \emph{rank poisoning}, where attacker-controlled content is made highly visible;
+(2) \emph{content poisoning}, where retrieved documents contain misleading or adversarial technical guidance; and
+(3) \emph{consensus poisoning}, where multiple poisoned sources appear to corroborate one another.
+Measurements will be collected at each stage of the pipeline,
+including whether poisoned content is retrieved, whether it is cited or followed,
+and whether it leads to harmful code actions.
+The study will also measure the tradeoff between attack resistance and normal task success.
+
+\paragraph{Defenses and expected deliverables.}
+The defense study will compare lightweight and deployable mechanisms, including:
+source-level filtering,
+instruction-level separation,
+cross-source agreement gating,
+and post-generation security checking.
+The expected deliverables include:
+\begin{itemize}
+    \item a benchmark for search- and documentation-level 
+    poisoning of coding agents,
+    \item deployment-oriented guidance for reducing upstream 
+    risk in AI-assisted software systems.
+\end{itemize}
+
+\paragraph{Scope.}
+To keep this dissertation layer focused and publishable,
+the work targets coding agents and documentation/search poisoning only.
+It does not attempt to cover all browser-agent environments,
+all prompt-injection settings,
+or all forms of model poisoning.
+This scope aligns Layer IV with the dissertation's 
+overall goal of developing practical 
+techniques for hardening the software-development 
+pipeline against security threats.
+
+
+
+% \section{Organization}
+
+% The thesis is organized as follows.
+% Chapter~\ref{sec:preli} defines the formal preliminaries and 
+% unified notation, including Section~\ref{sec:background} on execution-semantic background.
+
+% Across these chapters, we follow a consistent structure: problem context,
+% formal model, methodological choices, and implications.
+% This organization is designed to keep cross-layer reasoning explicit and technically auditable.
+
+
+\bibliographystyle{abbrv}
+\bibliography{main}
+
+\end{document}

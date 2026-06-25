@@ -1,0 +1,66 @@
+\section{Outline of the Dissertation}
+
+The remainder of this dissertation is organized into four parts that follow the
+lifecycle of high-stakes software. Part~I motivates the work and states our
+contributions. Part~II concerns untrusted development, where harmful code can be
+introduced as software is built. Part~III concerns untrusted use, where deployed
+software is exercised in ways its developers never anticipated. Part~IV
+concludes. Rather than collecting all background in one place, each technical
+chapter introduces the preliminaries and notation it needs.
+
+\noindent \textbf{Part I: Prologue.}
+Chapter~\ref{chapter:intro}, the present chapter, motivates the thesis through
+three real incidents, reviews the most relevant prior work, states the
+contributions, and frames the questions the dissertation answers.
+
+\noindent \textbf{Part II: Securing High-Stakes Software Development.}
+This part studies threats that arise while software is written, when AI coding
+tools can introduce harmful code.
+
+\noindent \textbf{Chapter 2: Auditing Malicious Scam Endpoints in LLM-Assisted
+Code Generation.}
+This chapter studies whether production large language models generate code
+containing malicious artifacts, such as scam or phishing endpoints, under
+ordinary developer-style prompts. It presents an automated auditing framework
+that constructs benign-looking coding requests at scale and measures how often
+the generated code recommends malicious resources. The material is based on
+\textsc{Scam2Prompt}~\cite{chen2025scam2prompt}, currently under submission.
+
+\noindent \textbf{Chapter 3: Defending Search- and Documentation-Level Poisoning
+of Coding Agents (Unfinished Work).}
+This is the planned final chapter of the dissertation. It studies a more upstream
+threat, in which coding agents retrieve external information while solving a
+task. The chapter examines how poisoned external content can be retrieved,
+trusted, and turned into harmful coding outcomes, and it proposes defenses that
+reduce this risk while preserving normal agent utility. The material is based on
+ongoing research.
+
+\noindent \textbf{Part III: Securing High-Stakes Software Deployment.}
+This part studies threats that arise after software is deployed, when it is used
+in ways its developers never anticipated.
+
+\noindent \textbf{Chapter 4: Securing Smart Contracts with Runtime Invariants.}
+This chapter studies runtime invariant generation and enforcement for smart
+contract security. It builds on the observation that malicious transactions
+often behave abnormally in their asset movements, state updates, or invocation
+patterns when compared with benign use. The chapter presents techniques for
+learning behavioral invariants from historical transaction traces and enforcing
+them as runtime guards on deployed contracts. The material is based on
+\textsc{Trace2Inv}~\cite{chen2024demystifying}, published at FSE 2024.
+
+\noindent \textbf{Chapter 5: Securing Smart Contracts with Control-Flow
+Integrity.}
+This chapter studies control-flow integrity for decentralized finance smart
+contracts. Its central observation is that many attacks exploit unexpected
+control flow across functions and contracts, even when each individual component
+appears benign in isolation. The chapter develops a runtime guard framework that
+instruments contracts before deployment and validates whether transaction
+executions follow legitimate control-flow structures. The material is based on
+\textsc{CrossGuard}~\cite{chen2025secure}, accepted at ICSE 2026.
+
+\noindent \textbf{Part IV: Epilogue.}
+
+\noindent \textbf{Chapter 6: Conclusion and Future Work.}
+This chapter concludes the dissertation. It revisits the common theme of securing
+high-stakes software against untrusted development and untrusted use, summarizes
+the contributions, and discusses broader lessons and directions for future work.

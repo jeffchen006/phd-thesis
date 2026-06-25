@@ -1,0 +1,53 @@
+\section{Contributions}
+
+This dissertation, \emph{Securing High-Stakes Software Against Untrusted
+Development and Untrusted Use}, studies how to protect software that guards
+critical assets when neither the code that builds it nor the parties that use it
+can be fully trusted. As the motivating examples show, harmful behavior can be
+introduced while software is written, by AI coding tools that fabricate or follow
+untrusted content, and it can be triggered after software is deployed, by
+interactions its designers never anticipated. In both settings, the harmful
+behavior is induced by factors that cannot be fully enumerated or validated in
+advance.
+
+We organize the work around these two settings. The first half of the
+dissertation concerns untrusted development, where the goal is to prevent or
+detect harmful code before it is trusted or deployed. The second half concerns
+untrusted use, where the goal is to protect already-deployed software against
+adversarial interaction at runtime. We instantiate each setting in a concrete
+domain: LLM-assisted coding systems for development, and smart contracts for
+deployment.
+
+This thesis makes the following contributions.
+\begin{itemize}
+    \item \textbf{A unified defense framing for high-stakes software
+    under untrusted development and use.}
+    We formulate a common perspective for software whose behavior may be shaped
+    by AI-generated code, weakly trusted external content, opaque models, or
+    adversarial interaction, and we identify defense opportunities both before
+    and after deployment.
+
+    \item \textbf{Auditing malicious endpoints in production LLMs (Chapter~2).}
+    We audit production language models as they generate code under ordinary
+    developer-style prompts, and show that they recommend malicious resources,
+    such as scam endpoints, at non-trivial rates. We build an automated framework
+    that constructs benign-looking coding requests at scale and measures this
+    risk~\cite{chen2025scam2prompt}.
+
+    \item \textbf{Defending coding agents against search- and
+    documentation-level poisoning (Chapter~3).}
+    We study how poisoned external content retrieved by coding agents propagates
+    into harmful coding outcomes, and we develop defenses that reduce this risk
+    while preserving normal agent utility. This is the planned final work of the
+    dissertation.
+
+    \item \textbf{Runtime invariants for deployed smart contracts (Chapter~4).}
+    We propose techniques that learn behavioral invariants from historical
+    transaction traces and enforce them as runtime guards, stopping transactions
+    that depart from normal use~\cite{chen2024demystifying}.
+
+    \item \textbf{Control-flow integrity for smart contracts (Chapter~5).}
+    We propose algorithms that enforce control-flow integrity across contract
+    interactions with low runtime overhead, ensuring that contract functions are
+    invoked only in legitimate patterns~\cite{chen2025secure}.
+\end{itemize}

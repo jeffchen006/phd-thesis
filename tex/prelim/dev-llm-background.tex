@@ -1,0 +1,77 @@
+\section{Background}
+
+LLMs are increasingly used as software assistants
+that translate natural-language requests into
+code, edits, recommendations,
+and sometimes direct tool invocations.
+Unlike traditional software, whose behavior is
+formally defined  by explicit source code,
+LLM-based systems are influenced jointly by prompts,
+model weights,
+and, in many practical deployments, external information
+retrieved at task time.
+This combination creates a different security setting
+from the smart-contract case:
+the system may act on underspecified requests,
+while part of the information shaping its behavior may be weakly trusted.
+
+\subsection{Direct Prompt-to-Code Generation}
+We first consider the simpler model-centered setting
+in which a language model
+maps a prompt directly to a code artifact.
+Let $\mathcal{M}$ denote a language model,
+let $p$ denote a user prompt,
+and let $c=\mathcal{M}(p)$ denote the generated
+code snippet or patch.
+To reason about risk, we use an output-risk
+oracle $\mathcal{O}$ that determines
+whether the generated artifact is benign or malicious.
+In Layer III, this oracle is instantiated by checks
+for harmful code artifacts,
+such as scam URLs or malicious endpoints.
+
+Because this dissertation focuses on ordinary
+developer workflows rather than
+active jailbreak attacks, we also use a prompt
+classifier $\mathcal{P}$
+that distinguishes \emph{developer-style} prompts
+from prompts that are
+clearly adversarial or otherwise outside normal
+software-development practice.
+The core risk-discovery set is therefore
+\[
+\mathcal{S}
+=
+\{(p,c)\mid \mathcal{P}(p)=\text{developer-style},\;
+c=\mathcal{M}(p),\;
+\mathcal{O}(c)=\text{malicious}\}.
+\]
+This formulation captures the central Layer III question:
+under ordinary developer-style requests, when does the model itself emit
+harmful code artifacts that a user may later trust or execute?
+
+\subsection{Retrieval-Augmented Coding Agents}
+Many modern coding assistants extend the base model with retrieval,
+tool use, and multi-step reasoning.
+To capture this setting, let $\mathcal{D}$ denote an external document corpus,
+such as official documentation, tutorials, issue discussions, package pages,
+or search-indexed content.
+Let $\mathcal{R}(p,\mathcal{D}) \subseteq \mathcal{D}$ denote the evidence
+retrieved for task $p$, and let $\mathcal{A}$ denote a coding agent that produces
+an output $y$ from the prompt and retrieved evidence:
+\[
+y=\mathcal{A}(p,\mathcal{R}(p,\mathcal{D})).
+\]
+Here, $y$ may be a code patch, a recommendation, a dependency choice,
+or a tool-mediated action taken during task execution.
+
+This notation separates two distinct sources of risk.
+In the direct-generation setting, harmful behavior may
+already be latent in $\mathcal{M}$.
+In the agent setting, harmful behavior may additionally be induced by
+poisoned or weakly trusted content inside $\mathcal{D}$ that
+is retrieved and followed at task time.
+
+Together, these preliminaries provide necessary background knowledge
+and a shared notation list for the rest of
+ the thesis.

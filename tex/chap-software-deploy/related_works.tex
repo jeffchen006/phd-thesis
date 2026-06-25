@@ -1,0 +1,107 @@
+\section{Related Works}
+
+
+% \subsection{Program Analysis for Smart Contracts}
+
+% \noindent \textbf{Parametric Optimization.}
+% For some flash-loan attack cases, prior work manually extracted formulas of candidate functions,
+% manually defined parameter constraints, and applied off-the-shelf optimization to search for profitable parameters\cite{cao2021flashot,qin2021attacking}.
+% These methods demonstrate feasibility for specific incidents, but their manual workflow and protocol-specific expertise requirements
+% limit scalability when the attack space is large.
+
+\noindent \textbf{Static Analysis and Symbolic Execution.}
+Static analyzers such as Slither, Securify, Zeus, Park, and 
+SmartCheck\cite{feist2019slither,tsankov2018securify,
+kalra2018zeus,zheng2022park,tikhomirov2018smartcheck}
+have been widely used to detect vulnerabilities in smart contracts.
+Symbolic-execution-based tools and 
+techniques\cite{king1976symbolic,mythril,luu2016making,liu2020towards,
+frank2020ethbmc,feng2019precise,mossberg2019manticore}
+systematically explore path conditions to find property-violating traces.
+These approaches are highly effective for many vulnerability classes. 
+However, for complex DeFi smart contracts, real-world attacks typically 
+involves multiple contracts and long execution traces, 
+which can lead to state coupling and path explosion 
+challenges for static and symbolic methods.
+
+\noindent \textbf{Fuzzing.}
+ContractFuzzer, sFuzz, ContraMaster, SMARTIAN, 
+and ItyFuzz\cite{jiang2018contractfuzzer,nguyen2020sfuzz,wang2020oracle,
+choi2021smartian,shou2023ityfuzz}
+introduce effective fuzzing strategies for smart-contract security testing.
+However, these techniques either only work on one contract or focus
+on specific vulnerabilities like re-entrancy. 
+Moreover, real-world DeFi smart contract attacks can 
+involve tens of contract interactions and tens of chosen parameters,
+which is unlikely to be found by random fuzzing. 
+
+
+\noindent \textbf{Smart Contract Attack Monitoring.}
+Prior studies analyze DeFi smart contract attacks and related
+ DeFi transaction strategies\cite{qin2021attacking,cao2021flashot,
+ werapun2022flash,wang2021towards,gan2022understanding}.
+Monitoring-oriented systems have also been proposed 
+for post-hoc or real-time attack detection
+\cite{xia2023detecting,ramezany2023midnight,wang2022defiscanner}.
+Despite these efforts and the good coverage of known attack patterns, 
+these works do not propose systematic generalized methods for defending 
+against novel attack vectors that may arise in the future. 
+
+
+
+\subsection{Runtime Enforcement and Invariant Guards for Smart Contracts}
+
+\noindent \textbf{Invariant Generation and Enforcement.}
+Prior research has proposed multiple approaches to 
+derive and enforce smart-contract invariants.
+Cider\cite{liu2022learning} learns arithmetic-overflow invariants 
+using reinforcement learning,
+InvCon and InvCon+\cite{liu2022invcon,liu2024automated} combine 
+dynamic inference with static validation. 
+These directions provide practical invariant families 
+and evidence for runtime protection,
+especially when the objective is to reject abnormal executions 
+with low deployment friction. However, 
+these works only cover a limited set of invariant types and 
+more importantly, do not propose methods for 
+patching existing smart contracts after their deployment, 
+making their approach limited to pre-deployment use cases. 
+Our thesis contributes a broader framework for runtime safety enforcement,
+including pre-deployment and post-deployment use cases.
+
+
+\noindent \textbf{Control-Flow Restriction in industry.}
+Industry systems such as SphereX use control-flow 
+restriction to restrict control flows over deployed smart contracts\cite{spherex}.
+However, their approach requires 
+customers to manually define the allowed control flows, 
+which is not scalable for complex DeFi protocols. Our thesis 
+contributes an automated approach 
+to deploy template-based control-flow guards that can be applied 
+to a wide range of DeFi protocols with minimal manual effort and minimal 
+number of falsely blocked transactions.
+
+
+
+\noindent
+\textbf{Re-entrancy Attack Defense and Secure Type System.}
+Numerous tools restrict control flows to combat re-entrancy attacks. 
+Static analysis tools~\cite{luu2016making,torres2018osiris,
+liu2018reguard,feist2019slither,
+zhang2019mpro,bose2022sailfish,ma2021pluto,zheng2022park,wang2024efficiently,
+albert2020taming} identify re-entrancy vulnerabilities and apply guards. 
+Runtime frameworks like Sereum~\cite{rodler2018sereum} and 
+\citeauthor{grossman2017online} protect deployed contracts, 
+while \citeauthor{callens2024temporarily} prevent duplicate 
+function calls within transactions. Unlike these 
+re-entrancy-focused approaches, our thesis adopts broader 
+control flow restriction targeting comprehensive vulnerability classes.
+\citeauthor{cecchetti2020securing} propose a security type system to 
+enforce information flow and re-entrancy controls~\cite{cecchetti2020securing,
+cecchetti2021compositional}. Conversely, 
+our thesis contributes a purely runtime system built entirely on the EVM, 
+operating without supplementary type systems or language modifications.
+
+
+
+
