@@ -10,7 +10,7 @@ main.pdf: main.tex main.bib tex/*
 # thesis; it is compiled separately into roadmap.pdf via `make roadmap`.
 roadmap: roadmap.pdf
 
-roadmap.pdf: roadmap.tex tex/intro/05-roadmap-and-organization.tex tex/intro/works-remaining.tex main.bib
+roadmap.pdf: roadmap.tex main.bib
 	-pdflatex -interaction=nonstopmode roadmap
 	-bibtex roadmap
 	-pdflatex -interaction=nonstopmode roadmap

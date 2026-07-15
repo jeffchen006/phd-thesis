@@ -1,5 +1,6 @@
 \documentclass{ut-thesis}
 \usepackage[colorlinks]{hyperref} % for links
+\hypersetup{linkcolor=black, citecolor=black, urlcolor=black} % match template: black links (TOC no longer red)
 \usepackage{graphicx} % for embedding graphics
 \usepackage{booktabs} % for pretty tables
 \usepackage{lipsum} % for gibberish text
@@ -148,7 +149,7 @@
 \newcommand*{\numOfAttacksFantom}{one}
 \newcommand*{\numOfAttacksDVD}{two}
 
-\providecommand{\revise}[1]{\textcolor{blue}{#1}}
+\providecommand{\revise}[1]{\textcolor{black}{#1}}
 \providecommand{\camera}[1]{#1}
 \providecommand{\chen}[1]{#1}
 \providecommand{\framework}{Framework}
@@ -192,7 +193,10 @@
 
     \input{tex/intro/motivation}
 
+
     \input{tex/intro/motivating_examples}
+
+    \input{tex/intro/prior_work}
 
     \input{tex/intro/contributions}
 
@@ -204,23 +208,27 @@
     \part{Securing High-Stakes Software Development}
     \label{part:development}
 
+    \chapter{Defending Search- and Documentation-Level Poisoning of Coding Agents (Ongoing Work)}
+
+    \input{tex/chap-software-dev/related_works.tex}
+
     \chapter{Auditing Malicious Scam Endpoints in LLM-Assisted Code Generation}
     
     \input{tex/prelim/dev-llm-background}   % LLM-assisted coding background (moved from Ch. Background sec. 2.2)
 
-    \chapter{Defending Search- and Documentation-Level Poisoning of Coding Agents (Unfinished Work)}
 
-    \input{tex/chap-software-dev/related_works.tex}
 
     %% ============================ Part III ==========================
     \part{Securing High-Stakes Software Deployment}
     \label{part:use}
 
+    \chapter{Securing Smart Contracts with Control-Flow Integrity}
+    \input{tex/chap-software-deploy/related_works.tex}
+
     \chapter{Securing Smart Contracts with Runtime Invariants}
     \input{tex/prelim/deploy-evm-background} 
 
-    \chapter{Securing Smart Contracts with Control-Flow Integrity}
-    \input{tex/chap-software-deploy/related_works.tex}
+
 
     %% ============================ Part IV ===========================
     \part{Epilogue}

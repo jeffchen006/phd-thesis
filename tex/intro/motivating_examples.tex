@@ -1,5 +1,5 @@
-\section{Damage from Untrusted Development and Use}
-\label{sec:motivation}
+\section{Motivating Examples}
+\label{sec:examples}
 
 High-stakes software, the code that guards money, secrets, and other critical
 assets, can be compromised at every stage of its lifecycle. We present three
@@ -303,11 +303,19 @@ side of deployment.
 
 Answering these questions calls for defenses at more than one point in the
 software lifecycle. The rest of this dissertation develops them on both sides:
-before high-stakes software is deployed, by auditing and hardening 
-AI developing tools as well as code generated, 
-and while it deploys and runs, 
-by enforcing restrictions at first use and gradually 
+before high-stakes software is deployed, by auditing and hardening
+AI developing tools as well as code generated,
+and while it deploys and runs,
+by enforcing restrictions at first use and gradually
 relaxing the restrictions as the software proves itself in production.
+
+\revise{These questions, and the defenses we build for them, are not specific to any
+single domain: they apply to high-stakes software in general, wherever untrusted
+development or untrusted use threatens the critical assets the software guards.
+Throughout this dissertation, we ground the work in \emph{blockchain applications}
+as our representative high-stakes software, since they custody cryptocurrencies
+directly in code and thereby make both the stakes and the resulting losses concrete
+and measurable.}
 
 
 

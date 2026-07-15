@@ -1,4 +1,6 @@
 \section{Contributions}
+\label{sec:contributions}
+
 
 This dissertation, \emph{Securing High-Stakes Software Against Untrusted
 Development and Untrusted Use}, studies how to protect software that guards
@@ -16,38 +18,53 @@ detect harmful code before it is trusted or deployed. The second half concerns
 untrusted use, where the goal is to protect already-deployed software against
 adversarial interaction at runtime. We instantiate each setting in a concrete
 domain: LLM-assisted coding systems for development, and smart contracts for
-deployment.
+deployment. \revise{Recall the high-stakes software lifecycle of
+Figure~\ref{fig:workflow}; Figure~\ref{fig:contributions} revisits that same
+lifecycle, now mapping each contribution onto the stage it defends.}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\textwidth]{figures/workflow2.pdf}
+  \caption{\revise{Overview of the contributions of this dissertation, organized
+  along the lifecycle of high-stakes software. The development side (untrusted
+  development) covers defending coding agents against search- and
+  documentation-level poisoning (Chapter~2) and auditing malicious endpoints in
+  production LLMs (Chapter~3); the deployment side (untrusted use) covers
+  control-flow integrity (Chapter~4) and runtime invariants (Chapter~5) for
+  deployed smart contracts.}}
+  \label{fig:contributions}
+\end{figure}
 
 This thesis makes the following contributions.
 \begin{itemize}
-    \item \textbf{A unified defense framing for high-stakes software
-    under untrusted development and use.}
-    We formulate a common perspective for software whose behavior may be shaped
-    by AI-generated code, weakly trusted external content, opaque models, or
-    adversarial interaction, and we identify defense opportunities both before
-    and after deployment.
+    % \item \textbf{A unified defense framing for high-stakes software
+    % under untrusted development and use.}
+    % We formulate a common perspective for software whose behavior may be shaped
+    % by AI-generated code, weakly trusted external content, opaque models, or
+    % adversarial interaction, and we identify defense opportunities both before
+    % and after deployment.
 
-    \item \textbf{Auditing malicious endpoints in production LLMs (Chapter~2).}
+    \item \textbf{Defending coding agents against search- and
+    documentation-level poisoning (Chapter~\revise{2}).}
+    We study how poisoned external content retrieved by coding agents propagates
+    into harmful coding outcomes, and we develop defenses that reduce this risk
+    while preserving normal agent utility. This is the planned final work of the
+    dissertation.
+
+    \item \textbf{Auditing malicious endpoints in production LLMs (Chapter~\revise{3}).}
     We audit production language models as they generate code under ordinary
     developer-style prompts, and show that they recommend malicious resources,
     such as scam endpoints, at non-trivial rates. We build an automated framework
     that constructs benign-looking coding requests at scale and measures this
     risk~\cite{chen2025scam2prompt}.
 
-    \item \textbf{Defending coding agents against search- and
-    documentation-level poisoning (Chapter~3).}
-    We study how poisoned external content retrieved by coding agents propagates
-    into harmful coding outcomes, and we develop defenses that reduce this risk
-    while preserving normal agent utility. This is the planned final work of the
-    dissertation.
-
-    \item \textbf{Runtime invariants for deployed smart contracts (Chapter~4).}
-    We propose techniques that learn behavioral invariants from historical
-    transaction traces and enforce them as runtime guards, stopping transactions
-    that depart from normal use~\cite{chen2024demystifying}.
-
-    \item \textbf{Control-flow integrity for smart contracts (Chapter~5).}
+    \item \textbf{Control-flow integrity for smart contracts (Chapter~\revise{4}).}
     We propose algorithms that enforce control-flow integrity across contract
     interactions with low runtime overhead, ensuring that contract functions are
     invoked only in legitimate patterns~\cite{chen2025secure}.
+
+    \item \textbf{Runtime invariants for deployed smart contracts (Chapter~\revise{5}).}
+    We propose techniques that learn behavioral invariants from historical
+    transaction traces and enforce them as runtime guards, stopping transactions
+    that depart from normal use~\cite{chen2024demystifying}.
 \end{itemize}

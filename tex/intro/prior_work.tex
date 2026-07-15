@@ -1,0 +1,105 @@
+\section{\revise{Prior Work}}
+
+\revise{Before describing our own
+contributions, we show how related works approached
+the same problems  
+before this dissertation:
+security analysis for smart contracts, and 
+security of LLM-assisted code
+generation. 
+For each, we note what earlier work achieved,
+why it was not enough to
+prevent the incidents of Section~\ref{sec:examples}, and 
+how this dissertation
+advances the field.}
+
+\subsection{\revise{Securing Smart Contracts}}
+
+\revise{Most prior work aims to find 
+vulnerabilities \emph{before} a contract is
+deployed. Static-analysis and symbolic-execution tools such as
+Oyente~\cite{luu2016making}, Securify~\cite{tsankov2018securify}, and
+Slither~\cite{feist2019slither}, along with fuzzers such as
+ContractFuzzer~\cite{jiang2018contractfuzzer} and 
+ItyFuzz~\cite{shou2023ityfuzz},
+detect known vulnerability classes like re-entrancy and 
+integer overflow. Yet this
+was not enough to prevent incidents like the 
+Harvest exploit of
+Section~\ref{subsec:example3}: the 
+costliest DeFi attacks exploit \emph{design
+flaws}, in which every individual operation is 
+permitted and only their combination
+is harmful, so nothing looks like a bug; 
+they span many contracts and long attack vectors,
+defeating single-contract analysis; and 
+pre-deployment tools cannot help a contract
+that is already live. 
+A closer line moves protection to runtime, 
+learning or
+enforcing invariants~\cite{liu2022learning, liu2022invcon, liu2024automated,
+deng2024safeguarding} or restricting control 
+flow~\cite{rodler2018sereum, li2020securing,
+spherex}, but each covers only a narrow set of properties, often needs
+manually specified policies, and cannot patch a contract after deployment.}
+
+\revise{This dissertation advances the deployment 
+side on exactly these gaps.
+Chapter~4 (\textsc{CrossGuard}) targets the cross-contract 
+design flaws that defeat
+single-contract analysis, automatically adding 
+control-flow-integrity checks that
+block illegitimate interaction patterns with low 
+overhead and no manual
+specification. Chapter~5 (\textsc{Trace2Inv}) learns a 
+broad range of behavioral
+invariants from a contract's own transaction history and 
+enforces them as runtime
+guards that apply both before and after deployment.}
+
+\subsection{\revise{Securing LLM-Assisted Code Generation}}
+
+\revise{Before this dissertation, the study of insecure AI-generated code largely
+fell into three lines: 
+inducing harmful code at \emph{inference time} by feeding the
+model malicious external content~\cite{zeng2025inducing, yi2025benchmarking};
+poisoning the \emph{training pipeline}~\cite{carlini2024poisoning, 
+zhao2025data,
+jiang2024turning}, 
+mostly studied for natural-language rather than code outputs; and
+benchmarking how often generated code contains 
+classic weaknesses in Common
+Weakness Enumeration 
+categories~\cite{yang2024seccodeplt, debenedetti2023a}. As
+assistants grew into retrieval-augmented agents, 
+a parallel line studied poisoning of
+retrieved knowledge and early defenses~\cite{zou2025poisonedrag, 
+chen2024agentpoison,
+zhou2025trustrag, wang2025astute}, but evaluated 
+mainly on simple question answering
+rather than on coding agents that can execute code. 
+None of this established the
+threat behind the incident of Section~\ref{subsec:example1}: 
+that a \emph{production}
+model, with no external access at inference time, 
+reproduces a real-world harmful
+artifact, such as a live scam endpoint, in response to an 
+ordinary developer prompt,
+most likely because that artifact was 
+passively absorbed into its weights.}
+
+\revise{This dissertation advances 
+the development side by closing these gaps.
+Chapter~2 moves upstream to coding agents, 
+developing defenses against search- and
+documentation-level poisoning, where a successful 
+attack is most consequential
+because the agent can act on the poisoned result. 
+Chapter~3 (\textsc{Scam2Prompt})
+audits production LLMs with an automated 
+framework that issues benign-looking coding
+requests at scale and measures how often the 
+generated code embeds malicious
+endpoints, exposing passive, already-present 
+poisoning rather than a new
+inference-time attack.}
